@@ -1,0 +1,24 @@
+# 개인 학습용 사이트 — 검색엔진 색인을 원하지 않습니다.
+# 각 HTML의 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet"> 와 함께 동작합니다.
+
+User-agent: *
+Disallow: /
+
+# 주요 AI 크롤러 명시 차단
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /

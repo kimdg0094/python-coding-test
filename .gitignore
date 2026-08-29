@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 로그 (수 MB짜리 JFR replay 로그)
+*.log
+
+# 에디터 · OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 임시 백업
+*.bak
+_orig_test.html
+
+# C++ 사이트 — 2026-08-28부터 동결(로컬 보관만, 배포 대상 아님)
+cpp/
+cpp_learning.html
