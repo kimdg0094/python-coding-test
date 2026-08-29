@@ -142,6 +142,17 @@ pre>code.language-text,pre>code.language-diagram{white-space:pre}
 .tablewrap{overflow-x:auto;margin:14px 0}
 .tablewrap table{margin:0}
 
+/* ── 예제 묶음: 빈 줄로 구분된 독립 예제를 각각의 박스로 ── */
+.exset{margin:13px 0}
+.exset pre{margin:0}
+.exset pre + pre{margin-top:9px}
+/* 같은 설명에 딸린 예제들임을 알 수 있게 왼쪽에 옅은 연결선 */
+.exset{border-left:2px solid var(--accent-lb);padding-left:11px;border-radius:2px}
+
+/* ── 코드 입력칸: 내용만큼 높이가 늘어나고 내부 스크롤 없음 ── */
+.runner .code{overflow-y:hidden;resize:none;min-height:150px;
+  height:auto;field-sizing:content}
+
 .res-body h2{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:30px 0 10px;color:var(--ink)}
 .res-body h4{font-size:15px;font-weight:700;margin:20px 0 6px;color:var(--accent-d)}
 .res-body p{margin:9px 0;line-height:1.7}

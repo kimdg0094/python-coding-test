@@ -98,12 +98,34 @@ def _depth_head(m):
     kind = DEPTH_LABELS.get(core, "check" if "체크리스트" in core else "warn")
     return f'<h4 class="dlabel dl-{kind}">{full.strip()}</h4>'
 
+# 개념 설명의 코드 블록에는 독립된 예제가 빈 줄로만 구분돼 여러 개 들어 있는 경우가 많다.
+# 어디까지가 한 예제인지 보이도록 각각을 별도 박스로 나눈다.
+# def/class가 있으면 하나의 프로그램(뼈대 코드)이라 나누지 않고,
+# 조각이 들여쓰기로 시작하면 블록 내부의 빈 줄이라 나누지 않는다.
+_PY_BLOCK = re.compile(r'<pre><code class="language-python">(.*?)</code></pre>', re.S)
+
+def _split_examples(m):
+    code = m.group(1)
+    if re.search(r"^(def |class |@|async def )", code, re.M):
+        return m.group(0)
+    parts = [q for q in re.split(r"\n\s*\n", code) if q.strip()]
+    if len(parts) < 2:
+        return m.group(0)
+    if any(q.split("\n")[0][:1] in (" ", "\t") for q in parts):
+        return m.group(0)
+    boxes = "".join(
+        '<pre><code class="language-python">' + q.strip("\n") + "</code></pre>"
+        for q in parts)
+    return '<div class="exset">' + boxes + "</div>"
+
+
 def md2html(text):
     h = markdown.markdown(text or "", extensions=["tables", "fenced_code", "sane_lists"])
     h = re.sub(r"<li>\s*\[ \]\s*", '<li class="task"><input type="checkbox" disabled> ', h)
     h = re.sub(r"<li>\s*\[[xX]\]\s*", '<li class="task done"><input type="checkbox" checked disabled> ', h)
     h = _DEPTH_RE.sub(_depth_head, h)
     h = h.replace("<table>", '<div class="tablewrap"><table>').replace("</table>", "</table></div>")
+    h = _PY_BLOCK.sub(_split_examples, h)
     return h
 
 # ============ 코드 실행 채점 러너 ============
@@ -501,6 +523,27 @@ async function judge(runner){
   }
   resultEl.className='run-result pass'; resultEl.textContent='✅ 정답! 예제 '+tests.length+'개를 모두 통과했습니다.';
 }
+/* 코드 입력칸 자동 높이 — 길어지면 박스가 늘어나 전부 보이게(내부 스크롤 없음) */
+function autoGrow(ta){
+  if(!ta) return;
+  ta.style.height = 'auto';
+  ta.style.height = (ta.scrollHeight + 2) + 'px';
+}
+function growAll(){
+  Array.prototype.forEach.call(document.querySelectorAll('.runner .code'), autoGrow);
+}
+['input','keyup','change','paste','cut'].forEach(function(ev){
+  document.addEventListener(ev, function(e){
+    var t = e.target;
+    if(t && t.classList && t.classList.contains('code')) setTimeout(function(){autoGrow(t);}, 0);
+  }, true);
+});
+document.addEventListener('click', function(e){
+  if(e.target.closest('.tab')||e.target.closest('.jump-nav')) setTimeout(growAll, 60);
+});
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', growAll);
+else growAll();
+
 document.addEventListener('click', function(e){
   var rb = e.target.closest('.run-btn');
   if(rb){ judge(rb.closest('.runner')); return; }

@@ -285,6 +285,17 @@ pre>code.language-text,pre>code.language-diagram{white-space:pre}
 .tablewrap{overflow-x:auto;margin:14px 0}
 .tablewrap table{margin:0}
 
+/* ── 예제 묶음: 빈 줄로 구분된 독립 예제를 각각의 박스로 ── */
+.exset{margin:13px 0}
+.exset pre{margin:0}
+.exset pre + pre{margin-top:9px}
+/* 같은 설명에 딸린 예제들임을 알 수 있게 왼쪽에 옅은 연결선 */
+.exset{border-left:2px solid var(--accent-lb);padding-left:11px;border-radius:2px}
+
+/* ── 코드 입력칸: 내용만큼 높이가 늘어나고 내부 스크롤 없음 ── */
+.runner .code{overflow-y:hidden;resize:none;min-height:150px;
+  height:auto;field-sizing:content}
+
 .res-body h2{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:30px 0 10px;color:var(--ink)}
 .res-body h4{font-size:15px;font-weight:700;margin:20px 0 6px;color:var(--accent-d)}
 .res-body p{margin:9px 0;line-height:1.7}
@@ -363,16 +374,13 @@ print(&quot;두 번째 줄&quot;)       # 서로 다른 두 줄로 출력됨
 </ul>
 <p><code>type(값)</code>으로 자료형을 확인할 수 있다. 예) <code>type(3.14)</code> → <code>&lt;class 'float'&gt;</code></p>
 <p><strong>예시</strong>:</p>
-<pre><code class="language-python">a = 3
+<div class="exset"><pre><code class="language-python">a = 3
 print(a)       # 3
 a = 10         # 값을 덮어씀
-print(a)       # 10
-
-name = &quot;홍길동&quot;
+print(a)       # 10</code></pre><pre><code class="language-python">name = &quot;홍길동&quot;
 is_student = True
 print(type(a))         # &lt;class 'int'&gt;
-print(type(name))      # &lt;class 'str'&gt;
-</code></pre>
+print(type(name))      # &lt;class 'str'&gt;</code></pre></div>
 <p><strong>주의·흔한 실수</strong>:</p>
 <ul>
 <li><code>a = b</code>는 "a와 b가 같다"가 아니라 "b의 값을 a에 넣는다"이다. 방향(오른쪽→왼쪽)에 주의.</li>
@@ -648,12 +656,9 @@ print(f&quot;1 + 1 = {1 + 1}&quot;)                     # 1 + 1 = 2
 <li><code>int(input())</code> / <code>float(input())</code> : 입력을 정수/실수로 변환.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">age = int(input())
-print(&quot;당신의 나이는&quot;, age, &quot;살입니다.&quot;)
-
-height = float(input())
-print(&quot;당신의 키는&quot;, height, &quot;cm입니다.&quot;)
-</code></pre>
+<div class="exset"><pre><code class="language-python">age = int(input())
+print(&quot;당신의 나이는&quot;, age, &quot;살입니다.&quot;)</code></pre><pre><code class="language-python">height = float(input())
+print(&quot;당신의 키는&quot;, height, &quot;cm입니다.&quot;)</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li>형 변환 없이 문자열끼리 <code>+</code>하면 숫자 덧셈이 아니라 문자열 이어붙이기가 됨.</li>
@@ -672,11 +677,8 @@ print(&quot;당신의 키는&quot;, height, &quot;cm입니다.&quot;)
 <li>형 변환 동반 : <code>a, b = map(int, input().split())</code> (분리된 값들을 한 번에 변환).</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">a, b, c = input().split()          # &quot;apple banana cherry&quot; → a,b,c
-
-num1, num2 = map(int, input().split())
-print(&quot;두 수의 합은&quot;, num1 + num2, &quot;입니다.&quot;)   # &quot;10 20&quot; → 30
-</code></pre>
+<div class="exset"><pre><code class="language-python">a, b, c = input().split()          # &quot;apple banana cherry&quot; → a,b,c</code></pre><pre><code class="language-python">num1, num2 = map(int, input().split())
+print(&quot;두 수의 합은&quot;, num1 + num2, &quot;입니다.&quot;)   # &quot;10 20&quot; → 30</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li>나열한 변수 개수와 입력 값 개수가 다르면 언패킹 오류 발생.</li>
@@ -775,16 +777,11 @@ if temp &gt;= 30:
 <li>조건이 거짓이면 들여쓴 블록을 통째로 건너뛰고, 들여쓰지 않은 다음 코드로 넘어갑니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">age = int(input())
-
-if age &gt;= 18:
+<div class="exset"><pre><code class="language-python">age = int(input())</code></pre><pre><code class="language-python">if age &gt;= 18:
     print(&quot;성인입니다&quot;)
-    print(&quot;good&quot;)
-
-print(&quot;확인 완료되었습니다&quot;)
+    print(&quot;good&quot;)</code></pre><pre><code class="language-python">print(&quot;확인 완료되었습니다&quot;)
 # age=20 → 성인입니다 / good / 확인 완료되었습니다
-# age=10 → 확인 완료되었습니다  (if 블록은 건너뜀)
-</code></pre>
+# age=10 → 확인 완료되었습니다  (if 블록은 건너뜀)</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>if</code> 다음 줄을 들여쓰지 않으면 <code>IndentationError: expected an indented block after 'if' statement</code>가 발생합니다.</li>
@@ -917,19 +914,12 @@ print(f&quot;오늘의 활동은 {activity}입니다.&quot;)
 <li>기본값: <code>start=0</code>, <code>step=1</code>.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">for i in range(2, 6):      # 2 3 4 5
-    print(i)
-
-for i in range(1, 10, 2):  # 1 3 5 7 9 (양수 step)
-    print(i)
-
-for i in range(10, 0, -3): # 10 7 4 1 (음수 step)
-    print(i)
-
-# a부터 b까지(끝값 포함) 출력하려면 stop을 b+1로
+<div class="exset"><pre><code class="language-python">for i in range(2, 6):      # 2 3 4 5
+    print(i)</code></pre><pre><code class="language-python">for i in range(1, 10, 2):  # 1 3 5 7 9 (양수 step)
+    print(i)</code></pre><pre><code class="language-python">for i in range(10, 0, -3): # 10 7 4 1 (음수 step)
+    print(i)</code></pre><pre><code class="language-python"># a부터 b까지(끝값 포함) 출력하려면 stop을 b+1로
 for i in range(a, b + 1):
-    print(i)
-</code></pre>
+    print(i)</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>a</code>부터 <code>b</code>까지 b를 포함해 출력하려면 <code>range(a, b+1)</code>처럼 끝값에 +1을 해야 합니다.</li>
@@ -998,21 +988,16 @@ while num &lt; x:          # num이 100 이상이 되면 멈춤
 <li>우선순위가 헷갈리면 각 조건을 괄호로 묶어 <code>(A and B) or C</code> 처럼 의도를 명확히 합니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python"># 성인 판단: (나이 18 이상 그리고 시민권 보유) 또는 특별 허가
+<div class="exset"><pre><code class="language-python"># 성인 판단: (나이 18 이상 그리고 시민권 보유) 또는 특별 허가
 age = 20
 has_citizenship = True
-has_special_permission = False
-
-if (age &gt;= 18 and has_citizenship) or has_special_permission:
+has_special_permission = False</code></pre><pre><code class="language-python">if (age &gt;= 18 and has_citizenship) or has_special_permission:
     print(&quot;성인입니다.&quot;)
 else:
-    print(&quot;미성년자입니다.&quot;)
-
-# 윤년 판단: (4의 배수 그리고 100의 배수 아님) 또는 400의 배수
+    print(&quot;미성년자입니다.&quot;)</code></pre><pre><code class="language-python"># 윤년 판단: (4의 배수 그리고 100의 배수 아님) 또는 400의 배수
 year = 2000
 if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
-    print(&quot;윤년&quot;)
-</code></pre>
+    print(&quot;윤년&quot;)</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>and</code>/<code>or</code>의 결합 순서를 착각해 괄호를 빠뜨리면 의도와 다른 조건이 됩니다. 예외 조건(<code>or</code>)은 반드시 괄호로 그룹을 구분하세요.</li>
@@ -1038,17 +1023,14 @@ else:
 <li>들여쓰기 깊이로 어떤 <code>else</code>가 어떤 <code>if</code>에 속하는지 결정되므로 들여쓰기를 정확히 맞춰야 합니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">passport_valid = True
-visa_required = False
-
-if passport_valid:
+<div class="exset"><pre><code class="language-python">passport_valid = True
+visa_required = False</code></pre><pre><code class="language-python">if passport_valid:
     if visa_required:
         print(&quot;비자를 발급받습니다.&quot;)
     else:
         print(&quot;바로 여행을 떠납니다.&quot;)
 else:
-    print(&quot;여권을 새로 발급받습니다.&quot;)
-</code></pre>
+    print(&quot;여권을 새로 발급받습니다.&quot;)</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>else</code>가 짝이 되는 <code>if</code>는 들여쓰기 레벨로 결정됩니다. 안쪽 <code>else</code>인지 바깥 <code>else</code>인지 혼동하기 쉽습니다.</li>
@@ -1127,17 +1109,12 @@ nums.sort()           # [1, 2, 5, 9]
 <li>리스트 펼쳐 출력(언패킹): <code>print(*[1, 2, 3])</code>은 <code>print(1, 2, 3)</code>과 같아 요소를 공백으로 펼쳐 한 줄에 출력합니다. 구분자는 <code>print(*arr, sep=",")</code>처럼 <code>sep</code>으로 바꿀 수 있습니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python"># 여러 정수 입력받기
-nums = list(map(int, input().split()))   # &quot;10 20 30&quot; -&gt; [10, 20, 30]
-
-# for문으로 2배
+<div class="exset"><pre><code class="language-python"># 여러 정수 입력받기
+nums = list(map(int, input().split()))   # &quot;10 20 30&quot; -&gt; [10, 20, 30]</code></pre><pre><code class="language-python"># for문으로 2배
 doubled = []
 for x in nums:
-    doubled.append(x * 2)
-
-# 컴프리헨션으로 제곱 리스트
-squares = [x ** 2 for x in range(10)]    # [0, 1, 4, 9, ...]
-</code></pre>
+    doubled.append(x * 2)</code></pre><pre><code class="language-python"># 컴프리헨션으로 제곱 리스트
+squares = [x ** 2 for x in range(10)]    # [0, 1, 4, 9, ...]</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li>요소 직접 순회(<code>for x in arr</code>)에서는 요소의 인덱스에 직접 접근할 수 없으므로, 위치가 필요하면 <code>range(len(arr))</code>를 씁니다.</li>
@@ -1191,16 +1168,13 @@ squares = [x ** 2 for x in range(10)]    # [0, 1, 4, 9, ...]
 <li>f-문자열(f-string): 문자열 앞에 <code>f</code>를 붙이고 <code>{ }</code> 안에 변수·식을 넣어 값을 문자열에 끼워 넣음. 동적 문자열 생성에 유용 (예: <code>f"합은 {a + b}입니다"</code>). 뒤 챕터의 출력 포매팅에서 자주 쓰임.</li>
 </ul>
 <p><strong>예시</strong>:</p>
-<pre><code class="language-python">text = &quot;Python is fun&quot;
+<div class="exset"><pre><code class="language-python">text = &quot;Python is fun&quot;
 print(text[1:4])      # yth  (end 제외)
 print(text[::-1])     # 뒤집기: nuf si nohtyP
 print(text.replace(&quot;fun&quot;, &quot;cool&quot;))   # Python is cool
 print(&quot; a,b &quot;.strip().split(&quot;,&quot;))    # ['a', 'b']
-print(&quot;-&quot;.join([&quot;2026&quot;, &quot;07&quot;, &quot;01&quot;]))  # 2026-07-01
-
-# 서로 다른 따옴표로 감싸면 이스케이프 없이 따옴표 포함 가능
-print('그는 말했다, &quot;안녕&quot;')          # 그는 말했다, &quot;안녕&quot;
-</code></pre>
+print(&quot;-&quot;.join([&quot;2026&quot;, &quot;07&quot;, &quot;01&quot;]))  # 2026-07-01</code></pre><pre><code class="language-python"># 서로 다른 따옴표로 감싸면 이스케이프 없이 따옴표 포함 가능
+print('그는 말했다, &quot;안녕&quot;')          # 그는 말했다, &quot;안녕&quot;</code></pre></div>
 <p><strong>주의·흔한 실수</strong>:</p>
 <ul>
 <li><code>text[0] = "J"</code>처럼 인덱스로 값을 직접 대입하면 오류 — 불변이므로 새 문자열을 만들어야 함(예: 슬라이싱 조합, <code>replace</code>, 리스트 변환 후 재조립).</li>
@@ -1271,17 +1245,14 @@ for num in numbers:
 <li><code>break</code>는 루프를 빠져나와 루프 다음 문장으로 이동합니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">numbers = [10, -5, 7, -3, 0, 12, -1]
+<div class="exset"><pre><code class="language-python">numbers = [10, -5, 7, -3, 0, 12, -1]
 for num in numbers:      # 양수만 출력
     if num &lt;= 0:
         continue
-    print(num)           # 10, 7, 12
-
-for num in range(1, 6):  # 3을 만나면 종료
+    print(num)           # 10, 7, 12</code></pre><pre><code class="language-python">for num in range(1, 6):  # 3을 만나면 종료
     if num == 3:
         break
-    print(num)           # 1, 2
-</code></pre>
+    print(num)           # 1, 2</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>continue</code>를 쓸 때 카운터/누적 코드가 <code>continue</code> 뒤에 있으면 건너뛰어져 집계가 틀어집니다. 순서에 주의하세요.</li>
@@ -1361,7 +1332,7 @@ while True:
 print(total)
 </code></pre>
 <p><strong>참고 — while-else: break 유무로 else 실행이 갈린다</strong></p>
-<pre><code class="language-python"># (A) break로 빠져나가면 else는 실행 안 됨
+<div class="exset"><pre><code class="language-python"># (A) break로 빠져나가면 else는 실행 안 됨
 n = 3
 while n &gt; 0:
     print(n, end=&quot; &quot;)
@@ -1370,17 +1341,14 @@ while n &gt; 0:
     n -= 1
 else:
     print(&quot;정상 종료&quot;)
-# 출력: 3 2      (break로 나갔으므로 else 미실행)
-
-# (B) 조건이 거짓이 되어 정상 종료하면 else 실행됨
+# 출력: 3 2      (break로 나갔으므로 else 미실행)</code></pre><pre><code class="language-python"># (B) 조건이 거짓이 되어 정상 종료하면 else 실행됨
 n = 3
 while n &gt; 0:
     print(n, end=&quot; &quot;)
     n -= 1
 else:
     print(&quot;정상 종료&quot;)
-# 출력: 3 2 1 정상 종료
-</code></pre>
+# 출력: 3 2 1 정상 종료</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>break</code>(또는 종료 조건을 참으로 만드는 갱신)를 빠뜨리면 프로그램이 영원히 멈추지 않습니다.</li>
@@ -1450,16 +1418,14 @@ for i in range(3):        # 행 3번
     print()
 </code></pre>
 <p><strong>예시</strong></p>
-<pre><code class="language-python"># 역삼각형: range의 감소 스텝 활용
+<div class="exset"><pre><code class="language-python"># 역삼각형: range의 감소 스텝 활용
 n = 5
 for i in range(n, 0, -1):   # i = 5,4,3,2,1
     for j in range(i):
         print(&quot;*&quot;, end=&quot; &quot;)
     print()
 # 가운데 정렬 삼각형은 (공백 for문) + (별 for문) 두 내부 반복을 쓴다:
-# 공백은 range(n - i)번, 별은 range(2*i - 1)번
-
-# 완성 코드 (문자열 반복 * 를 쓰면 내부 for 없이도 한 줄로 처리 가능)
+# 공백은 range(n - i)번, 별은 range(2*i - 1)번</code></pre><pre><code class="language-python"># 완성 코드 (문자열 반복 * 를 쓰면 내부 for 없이도 한 줄로 처리 가능)
 n = 4
 for i in range(1, n + 1):
     print(&quot; &quot; * (n - i), end=&quot;&quot;)   # 앞쪽 공백 (n-i)개
@@ -1468,8 +1434,7 @@ for i in range(1, n + 1):
 #    *
 #   ***
 #  *****
-# *******
-</code></pre>
+# *******</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li><code>range(i)</code>와 <code>range(1, i+1)</code>의 반복 횟수는 같지만(i번), 줄 번호를 1부터 세려면 외부를 <code>range(1, n+1)</code>로 맞춰야 개수가 어긋나지 않는다.</li>
@@ -1641,19 +1606,14 @@ print(theater[1][2])  # 2번째 행, 3번째 열 -&gt; &quot;X&quot;
 <li>값 접근/변경: <code>matrix[r][c]</code>로 읽고, 대입으로 바꿉니다. 인덱스가 범위 안인지 확인하면 IndexError를 피할 수 있습니다.</li>
 </ul>
 <p><strong>예시</strong></p>
-<pre><code class="language-python">rows = int(input()); cols = int(input())
+<div class="exset"><pre><code class="language-python">rows = int(input()); cols = int(input())
 # 리스트 컴프리헨션으로 입력
-matrix = [list(map(int, input().split())) for _ in range(rows)]
-
-# 이중 for문으로 탐색·출력
+matrix = [list(map(int, input().split())) for _ in range(rows)]</code></pre><pre><code class="language-python"># 이중 for문으로 탐색·출력
 for i in range(rows):
     for j in range(cols):
         print(matrix[i][j], end=&quot; &quot;)
-    print()
-
-# 모든 값을 2배로 한 새 배열
-new_matrix = [[x * 2 for x in row] for row in matrix]
-</code></pre>
+    print()</code></pre><pre><code class="language-python"># 모든 값을 2배로 한 새 배열
+new_matrix = [[x * 2 for x in row] for row in matrix]</code></pre></div>
 <p><strong>주의·흔한 실수</strong></p>
 <ul>
 <li>각 행을 출력한 뒤 <code>print()</code>로 줄바꿈을 해줘야 격자 모양이 유지됩니다.</li>
@@ -4402,13 +4362,10 @@ print('Case #1:', a + b)
 a, b = 10, 5                   # 새 변수를 만들지 않고 덮어쓴다
 print('Case #2:', a + b)
 </code></pre>
-<pre><code class="language-python"># 5) 두 값 교환 — 두 가지 방법
+<div class="exset"><pre><code class="language-python"># 5) 두 값 교환 — 두 가지 방법
 temp = a                       # 방법 A: 임시 변수 (원리가 눈에 보인다)
 a = b
-b = temp
-
-a, b = b, a                    # 방법 B: 동시 대입 한 줄 (실전에서는 이쪽)
-</code></pre>
+b = temp</code></pre><pre><code class="language-python">a, b = b, a                    # 방법 B: 동시 대입 한 줄 (실전에서는 이쪽)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -8465,20 +8422,15 @@ while True:
 print(total)
 </code></pre>
 <p><strong>6) 판정하기 — "하나라도" 와 "모두"</strong></p>
-<pre><code class="language-python">n = int(input())
-
-found = False               # ← '하나라도' : 없다고 가정하고 시작
+<div class="exset"><pre><code class="language-python">n = int(input())</code></pre><pre><code class="language-python">found = False               # ← '하나라도' : 없다고 가정하고 시작
 for i in range(2, n):
     if n % i == 0:          # ← 문제마다 바뀜 (찾는 조건)
         found = True
-        break               # ← 하나 찾으면 결론이 나므로 멈춘다
-
-all_ok = True               # ← '모두' : 다 만족한다고 가정하고 시작
+        break               # ← 하나 찾으면 결론이 나므로 멈춘다</code></pre><pre><code class="language-python">all_ok = True               # ← '모두' : 다 만족한다고 가정하고 시작
 for i in range(2, n):
     if n % i == 0:          # ← 문제마다 바뀜 (어기는 조건)
         all_ok = False
-        break
-</code></pre>
+        break</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -9453,24 +9405,21 @@ for i in range(3):
 <li>행 번호 출력: 한 줄 안에서는 값이 모두 같고, 줄이 바뀌면 값이 바뀐다.</li>
 <li>열 번호 출력: 한 줄 안에서 값이 1,2,3...으로 바뀌고, 줄이 바뀌어도 같은 패턴이 반복된다.</li>
 </ul>
-<pre><code class="language-python"># 행 번호 출력 (i: 1~3)
+<div class="exset"><pre><code class="language-python"># 행 번호 출력 (i: 1~3)
 for i in range(1, 4):
     for j in range(1, 4):
         print(i, end=' ')
     print()
 # 1 1 1
 # 2 2 2
-# 3 3 3
-
-# 열 번호 출력 (j: 1~3)
+# 3 3 3</code></pre><pre><code class="language-python"># 열 번호 출력 (j: 1~3)
 for i in range(1, 4):
     for j in range(1, 4):
         print(j, end=' ')
     print()
 # 1 2 3
 # 1 2 3
-# 1 2 3
-</code></pre>
+# 1 2 3</code></pre></div>
 <ul>
 <li>안쪽 for가 값을 바꾸는지, 바깥 for가 값을 바꾸는지를 보면 어떤 변수를 찍어야 하는지 알 수 있다.</li>
 </ul>
@@ -10293,14 +10242,11 @@ print(arr)       # [10, 99, 30]
 <p>같은 값으로 채운 리스트를 한 번에 만들 수도 있다. <code>[0] * 5</code>는 <code>[0, 0, 0, 0, 0]</code>이다.</p>
 </li>
 </ul>
-<pre><code class="language-python">arr = []
+<div class="exset"><pre><code class="language-python">arr = []
 for i in range(1, 4):
     arr.append(i * i)
-print(arr)          # [1, 4, 9]
-
-zeros = [0] * 5
-print(zeros)        # [0, 0, 0, 0, 0]
-</code></pre>
+print(arr)          # [1, 4, 9]</code></pre><pre><code class="language-python">zeros = [0] * 5
+print(zeros)        # [0, 0, 0, 0, 0]</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <p><code>append</code>는 언제나 맨 뒤에 한 칸을 붙인다. 앞쪽 칸의 인덱스는 그대로 유지된다.</p>
 <pre><code class="language-text">   arr = []                  [ ]
@@ -11040,14 +10986,11 @@ print(*arr)                      # 10 20 30
 <p>보통 첫 줄에 행의 수 <code>n</code>, 열의 수 <code>m</code>이 주어지고, 그 다음 <code>n</code>개의 줄에 각 행의 값이 온다.</p>
 </li>
 </ul>
-<pre><code class="language-python">n, m = map(int, input().split())
+<div class="exset"><pre><code class="language-python">n, m = map(int, input().split())
 board = []
 for i in range(n):
     row = list(map(int, input().split()))
-    board.append(row)
-
-# board[0][0]은 첫 행 첫 열, board[n-1][m-1]은 마지막 값
-</code></pre>
+    board.append(row)</code></pre><pre><code class="language-python"># board[0][0]은 첫 행 첫 열, board[n-1][m-1]은 마지막 값</code></pre></div>
 <blockquote>
 <p>선행: <code>list(map(int, input().split()))</code>는 Ch7에서 배운 "한 줄에 여러 개 입력"이다. 그것을 여러 줄에 대해 반복하면 2차원 배열이 된다.</p>
 </blockquote>
@@ -11554,14 +11497,12 @@ if r - 1 &gt;= 0:     # 위쪽 칸이 격자 안에 있는가
         (r+1, c)
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
-<pre><code class="language-python"># 1) 격자 입력 + 모든 칸 순회 (합·개수·최댓값)
+<div class="exset"><pre><code class="language-python"># 1) 격자 입력 + 모든 칸 순회 (합·개수·최댓값)
 n, m = map(int, input().split())
 board = []
 for i in range(n):
     row = list(map(int, input().split()))
-    board.append(row)
-
-total = 0
+    board.append(row)</code></pre><pre><code class="language-python">total = 0
 cnt = 0
 mx = board[0][0]          # 0이 아니라 첫 칸에서 시작 (음수 대비)
 for i in range(n):
@@ -11572,8 +11513,7 @@ for i in range(n):
             cnt += 1
         if v &gt; mx:        # ← 문제마다 바뀜 (&gt; 는 첫 등장, &gt;= 는 마지막 등장)
             mx = v
-print(total, cnt, mx)
-</code></pre>
+print(total, cnt, mx)</code></pre></div>
 <pre><code class="language-python"># 2) 새 표를 만들어 칸 규칙대로 채우기 (패턴)
 n, m = map(int, input().split())
 board = [[0] * m for _ in range(n)]     # 행마다 독립된 리스트
@@ -11979,13 +11919,10 @@ print(words[0])         # 첫 번째 문자열
 <li>인덱스가 필요하면 <code>for i in range(len(s)):</code> 로 돌며 <code>s[i]</code>로 접근한다.</li>
 <li>순회하며 개수 세기(cnt)나 조건 검사를 할 수 있다.</li>
 </ul>
-<pre><code class="language-python">s = input()
+<div class="exset"><pre><code class="language-python">s = input()
 for c in s:
-    print(c)        # 글자를 한 줄에 하나씩
-
-s = &quot;abc&quot;
-print(s[0], s[2])   # a c
-</code></pre>
+    print(c)        # 글자를 한 줄에 하나씩</code></pre><pre><code class="language-python">s = &quot;abc&quot;
+print(s[0], s[2])   # a c</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <p>한 문자열의 같은 글자를 가리키는 번호가 두 벌 있다. 앞에서 세는 양수 인덱스와, 뒤에서 세는 음수 인덱스다.</p>
 <pre><code class="language-text"> s = &quot;banana&quot;
@@ -12131,19 +12068,16 @@ print(s[::-1])    # elppa (뒤집기)
 <li>위치는 0부터 센다. 첫 글자에서 찾으면 0, 없으면 흔히 <code>-1</code>로 표시한다(직접 그렇게 정하기).</li>
 <li>찾을 때 대소문자는 서로 다른 글자로 취급한다.</li>
 </ul>
-<pre><code class="language-python">s = &quot;banana&quot;
+<div class="exset"><pre><code class="language-python">s = &quot;banana&quot;
 if &quot;n&quot; in s:
-    print(&quot;있음&quot;)
-
-# 첫 등장 위치를 직접 찾기
+    print(&quot;있음&quot;)</code></pre><pre><code class="language-python"># 첫 등장 위치를 직접 찾기
 target = &quot;n&quot;
 pos = -1
 for i in range(len(s)):
     if s[i] == target:
         pos = i
         break
-print(pos)   # 2
-</code></pre>
+print(pos)   # 2</code></pre></div>
 <blockquote>
 <p>선행: <code>in</code>이 돌려주는 <code>True</code>/<code>False</code>는 조건문에서 배운 참/거짓 값이다. <code>if</code> 뒤에 그대로 쓸 수 있다.</p>
 </blockquote>
@@ -25250,14 +25184,11 @@ c = sorted(a, reverse=True)  # [9, 5, 2, 1]
 <li>실전 데이터는 값 하나가 아니라 "여러 필드가 묶인 한 덩어리"인 경우가 많다. 예: 학생 = (이름, 점수), 상품 = (이름, 가격, 재고). 이렇게 관련된 값들을 하나로 묶은 것을 여기서는 "객체"라 부른다.</li>
 <li>파이썬에서 가장 가벼운 묶음은 튜플이다. 소괄호로 여러 값을 한 덩어리로 만든다. 인덱스로 필드에 접근한다.</li>
 </ul>
-<pre><code class="language-python">student = (&quot;kim&quot;, 90)     # (이름, 점수)
+<div class="exset"><pre><code class="language-python">student = (&quot;kim&quot;, 90)     # (이름, 점수)
 name  = student[0]        # &quot;kim&quot;
-score = student[1]        # 90
-
-students = [(&quot;kim&quot;, 90), (&quot;lee&quot;, 85), (&quot;park&quot;, 90)]  # 객체들의 리스트
+score = student[1]        # 90</code></pre><pre><code class="language-python">students = [(&quot;kim&quot;, 90), (&quot;lee&quot;, 85), (&quot;park&quot;, 90)]  # 객체들의 리스트
 for name, score in students:   # 언패킹으로 필드에 이름 붙여 읽기
-    print(name, score)
-</code></pre>
+    print(name, score)</code></pre></div>
 <ul>
 <li>필드를 "이름"으로 부르고 싶으면 딕셔너리를 쓴다. 키로 접근해 가독성이 좋아진다.</li>
 </ul>
@@ -25591,16 +25522,13 @@ a.sort()                              # 원본을 오름차순으로(반환값�
 print(a[0], a[-1], a[n // 2])         # ← 문제마다 바뀜: 최소·최대·중앙값 등
 print(*sorted(set(a)))                # 중복 제거가 필요하면 set 후 다시 정렬
 </code></pre>
-<pre><code class="language-python"># 2) 객체(튜플) 다중 기준 정렬 — 실전 정렬 문제의 대부분
+<div class="exset"><pre><code class="language-python"># 2) 객체(튜플) 다중 기준 정렬 — 실전 정렬 문제의 대부분
 items = []
 for _ in range(n):
     parts = input().split()
-    items.append((parts[0], int(parts[1])))     # ← 문제마다 바뀜: 필드 구성
-
-items.sort(key=lambda x: (-x[1], x[0]))         # ← 1순위 점수 내림, 2순위 이름 오름
+    items.append((parts[0], int(parts[1])))     # ← 문제마다 바뀜: 필드 구성</code></pre><pre><code class="language-python">items.sort(key=lambda x: (-x[1], x[0]))         # ← 1순위 점수 내림, 2순위 이름 오름
 for name, score in items:
-    print(name, score)
-</code></pre>
+    print(name, score)</code></pre></div>
 <pre><code class="language-python"># 3) key 패턴 모음 — 규칙을 말로 적은 뒤 그대로 옮긴다
 sorted(a, key=lambda x: x[1])                   # 한 필드 오름차순
 sorted(a, key=lambda x: -x[1])                  # 한 필드 내림차순(숫자만 가능)
@@ -25619,13 +25547,10 @@ for i in range(len(a) - 1):           # i+1을 읽으므로 반드시 -1
         best = a[i + 1] - a[i]
 print(best)
 </code></pre>
-<pre><code class="language-python"># 5) 안정성에 맡기는 두 가지 패턴
-items.sort(key=lambda x: -x[1])       # 동점은 입력 순서 그대로 → 키에 넣지 않는다
-
-# 굳이 두 번 정렬해야 한다면 '2순위 먼저, 1순위 나중'
+<div class="exset"><pre><code class="language-python"># 5) 안정성에 맡기는 두 가지 패턴
+items.sort(key=lambda x: -x[1])       # 동점은 입력 순서 그대로 → 키에 넣지 않는다</code></pre><pre><code class="language-python"># 굳이 두 번 정렬해야 한다면 '2순위 먼저, 1순위 나중'
 items.sort(key=lambda x: x[0])        # 2순위
-items.sort(key=lambda x: -x[1])       # 1순위(안정성이 2순위 순서를 보존한다)
-</code></pre>
+items.sort(key=lambda x: -x[1])       # 1순위(안정성이 2순위 순서를 보존한다)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -26088,36 +26013,30 @@ def to_base(n, b):
 <p>가장 직관적인 방법은 "칸 배열(count array)"이다. 좌표 범위만큼 배열을 잡고, 각 구간에 대해 <code>a</code>부터 <code>b</code>까지 <code>+1</code> 한다. 이 배열을 훑으면 칠해진 칸 수(값&gt;0), 겹친 칸 수(값≥2), 최대 겹침(최댓값)을 한 번에 구할 수 있다.</p>
 </li>
 </ul>
-<pre><code class="language-python"># 좌표가 1..L 정수 칸이고 구간이 [a,b] 포함일 때
+<div class="exset"><pre><code class="language-python"># 좌표가 1..L 정수 칸이고 구간이 [a,b] 포함일 때
 L = 10
 cnt = [0] * (L + 2)
 for a, b in intervals:
     for x in range(a, b + 1):   # a..b 칸을 모두 칠함
-        cnt[x] += 1
-
-painted = sum(1 for x in range(1, L + 1) if cnt[x] &gt; 0)   # 칠해진 칸
+        cnt[x] += 1</code></pre><pre><code class="language-python">painted = sum(1 for x in range(1, L + 1) if cnt[x] &gt; 0)   # 칠해진 칸
 overlap = sum(1 for x in range(1, L + 1) if cnt[x] &gt;= 2)  # 겹친 칸
-max_layer = max(cnt)                                       # 최대 겹침 두께
-</code></pre>
+max_layer = max(cnt)                                       # 최대 겹침 두께</code></pre></div>
 <ul>
 <li>좌표가 매우 커서 칸 배열을 못 만들 땐 "이벤트 스위핑"을 쓴다. 각 구간을 시작 <code>+1</code>·끝 <code>-1</code> 이벤트로 바꿔 좌표순으로 정렬한 뒤, 훑어가며 현재 덮인 두께(<code>cover</code>)를 갱신하고 두께가 1 이상인 구간의 길이만 더한다.</li>
 </ul>
-<pre><code class="language-python"># 반열림 구간 [a, b) 들의 덮인 총 길이 (좌표가 커도 동작)
+<div class="exset"><pre><code class="language-python"># 반열림 구간 [a, b) 들의 덮인 총 길이 (좌표가 커도 동작)
 events = []
 for a, b in intervals:
     events.append((a, +1))      # 구간 시작: 두께 +1
     events.append((b, -1))      # 구간 끝:   두께 -1
-events.sort()                   # 좌표순 정렬(Ch3)
-
-cover = 0
+events.sort()                   # 좌표순 정렬(Ch3)</code></pre><pre><code class="language-python">cover = 0
 prev = None
 covered = 0
 for x, delta in events:
     if cover &gt; 0 and prev is not None:
         covered += x - prev     # 덮여 있던 구간 길이 누적
     cover += delta              # 두께 갱신
-    prev = x
-</code></pre>
+    prev = x</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>구간 세 개 <code>[1,3]</code>, <code>[2,5]</code>, <code>[7,8]</code>를 길이 10짜리 울타리에 칠하면 이렇게 쌓인다. 칸마다 <code>#</code>이 몇 개 쌓였는지가 곧 <code>cnt</code> 값이다.</li>
@@ -26258,16 +26177,13 @@ for x, delta in events:
 <p>기본기는 "2차원 카운트 격자"다. <code>grid[r][c]</code>에 몇 번 칠해졌는지 누적한다. 사각형 하나를 칠하는 것은 이중 for로 <code>r1..r2</code>, <code>c1..c2</code>를 <code>+1</code> 하는 것이다. 색을 다루면 <code>+1</code> 대신 색 번호를 대입하는데, 이때는 "나중에 칠한 색이 이긴다(last wins)"는 순서가 중요해진다.</p>
 </li>
 </ul>
-<pre><code class="language-python"># 행 1..N, 열 1..M. 사각형 (r1,c1)-(r2,c2) 포함 영역을 칠함
+<div class="exset"><pre><code class="language-python"># 행 1..N, 열 1..M. 사각형 (r1,c1)-(r2,c2) 포함 영역을 칠함
 grid = [[0] * (M + 1) for _ in range(N + 1)]
 for r1, c1, r2, c2 in rects:
     for r in range(r1, r2 + 1):
         for c in range(c1, c2 + 1):
-            grid[r][c] += 1                 # 칠한 횟수 누적
-
-painted = sum(grid[r][c] &gt; 0 for r in range(1, N+1) for c in range(1, M+1))
-overlap = sum(grid[r][c] &gt;= 2 for r in range(1, N+1) for c in range(1, M+1))
-</code></pre>
+            grid[r][c] += 1                 # 칠한 횟수 누적</code></pre><pre><code class="language-python">painted = sum(grid[r][c] &gt; 0 for r in range(1, N+1) for c in range(1, M+1))
+overlap = sum(grid[r][c] &gt;= 2 for r in range(1, N+1) for c in range(1, M+1))</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>5×5 도화지에 <code>A = (1,1)-(3,3)</code>, <code>B = (2,2)-(4,5)</code> 두 사각형을 칠하면 이렇게 된다. 겹침 영역은 <strong>행 방향 교집합 × 열 방향 교집합</strong>이다.</li>
@@ -26559,55 +26475,44 @@ def to_base(n, b):                  # 10진 정수 -&gt; b진 문자열
 <ul>
 <li>(3) 칠하기: 1차원 칸 배열과 2차원 카운트 격자.</li>
 </ul>
-<pre><code class="language-python"># 1D : 좌표 1..L, 닫힌 구간 [a, b]
+<div class="exset"><pre><code class="language-python"># 1D : 좌표 1..L, 닫힌 구간 [a, b]
 cnt = [0] * (L + 2)                 # 여유 칸 2개(1-based + 오른쪽 여유)
 for a, b in intervals:
     for x in range(a, b + 1):       # ← 닫힌 구간이라 b+1
         cnt[x] += 1
 painted = sum(1 for x in range(1, L + 1) if cnt[x] &gt; 0)
-exact_k = sum(1 for x in range(1, L + 1) if cnt[x] == k)   # ← 문제마다 바뀜
-
-# 2D : 행 1..N, 열 1..M
+exact_k = sum(1 for x in range(1, L + 1) if cnt[x] == k)   # ← 문제마다 바뀜</code></pre><pre><code class="language-python"># 2D : 행 1..N, 열 1..M
 grid = [[0] * (M + 1) for _ in range(N + 1)]
 for r1, c1, r2, c2 in rects:
     for r in range(r1, r2 + 1):
         for c in range(c1, c2 + 1):
-            grid[r][c] += 1         # ← 색 문제면 grid[r][c] = color (last wins)
-</code></pre>
+            grid[r][c] += 1         # ← 색 문제면 grid[r][c] = color (last wins)</code></pre></div>
 <ul>
 <li>(4) 이벤트 스위핑: 좌표가 커서 칸을 못 만들 때.</li>
 </ul>
-<pre><code class="language-python">events = []
+<div class="exset"><pre><code class="language-python">events = []
 for a, b in intervals:              # 반열림 [a, b)
     events.append((a, 1))           # 시작: 두께 +1
     events.append((b, -1))          # 끝  : 두께 -1
-events.sort()
-
-cover = 0
+events.sort()</code></pre><pre><code class="language-python">cover = 0
 prev = None
 covered = 0
 for x, delta in events:
     if cover &gt; 0 and prev is not None:
         covered += x - prev         # 길이는 두께를 갱신하기 '전에' 더한다
     cover += delta
-    prev = x
-</code></pre>
+    prev = x</code></pre></div>
 <ul>
 <li>(5) 시뮬레이션 루프의 일반형: 상태 → 한 스텝 → 종료 조건.</li>
 </ul>
-<pre><code class="language-python">t = 0                               # 진행량(턴 수, 시각 ...)
-state = start                       # ← 문제마다 바뀜: 위치·격자·남은 양
-
-while True:
+<div class="exset"><pre><code class="language-python">t = 0                               # 진행량(턴 수, 시각 ...)
+state = start                       # ← 문제마다 바뀜: 위치·격자·남은 양</code></pre><pre><code class="language-python">while True:
     if done(state, t):              # ← 종료 조건: 목표 도달 / 시간 끝 / 변화 없음
         break
     state = step(state)             # ← 규칙 한 번 적용 (여기가 문제의 본체)
     t += 1
     if t &gt; LIMIT:                   # 무한 루프 안전장치(규칙이 순환할 때)
-        break
-
-print(answer(state))
-</code></pre>
+        break</code></pre><pre><code class="language-python">print(answer(state))</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -26931,20 +26836,17 @@ print(best)                        # 4  (1,3,4,5)
 <li>"값 자체를 인덱스로 삼아" 배열 칸에 정보(등장 횟수, 이미 봤는지, 마지막 위치 등)를 쌓는 기법이다. 값의 범위가 크지 않을 때(예: 0~100, 1~1000000) 매우 강력하다. 흔히 카운팅(counting)·마킹(marking)이라 부른다.</li>
 <li>딕셔너리 없이도 되는 이유는, 값의 종류가 정해져 있으면 그 크기만큼 배열을 미리 만들어 <code>cnt[값] += 1</code>처럼 직접 접근할 수 있기 때문이다. 접근이 O(1)이라 빠르다.</li>
 </ul>
-<pre><code class="language-python">nums = [3, 1, 2, 3, 1, 3, 2, 1, 1]
+<div class="exset"><pre><code class="language-python">nums = [3, 1, 2, 3, 1, 3, 2, 1, 1]
 cnt = [0] * 4                # 값이 0~3 범위라고 알 때
 for x in nums:
     cnt[x] += 1
-print(cnt)                   # [0, 4, 2, 3]  (1이 4번, 2가 2번, 3이 3번)
-
-seen = [False] * 100         # &quot;이미 등장했는가&quot; 마킹
+print(cnt)                   # [0, 4, 2, 3]  (1이 4번, 2가 2번, 3이 3번)</code></pre><pre><code class="language-python">seen = [False] * 100         # &quot;이미 등장했는가&quot; 마킹
 first_rep = -1
 for x in [4, 7, 2, 7, 5, 2]:
     if seen[x]:
         first_rep = x; break # 두 번째로 나타나는 순간이 첫 중복
     seen[x] = True
-print(first_rep)             # 7
-</code></pre>
+print(first_rep)             # 7</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>이 기법의 전부는 "<strong>값을 인덱스 자리에 밀어 넣는다</strong>"는 한 문장이다. 값 3을 만나면 3번 칸을, 값 1을 만나면 1번 칸을 건드린다. 값이 곧 주소이므로 찾는 과정이 없다.</li>
@@ -27046,21 +26948,18 @@ print(first_rep)             # 7
 <li>2차원 격자에서 "상하좌우(또는 8방향)로 한 칸 이동"을 방향마다 if로 쓰지 않고, 행 변화량 배열 dx와 열 변화량 배열 dy에 담아 반복문 하나로 처리하는 기법이다. 격자 시뮬레이션(이웃 확인, 이동, 회전)의 필수 도구다.</li>
 <li>방향 k에 대해 다음 칸은 <code>(r + dx[k], c + dy[k])</code>다. 이동 후에는 항상 격자 안인지(경계 검사) 확인한다.</li>
 </ul>
-<pre><code class="language-python">grid = [[1,2,3],
+<div class="exset"><pre><code class="language-python">grid = [[1,2,3],
         [4,5,6],
         [7,8,9]]
 n, m = 3, 3
 dx = [-1, 1, 0, 0]     # 상 하 좌 우 (행 변화)
-dy = [0, 0, -1, 1]     # 상 하 좌 우 (열 변화)
-
-r, c = 1, 1            # 가운데 칸
+dy = [0, 0, -1, 1]     # 상 하 좌 우 (열 변화)</code></pre><pre><code class="language-python">r, c = 1, 1            # 가운데 칸
 s = 0
 for k in range(4):
     nr, nc = r + dx[k], c + dy[k]
     if 0 &lt;= nr &lt; n and 0 &lt;= nc &lt; m:    # 경계 안일 때만
         s += grid[nr][nc]
-print(s)              # 20  (2+8+4+6)
-</code></pre>
+print(s)              # 20  (2+8+4+6)</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>이 레슨에서 가장 중요한 그림이다. <code>dx[k]</code>, <code>dy[k]</code>가 실제 이동과 어떻게 대응되는지 <strong>중심 칸 주위에 인덱스를 적어</strong> 외워 두면, 이후 모든 격자 문제에서 방향 실수가 사라진다.</li>
@@ -27364,23 +27263,18 @@ print(s)              # 20  (2+8+4+6)
 <ul>
 <li>(1) dx/dy 이웃 훑기: 격자 문제의 기본 골격.</li>
 </ul>
-<pre><code class="language-python">dx = [-1, 1, 0, 0]                  # ← 8방향이면 길이 8로 교체
-dy = [0, 0, -1, 1]
-
-for r in range(n):
+<div class="exset"><pre><code class="language-python">dx = [-1, 1, 0, 0]                  # ← 8방향이면 길이 8로 교체
+dy = [0, 0, -1, 1]</code></pre><pre><code class="language-python">for r in range(n):
     for c in range(m):
         for k in range(len(dx)):            # 방향 수만큼
             nr, nc = r + dx[k], c + dy[k]
             if 0 &lt;= nr &lt; n and 0 &lt;= nc &lt; m:  # 경계 검사가 먼저!
-                use(grid[nr][nc])            # ← 문제마다 바뀜: 합·개수·최댓값
-</code></pre>
+                use(grid[nr][nc])            # ← 문제마다 바뀜: 합·개수·최댓값</code></pre></div>
 <ul>
 <li>(2) 격자 위를 걷는 시뮬레이션: 상태 → 한 스텝 → 종료 조건. 회전 규칙이 붙는 형태다.</li>
 </ul>
-<pre><code class="language-python">dx = [0, 1, 0, -1]                  # right, down, left, up (시계 순서)
-dy = [1, 0, -1, 0]
-
-r = c = 0                           # ← 문제마다 바뀜: 시작 위치
+<div class="exset"><pre><code class="language-python">dx = [0, 1, 0, -1]                  # right, down, left, up (시계 순서)
+dy = [1, 0, -1, 0]</code></pre><pre><code class="language-python">r = c = 0                           # ← 문제마다 바뀜: 시작 위치
 d = 0                               # ← 시작 방향
 for step in range(total_steps):     # ← 종료 조건: 횟수·목표 도달·더 못 감
     visit(r, c)                     # 현재 칸에서 할 일
@@ -27388,8 +27282,7 @@ for step in range(total_steps):     # ← 종료 조건: 횟수·목표 도달·
     if not (0 &lt;= nr &lt; n and 0 &lt;= nc &lt; n and ok(nr, nc)):
         d = (d + 1) % 4             # 못 가면 방향만 튼다
         nr, nc = r + dx[d], c + dy[d]
-    r, c = nr, nc
-</code></pre>
+    r, c = nr, nc</code></pre></div>
 <ul>
 <li>(3) 한 번 훑기: 현재 길이 <code>cur</code>와 최댓값 <code>best</code>.</li>
 </ul>
@@ -27405,15 +27298,13 @@ for i in range(1, n):
 <ul>
 <li>(4) 슬라이딩 창: 길이가 고정일 때와 조건으로 정해질 때.</li>
 </ul>
-<pre><code class="language-python"># 고정 길이 k
+<div class="exset"><pre><code class="language-python"># 고정 길이 k
 s = sum(a[:k])
 best = s                            # 음수 대비: 0이 아니라 첫 창 합
 for i in range(k, n):
     s += a[i] - a[i - k]            # 들어온 값 더하고 빠진 값 뺀다
     if s &gt; best:
-        best = s
-
-# 가변 길이: 조건을 어기면 왼쪽을 민다
+        best = s</code></pre><pre><code class="language-python"># 가변 길이: 조건을 어기면 왼쪽을 민다
 left = 0
 bad = 0
 best = 0
@@ -27425,23 +27316,17 @@ for right in range(n):
             bad -= 1
         left += 1
     if right - left + 1 &gt; best:
-        best = right - left + 1
-</code></pre>
+        best = right - left + 1</code></pre></div>
 <ul>
 <li>(5) 배열 기록: 값을 인덱스로 삼아 세거나 표시한다.</li>
 </ul>
-<pre><code class="language-python">R = 100000                          # ← 문제마다 바뀜: 값의 최댓값
+<div class="exset"><pre><code class="language-python">R = 100000                          # ← 문제마다 바뀜: 값의 최댓값
 cnt = [0] * (R + 1)                 # 크기는 최댓값 + 1
 seen = [False] * (R + 1)
-last = [-1] * (R + 1)               # -1 = 한 번도 안 나옴
-
-for i, v in enumerate(values):      # enumerate: (위치, 값)을 함께 준다
+last = [-1] * (R + 1)               # -1 = 한 번도 안 나옴</code></pre><pre><code class="language-python">for i, v in enumerate(values):      # enumerate: (위치, 값)을 함께 준다
     cnt[v] += 1
     seen[v] = True
-    last[v] = i
-
-answer = [v for v in range(R + 1) if cnt[v] == 2]   # ← 조건은 문제마다
-</code></pre>
+    last[v] = i</code></pre><pre><code class="language-python">answer = [v for v in range(R + 1) if cnt[v] == 2]   # ← 조건은 문제마다</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -27628,19 +27513,14 @@ seen[n] = True
 <li>"자리 수 단위"란 정수 하나하나(또는 한 개의 대상 하나하나)를 후보로 놓고, 범위 안의 모든 수를 순회하며 조건을 검사하는 가장 기본적인 형태다.</li>
 <li>핵심 도구는 정수를 "자릿수의 나열"로 다루는 것이다. 각 자리 숫자를 꺼내야 조건(자릿수 합, 특정 숫자 포함, 대칭 여부 등)을 검사할 수 있다.</li>
 </ul>
-<pre><code class="language-python"># 정수 n의 각 자리 숫자를 다루는 두 가지 방법
-n = 4720
-
-# 방법 A: 문자열로 바꿔서 한 글자씩
+<div class="exset"><pre><code class="language-python"># 정수 n의 각 자리 숫자를 다루는 두 가지 방법
+n = 4720</code></pre><pre><code class="language-python"># 방법 A: 문자열로 바꿔서 한 글자씩
 for ch in str(n):
-    d = int(ch)   # 4, 7, 2, 0 순서로 나옴
-
-# 방법 B: 10으로 나눠가며 뒤에서부터
+    d = int(ch)   # 4, 7, 2, 0 순서로 나옴</code></pre><pre><code class="language-python"># 방법 B: 10으로 나눠가며 뒤에서부터
 m = n
 while m &gt; 0:
     d = m % 10    # 0, 2, 7, 4 순서(맨 뒷자리부터)
-    m //= 10
-</code></pre>
+    m //= 10</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>완전탐색은 "탐색 공간을 통째로 늘어놓고, 하나씩 도장을 찍는" 그림으로 이해하면 쉽다. 자리 수 단위에서는 그 공간이 <strong>일직선 위의 정수들</strong>이다.</li>
@@ -27957,20 +27837,13 @@ for i in range(n):          # 구간 시작
 <li>자리가 n개이고 각 자리가 고를 수 있는 값이 m가지면, 가능한 조합은 mⁿ개다. 이 모든 조합을 만들어 조건을 검사하는 것이 "자리마다 숫자를 정하는" 완전탐색이다.</li>
 <li>자리 수가 고정(2~3개)이면 for를 그만큼 중첩하면 되고, 자리 수가 변수 n이면 <code>itertools.product</code>로 mⁿ개를 한 번에 뽑아낼 수 있다.</li>
 </ul>
-<pre><code class="language-python">from itertools import product
-
-digits = [1, 2, 3]      # 각 자리에서 고를 수 있는 값
-n = 3                   # 자리 수
-
-# 아래 두 코드는 같은 mⁿ개 조합을 만든다
+<div class="exset"><pre><code class="language-python">from itertools import product</code></pre><pre><code class="language-python">digits = [1, 2, 3]      # 각 자리에서 고를 수 있는 값
+n = 3                   # 자리 수</code></pre><pre><code class="language-python"># 아래 두 코드는 같은 mⁿ개 조합을 만든다
 for a in digits:                 # 자리 수가 고정일 때: for 중첩
     for b in digits:
         for c in digits:
-            combo = (a, b, c)    # 이 조합을 검사
-
-for combo in product(digits, repeat=n):   # 자리 수가 변수일 때
-    ...                                    # combo = (1,1,1), (1,1,2), ...
-</code></pre>
+            combo = (a, b, c)    # 이 조합을 검사</code></pre><pre><code class="language-python">for combo in product(digits, repeat=n):   # 자리 수가 변수일 때
+    ...                                    # combo = (1,1,1), (1,1,2), ...</code></pre></div>
 <ul>
 <li>한 줄 요약: <code>product(digits, repeat=n)</code>은 "digits로 도는 for를 n번 중첩한 것"과 완전히 같은 mⁿ개 조합을 만든다. 다만 for 중첩은 n을 코드로 바꿔야 하지만 <code>product</code>는 n을 변수로 받을 수 있다는 점만 다르다.</li>
 </ul>
@@ -28309,14 +28182,10 @@ for i in range(n):                  # 구간 시작
 <ul>
 <li>(3) 자리마다 값 정하기: 자리 수가 고정이면 중첩 for, 변수면 <code>product</code>.</li>
 </ul>
-<pre><code class="language-python">from itertools import product
-
-# 자리 수가 코드에 박혀 있을 때 (2자리)
+<div class="exset"><pre><code class="language-python">from itertools import product</code></pre><pre><code class="language-python"># 자리 수가 코드에 박혀 있을 때 (2자리)
 for x in range(1, d + 1):
     for y in range(1, d + 1):
-        combo = (x, y)              # ← 여기서 조건 검사
-
-# 자리 수 n 이 입력으로 올 때 — 위와 완전히 같은 것을 만든다
+        combo = (x, y)              # ← 여기서 조건 검사</code></pre><pre><code class="language-python"># 자리 수 n 이 입력으로 올 때 — 위와 완전히 같은 것을 만든다
 for combo in product(range(1, d + 1), repeat=n):
     ok = True
     for i in range(n - 1):          # ← 문제마다 바뀜: 조건
@@ -28324,23 +28193,19 @@ for combo in product(range(1, d + 1), repeat=n):
             ok = False
             break
     if ok:
-        cnt += 1
-</code></pre>
+        cnt += 1</code></pre></div>
 <ul>
 <li>(4) 경우의 수 계산: 코드를 짜기 전에 이 표를 먼저 채운다.</li>
 </ul>
-<pre><code class="language-python"># 후보 수 세는 공식 (검산용 — 코드는 완전탐색으로 짜도 된다)
+<div class="exset"><pre><code class="language-python"># 후보 수 세는 공식 (검산용 — 코드는 완전탐색으로 짜도 된다)
 #   범위 정수         : b - a + 1
 #   모든 연속 구간    : n * (n + 1) // 2
 #   길이 L 고정 구간  : n - L + 1
 #   자리 n, 값 m 가지 : m ** n
 #   첫 자리만 0 금지  : (m - 1) * m ** (n - 1)
 #   이웃 자리 상이    : d * (d - 1) ** (n - 1)
-#   n칸 중 k칸만 'A'  : C(n, k) * 2 ** (n - k)
-
-total = m ** n                      # ← 문제마다 바뀜
-print(total, &quot;candidates&quot;)          # 10^7 을 넘으면 다른 방법을 찾는다
-</code></pre>
+#   n칸 중 k칸만 'A'  : C(n, k) * 2 ** (n - k)</code></pre><pre><code class="language-python">total = m ** n                      # ← 문제마다 바뀜
+print(total, &quot;candidates&quot;)          # 10^7 을 넘으면 다른 방법을 찾는다</code></pre></div>
 <ul>
 <li>(5) 세기·최선값 고르기의 공통 마무리.</li>
 </ul>
@@ -28560,19 +28425,16 @@ if combo.count('A') == k:             # 정확히 k 개
 <li>언제 쓰나: "몇 개를 골라서 …", "어떤 것들을 포함시켜야 …", "고르는 조합 중 최선은?"처럼 <strong>선택의 대상이 개별 물체</strong>이고, 각 물체가 서로 독립적으로 포함/제외될 수 있을 때.</li>
 <li>핵심 도구는 <strong>비트마스크(bitmask)</strong>다. 0부터 2^N - 1까지의 정수 하나가 하나의 부분집합에 대응한다. 정수를 이진수로 봤을 때 i번째 비트가 1이면 "i번 물체를 골랐다"는 뜻이다.</li>
 </ul>
-<pre><code class="language-python"># N개의 물체에 대한 모든 부분집합을 순회
+<div class="exset"><pre><code class="language-python"># N개의 물체에 대한 모든 부분집합을 순회
 N = 4
-values = [3, 7, 4, 9]
-
-for mask in range(1 &lt;&lt; N):          # 0 ~ 2^N - 1
+values = [3, 7, 4, 9]</code></pre><pre><code class="language-python">for mask in range(1 &lt;&lt; N):          # 0 ~ 2^N - 1
     chosen = []
     total = 0
     for i in range(N):
         if mask &amp; (1 &lt;&lt; i):         # i번째 비트가 켜져 있으면
             chosen.append(values[i])
             total += values[i]
-    # 여기서 chosen(고른 물체들)과 total(합)을 평가
-</code></pre>
+    # 여기서 chosen(고른 물체들)과 total(합)을 평가</code></pre></div>
 <ul>
 <li>비트 연산을 처음 본다면 이렇게 이해하면 된다. <code>1 &lt;&lt; i</code>는 "1을 왼쪽으로 i칸 민 값"으로, i번째 자리만 1이고 나머지는 0인 수다(<code>1&lt;&lt;0</code>=1, <code>1&lt;&lt;1</code>=2, <code>1&lt;&lt;2</code>=4 …). 따라서 <code>1 &lt;&lt; N</code>은 2^N이 되어 부분집합 개수만큼 반복할 수 있다. <code>mask &amp; (1 &lt;&lt; i)</code>는 두 수의 겹치는 비트만 남기는 AND 연산이라, mask의 i번째 비트가 1일 때만 0이 아닌 값이 되어 "i번 물체를 골랐는가?"를 검사한다.</li>
 <li>비트 연산이 낯설면 재귀로 "i번째 물체를 포함/제외한다"를 하나씩 결정하며 내려가도 똑같이 모든 부분집합을 만들 수 있다(둘 중 편한 쪽을 쓰면 된다).</li>
@@ -28961,11 +28823,9 @@ for v in range(lo, hi + 1):          # 정답 후보 값을 하나씩
 </ul>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>부분집합 완전탐색 — 비트마스크 골격.</p>
-<pre><code class="language-python">n = 4
+<div class="exset"><pre><code class="language-python">n = 4
 w = [3, 7, 4, 9]                  # ← 문제마다 바뀜(물체의 속성)
-C = 13                            # ← 문제마다 바뀜(제약)
-
-best = 0                          # ← 답이 음수일 수 있으면 None으로
+C = 13                            # ← 문제마다 바뀜(제약)</code></pre><pre><code class="language-python">best = 0                          # ← 답이 음수일 수 있으면 None으로
 for mask in range(1 &lt;&lt; n):        # 0 .. 2^n - 1, 부분집합 하나씩
     total = 0
     cnt = 0
@@ -28976,8 +28836,7 @@ for mask in range(1 &lt;&lt; n):        # 0 .. 2^n - 1, 부분집합 하나씩
     if total &lt;= C:                # ← 문제마다 바뀜(제약 통과 조건)
         if total &gt; best:          # ← 문제마다 바뀜(최대/최소/개수)
             best = total
-print(best)
-</code></pre>
+print(best)</code></pre></div>
 <p>부분집합 완전탐색 — 재귀 골격(비트 연산이 낯설 때 같은 일을 한다).</p>
 <pre><code class="language-python">n = 3
 a = [5, 2, 8]
@@ -28996,11 +28855,9 @@ go(0, 0)
 print(best)
 </code></pre>
 <p>두 그룹으로 나누기 골격 — 한쪽만 고르면 반대쪽은 자동이다.</p>
-<pre><code class="language-python">n = 4
+<div class="exset"><pre><code class="language-python">n = 4
 a = [1, 6, 11, 5]
-total = sum(a)
-
-best = None
+total = sum(a)</code></pre><pre><code class="language-python">best = None
 for mask in range(1, (1 &lt;&lt; n) - 1):   # 양 끝 제외 → 두 그룹 모두 최소 1개
     s = 0
     for i in range(n):
@@ -29009,13 +28866,10 @@ for mask in range(1, (1 &lt;&lt; n) - 1):   # 양 끝 제외 → 두 그룹 모�
     d = abs(s - (total - s))          # ← 문제마다 바뀜(평가식)
     if best is None or d &lt; best:
         best = d
-print(best)
-</code></pre>
+print(best)</code></pre></div>
 <p>값 기준 완전탐색 골격 — 후보 값을 하나씩 대입해 판정한다.</p>
-<pre><code class="language-python">a = [20, 15, 10, 17]
-M = 7                             # ← 문제마다 바뀜(목표치)
-
-lo, hi = 0, max(a)                # ← 문제마다 바뀜(후보 값의 범위)
+<div class="exset"><pre><code class="language-python">a = [20, 15, 10, 17]
+M = 7                             # ← 문제마다 바뀜(목표치)</code></pre><pre><code class="language-python">lo, hi = 0, max(a)                # ← 문제마다 바뀜(후보 값의 범위)
 ans = -1                          # 한 번도 만족 못 하면 그대로 -1
 for v in range(lo, hi + 1):       # hi 자신도 후보이므로 +1 필수
     got = 0
@@ -29024,8 +28878,7 @@ for v in range(lo, hi + 1):       # hi 자신도 후보이므로 +1 필수
             got += x - v
     if got &gt;= M:                  # ← 문제마다 바뀜(조건)
         ans = v                   # &quot;만족하는 v 중 최대&quot; → 계속 덮어쓰기
-print(ans)
-</code></pre>
+print(ans)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -29631,9 +29484,7 @@ for x in arr:      # 끝 위치를 하나씩 옮기는 것이 유일한 축
 </ul>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>가정 하나 고정 → 규칙 전개 → 검증 골격.</p>
-<pre><code class="language-python">n, d, H = 4, 2, 10                # ← 문제마다 바뀜(입력)
-
-cnt = 0
+<div class="exset"><pre><code class="language-python">n, d, H = 4, 2, 10                # ← 문제마다 바뀜(입력)</code></pre><pre><code class="language-python">cnt = 0
 best = None
 for x in range(1, H + 1):         # ← 문제마다 바뀜(가정할 값의 범위)
     ok = True                     # 가정마다 반드시 새로 초기화
@@ -29647,24 +29498,18 @@ for x in range(1, H + 1):         # ← 문제마다 바뀜(가정할 값의 범
         cnt += 1
         if best is None or x &gt; best:
             best = x
-print(cnt, best)
-</code></pre>
+print(cnt, best)</code></pre></div>
 <p>단조 수열이면 양 끝만 검사한다 — 위 골격의 안쪽 루프를 O(1)로 줄인 형태.</p>
-<pre><code class="language-python">n, d, H = 4, 2, 10
-
-cnt = 0
+<div class="exset"><pre><code class="language-python">n, d, H = 4, 2, 10</code></pre><pre><code class="language-python">cnt = 0
 for x in range(1, H + 1):
     lo = x                        # d &gt;= 0 이므로 맨 앞이 최솟값
     hi = x + d * (n - 1)          # 맨 뒤가 최댓값
     if lo &gt;= 1 and hi &lt;= H:       # 양 끝이 범위 안 → 중간은 자동
         cnt += 1
-print(cnt)
-</code></pre>
+print(cnt)</code></pre></div>
 <p>기준점 하나를 고정하고 나머지를 훑는 골격.</p>
-<pre><code class="language-python">n = 5
-a = [3, 1, 4, 1, 5]
-
-best = None
+<div class="exset"><pre><code class="language-python">n = 5
+a = [3, 1, 4, 1, 5]</code></pre><pre><code class="language-python">best = None
 for i in range(n):                # i를 기준점으로 고정
     for j in range(n):            # ← 문제에 따라 O(1) 계산으로 대체 가능
         if j == i:
@@ -29672,37 +29517,28 @@ for i in range(n):                # i를 기준점으로 고정
         v = a[i] - a[j]           # ← 문제마다 바뀜(평가식)
         if best is None or v &gt; best:
             best = v
-print(best)
-</code></pre>
+print(best)</code></pre></div>
 <p>쌍을 정확히 한 번씩 보는 골격 — 순서가 무의미하면 <code>i &lt; j</code>.</p>
-<pre><code class="language-python">n = 4
-a = [3, 1, 4, 2]
-
-best = None
+<div class="exset"><pre><code class="language-python">n = 4
+a = [3, 1, 4, 2]</code></pre><pre><code class="language-python">best = None
 for i in range(n):
     for j in range(i + 1, n):     # (i, j)를 한 번만, 총 n(n-1)/2회
         v = a[i] * a[j]           # ← 문제마다 바뀜
         if best is None or v &gt; best:
             best = v
-print(best)
-</code></pre>
+print(best)</code></pre></div>
 <p>시각(이벤트)을 축으로 스캔하는 골격 — 구간 겹침 개수를 셀 때의 정석.</p>
-<pre><code class="language-python">segs = [(1, 4), (2, 5), (6, 8)]   # ← 문제마다 바뀜(반열린 구간 [s, e))
-
-events = []
+<div class="exset"><pre><code class="language-python">segs = [(1, 4), (2, 5), (6, 8)]   # ← 문제마다 바뀜(반열린 구간 [s, e))</code></pre><pre><code class="language-python">events = []
 for s, e in segs:
     events.append((s, 1))         # 시작: +1
     events.append((e, -1))        # 끝: -1
-events.sort(key=lambda x: (x[0], x[1]))   # 동시각이면 -1이 먼저
-
-cur = 0
+events.sort(key=lambda x: (x[0], x[1]))   # 동시각이면 -1이 먼저</code></pre><pre><code class="language-python">cur = 0
 best = 0
 for _, delta in events:
     cur += delta
     if cur &gt; best:
         best = cur
-print(best)
-</code></pre>
+print(best)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -30455,31 +30291,23 @@ def can_make(T):
 </ul>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>포함-배제 골격 — 두 조건이 겹칠 때.</p>
-<pre><code class="language-python">N = 20
-a, b = 3, 5                       # ← 문제마다 바뀜(두 조건)
-
-import math
+<div class="exset"><pre><code class="language-python">N = 20
+a, b = 3, 5                       # ← 문제마다 바뀜(두 조건)</code></pre><pre><code class="language-python">import math
 lcm = a * b // math.gcd(a, b)     # 두 조건을 동시에 만족하는 것의 주기
 cnt = N // a + N // b - N // lcm  # |A| + |B| - |A &amp; B|
-print(cnt)
-</code></pre>
+print(cnt)</code></pre></div>
 <p>두 구간의 겹침 판정과 교집합·합집합 길이 골격.</p>
-<pre><code class="language-python">a1, a2 = 0, 5                     # 구간 A = [a1, a2)
-b1, b2 = 3, 8                     # 구간 B = [b1, b2)
-
-L = max(a1, b1)                   # 겹침 후보의 왼쪽 끝
+<div class="exset"><pre><code class="language-python">a1, a2 = 0, 5                     # 구간 A = [a1, a2)
+b1, b2 = 3, 8                     # 구간 B = [b1, b2)</code></pre><pre><code class="language-python">L = max(a1, b1)                   # 겹침 후보의 왼쪽 끝
 R = min(a2, b2)                   # 겹침 후보의 오른쪽 끝
 if L &lt; R:                         # 반열린 구간이면 '&lt;' (닫힌 구간이면 '&lt;=')
     inter = R - L
 else:
     inter = 0
 union = (a2 - a1) + (b2 - b1) - inter
-print(inter, union)
-</code></pre>
+print(inter, union)</code></pre></div>
 <p>구간 여러 개의 합집합 길이 — 정렬 후 스위핑 골격.</p>
-<pre><code class="language-python">segs = [(1, 4), (2, 6), (8, 10)]  # ← 문제마다 바뀜
-
-segs.sort()                       # 왼쪽 끝 기준 정렬이 전제 조건
+<div class="exset"><pre><code class="language-python">segs = [(1, 4), (2, 6), (8, 10)]  # ← 문제마다 바뀜</code></pre><pre><code class="language-python">segs.sort()                       # 왼쪽 끝 기준 정렬이 전제 조건
 total = 0
 cover_end = -1                    # 지금까지 덮은 오른쪽 끝
 for L, R in segs:
@@ -30488,12 +30316,9 @@ for L, R in segs:
     start = L if L &gt; cover_end else cover_end
     total += R - start            # 새로 덮이는 부분만 더한다
     cover_end = R
-print(total)
-</code></pre>
+print(total)</code></pre></div>
 <p>MECE 케이스 분기 골격 — 축을 하나 정하고 <code>else</code>로 닫는다.</p>
-<pre><code class="language-python">a, b, c = 3, 3, 6                 # ← 문제마다 바뀜
-
-kinds = len({a, b, c})            # ← 문제마다 바뀜(케이스를 가르는 축)
+<div class="exset"><pre><code class="language-python">a, b, c = 3, 3, 6                 # ← 문제마다 바뀜</code></pre><pre><code class="language-python">kinds = len({a, b, c})            # ← 문제마다 바뀜(케이스를 가르는 축)
 if kinds == 1:                    # 케이스 1: 모두 같음
     ans = 10000 + a * 1000        # ← 문제마다 바뀜
 elif kinds == 2:                  # 케이스 2: 정확히 둘만 같음
@@ -30501,13 +30326,10 @@ elif kinds == 2:                  # 케이스 2: 정확히 둘만 같음
     ans = 1000 + same * 100       # ← 문제마다 바뀜
 else:                             # 케이스 3: 모두 다름 (else로 빠짐 방지)
     ans = max(a, b, c) * 100      # ← 문제마다 바뀜
-print(ans)
-</code></pre>
+print(ans)</code></pre></div>
 <p>역추론 골격 — 후보를 세우고 관찰로 걸러낸다.</p>
-<pre><code class="language-python">lo, hi = 0, 100                   # ← 문제마다 바뀜(원인의 후보 범위)
-obs = [(4, 0), (6, 2)]            # ← 문제마다 바뀜(관찰들)
-
-cands = []
+<div class="exset"><pre><code class="language-python">lo, hi = 0, 100                   # ← 문제마다 바뀜(원인의 후보 범위)
+obs = [(4, 0), (6, 2)]            # ← 문제마다 바뀜(관찰들)</code></pre><pre><code class="language-python">cands = []
 for x in range(lo, hi + 1):
     ok = True
     for t, w in obs:
@@ -30515,15 +30337,12 @@ for x in range(lo, hi + 1):
             ok = False
             break
     if ok:
-        cands.append(x)
-
-if len(cands) == 0:
+        cands.append(x)</code></pre><pre><code class="language-python">if len(cands) == 0:
     print(-1)                     # 불가능
 elif len(cands) == 1:
     print(cands[0])               # 유일하게 복원됨
 else:
-    print(*cands)                 # 여러 개 — 문제가 요구하는 형식으로
-</code></pre>
+    print(*cands)                 # 여러 개 — 문제가 요구하는 형식으로</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -39561,23 +39380,16 @@ print(best)                    # (9)
 <li>삼각형 반복 <code>for j in range(i)</code>: 실행 총합 <code>0+1+2+...+(n-1) = n(n-1)/2</code> → 여전히 <code>O(n²)</code>(계수 1/2는 지운다).</li>
 <li>순차 반복(중첩 아님)은 더한다: <code>O(n) + O(n) = O(n)</code>.</li>
 </ul>
-<pre><code class="language-python"># 각 패턴의 총 실행 횟수
+<div class="exset"><pre><code class="language-python"># 각 패턴의 총 실행 횟수
 for i in range(n):            # O(n)
-    work()
-
-for i in range(n):            # O(n^2) : n * n
+    work()</code></pre><pre><code class="language-python">for i in range(n):            # O(n^2) : n * n
     for j in range(n):
-        work()
-
-for i in range(n):            # O(n^2) : 0+1+...+(n-1) = n(n-1)/2
+        work()</code></pre><pre><code class="language-python">for i in range(n):            # O(n^2) : 0+1+...+(n-1) = n(n-1)/2
     for j in range(i):
-        work()
-
-i = n
+        work()</code></pre><pre><code class="language-python">i = n
 while i &gt; 1:                  # O(log n) : n, n/2, n/4, ... 1
     i //= 2
-    work()
-</code></pre>
+    work()</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>중첩 반복의 총 실행 횟수는 <strong>몸통이 실행되는 칸의 개수</strong>다. 안쪽 상한이 바깥 변수에 걸리면 그 칸들이 직사각형이 아니라 <strong>삼각형</strong>이 된다.</li>
@@ -42582,16 +42394,11 @@ heapq.nsmallest(3, arr)              # 작은 순서 3개
 <p>파이썬의 <code>sorted</code>와 <code>list.sort</code>는 "팀소트(Timsort)"라서 항상 안정이다. 그래서 파이썬에선 안정성을 공짜로 얻는다. 대신 이 성질을 "의식적으로 활용"하는 법을 아는 게 중요하다.</p>
 </li>
 </ul>
-<pre><code class="language-python">data = [(&quot;kim&quot;, 90), (&quot;lee&quot;, 85), (&quot;park&quot;, 90), (&quot;choi&quot;, 85)]
-
-# 점수 내림차순만 지정 → 같은 점수끼리는 입력 순서 그대로 유지(안정)
+<div class="exset"><pre><code class="language-python">data = [(&quot;kim&quot;, 90), (&quot;lee&quot;, 85), (&quot;park&quot;, 90), (&quot;choi&quot;, 85)]</code></pre><pre><code class="language-python"># 점수 내림차순만 지정 → 같은 점수끼리는 입력 순서 그대로 유지(안정)
 by_score = sorted(data, key=lambda x: -x[1])
-# 결과: kim(90), park(90), lee(85), choi(85)  ← 90끼리 kim→park, 85끼리 lee→choi
-
-# 다단 정렬: 2순위 먼저, 1순위 나중 (안정성 덕분에 성립)
+# 결과: kim(90), park(90), lee(85), choi(85)  ← 90끼리 kim→park, 85끼리 lee→choi</code></pre><pre><code class="language-python"># 다단 정렬: 2순위 먼저, 1순위 나중 (안정성 덕분에 성립)
 tmp = sorted(data, key=lambda x: x[0])       # 2순위: 이름 오름차순
-res = sorted(tmp, key=lambda x: -x[1])       # 1순위: 점수 내림차순
-</code></pre>
+res = sorted(tmp, key=lambda x: -x[1])       # 1순위: 점수 내림차순</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <pre><code class="language-text"> sort by score only            # 동점(85) 두 명의 순서에 주목
    input  : A(90)  B(85)  C(90)  D(85)
@@ -42978,22 +42785,13 @@ def top_k(a, k):                        # 상위 k 개를 O(n log k) 에
             heapq.heappop(h)            # 가장 작은 것을 버려 크기를 k 로 유지
     return sorted(h, reverse=True)
 </code></pre>
-<pre><code class="language-python"># 5) 실전 — sort(key=) 패턴 모음
-rows = [(&quot;kim&quot;, 90, 3), (&quot;lee&quot;, 85, 1), (&quot;park&quot;, 90, 2)]
-
-rows.sort(key=lambda r: r[1])                  # 제자리 정렬, 반환값은 None
-best = sorted(rows, key=lambda r: -r[1])       # 새 리스트, 점수 내림차순
-
-# 다중 기준: 튜플에 순위대로 나열 (숫자는 부호로 방향을 뒤집는다)
-sorted(rows, key=lambda r: (-r[1], r[0]))      # ← 문제마다 바뀜(정렬 규칙)
-
-# 방향이 뒤섞여 튜플로 못 쓸 때: 낮은 순위부터 여러 번 안정 정렬
+<div class="exset"><pre><code class="language-python"># 5) 실전 — sort(key=) 패턴 모음
+rows = [(&quot;kim&quot;, 90, 3), (&quot;lee&quot;, 85, 1), (&quot;park&quot;, 90, 2)]</code></pre><pre><code class="language-python">rows.sort(key=lambda r: r[1])                  # 제자리 정렬, 반환값은 None
+best = sorted(rows, key=lambda r: -r[1])       # 새 리스트, 점수 내림차순</code></pre><pre><code class="language-python"># 다중 기준: 튜플에 순위대로 나열 (숫자는 부호로 방향을 뒤집는다)
+sorted(rows, key=lambda r: (-r[1], r[0]))      # ← 문제마다 바뀜(정렬 규칙)</code></pre><pre><code class="language-python"># 방향이 뒤섞여 튜플로 못 쓸 때: 낮은 순위부터 여러 번 안정 정렬
 tmp = sorted(rows, key=lambda r: r[0])         # 2순위: 이름 오름차순
-res = sorted(tmp, key=lambda r: -r[1])         # 1순위: 점수 내림차순
-
-sorted(rows, key=lambda r: r[1], reverse=True) # 동점의 입력 순서는 유지된다
-sorted(set(x for x in [3, 1, 3]))              # 중복 제거 후 정렬
-</code></pre>
+res = sorted(tmp, key=lambda r: -r[1])         # 1순위: 점수 내림차순</code></pre><pre><code class="language-python">sorted(rows, key=lambda r: r[1], reverse=True) # 동점의 입력 순서는 유지된다
+sorted(set(x for x in [3, 1, 3]))              # 중복 제거 후 정렬</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <p>정렬 알고리즘 비교표 (n = 원소 수, d = 자릿수)</p>
 <div class="tablewrap"><table>
@@ -43916,22 +43714,13 @@ def upper_bound(arr, x):             # arr[i] &gt; x 인 첫 i
 <ul>
 <li>(3) 같은 일을 표준 라이브러리로. 대회·시험에서는 이쪽이 안전하다.</li>
 </ul>
-<pre><code class="language-python">from bisect import bisect_left, bisect_right, insort
-
-left  = bisect_left(arr, x)          # == lower_bound
-right = bisect_right(arr, x)         # == upper_bound
-
-found      = left &lt; len(arr) and arr[left] == x   # 존재 여부(범위 검사 필수)
+<div class="exset"><pre><code class="language-python">from bisect import bisect_left, bisect_right, insort</code></pre><pre><code class="language-python">left  = bisect_left(arr, x)          # == lower_bound
+right = bisect_right(arr, x)         # == upper_bound</code></pre><pre><code class="language-python">found      = left &lt; len(arr) and arr[left] == x   # 존재 여부(범위 검사 필수)
 count_x    = right - left                          # x 의 개수
 first_pos  = left if found else -1                 # 첫 위치
 last_pos   = right - 1 if found else -1            # 마지막 위치
-count_ab   = bisect_right(arr, b) - bisect_left(arr, a)   # [a, b] 안의 개수
-
-le_idx = bisect_right(arr, x) - 1    # x 이하 최댓값의 위치(-1이면 없음)
-ge_idx = bisect_left(arr, x)         # x 이상 최솟값의 위치( n이면 없음)
-
-insort(arr, x)                       # 정렬을 유지한 삽입 — 탐색 O(log n) + 이동 O(n)
-</code></pre>
+count_ab   = bisect_right(arr, b) - bisect_left(arr, a)   # [a, b] 안의 개수</code></pre><pre><code class="language-python">le_idx = bisect_right(arr, x) - 1    # x 이하 최댓값의 위치(-1이면 없음)
+ge_idx = bisect_left(arr, x)         # x 이상 최솟값의 위치( n이면 없음)</code></pre><pre><code class="language-python">insort(arr, x)                       # 정렬을 유지한 삽입 — 탐색 O(log n) + 이동 O(n)</code></pre></div>
 <ul>
 <li>(4) 파라메트릭 서치 — <strong>참인 최댓값</strong>(<code>ok</code>가 <code>T T T F F F</code> 모양).</li>
 </ul>
@@ -44478,16 +44267,13 @@ empty = (len(st) == 0)   # 비었는지 검사는 항상 pop 전에!
 <li>언제 쓰나: 도착/발생한 순서대로 공정하게 처리해야 할 때. 대표적으로 BFS(너비 우선 탐색)의 방문 대기열, 작업 스케줄링, 버퍼(생산자-소비자), 순서 보존 시뮬레이션 등이다. "먼저 온 사람부터", "레벨 순서대로"가 신호다.</li>
 <li>파이썬에서 <code>list</code>로 큐를 흉내낼 수는 있지만 <code>pop(0)</code>(맨 앞 빼기)이 O(n)이라 느리다. 그래서 <code>collections.deque</code>를 쓴다. <code>append</code>로 뒤에 넣고 <code>popleft</code>로 앞에서 빼면 둘 다 O(1)이다.</li>
 </ul>
-<pre><code class="language-python">from collections import deque
-
-q = deque()          # 큐 = deque
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">q = deque()          # 큐 = deque
 q.append(1)          # enqueue 1 -&gt; deque([1])
 q.append(2)          # enqueue 2 -&gt; deque([1, 2])
 q.append(3)          # enqueue 3 -&gt; deque([1, 2, 3])
 front = q[0]         # 맨 앞 엿보기 -&gt; 1
 x = q.popleft()      # dequeue    -&gt; 1, 큐는 deque([2, 3])
-empty = (len(q) == 0)    # 비었는지 검사는 popleft 전에!
-</code></pre>
+empty = (len(q) == 0)    # 비었는지 검사는 popleft 전에!</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <p>큐는 <strong>들어가는 끝과 나오는 끝이 서로 반대</strong>라는 점이 스택과 다르다.</p>
 <pre><code class="language-text">       front           rear
@@ -44628,15 +44414,12 @@ empty = (len(q) == 0)    # 비었는지 검사는 popleft 전에!
 <li>언제 쓰나: "양쪽 끝을 다 만져야 할 때"가 핵심 신호다. 회문(팰린드롬) 검사, 앞뒤로 붙는 시뮬레이션, 그리고 가장 중요한 응용인 "슬라이딩 윈도우 최댓값/최솟값"(단조 덱). 창이 오른쪽으로 움직일 때 뒤에서 쓸모없는 값을 빼고, 앞에서 창을 벗어난 값을 빼는 데 양쪽 접근이 필수다.</li>
 <li>파이썬에서는 <code>collections.deque</code>가 그대로 덱이다. <code>append</code>(뒤 넣기)/<code>pop</code>(뒤 빼기)/<code>appendleft</code>(앞 넣기)/<code>popleft</code>(앞 빼기) 네 연산을 제공한다. <code>deque(maxlen=k)</code>를 주면 넘칠 때 반대쪽이 자동으로 밀려나 고정 크기 창에도 편하다.</li>
 </ul>
-<pre><code class="language-python">from collections import deque
-
-dq = deque([2, 3])
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">dq = deque([2, 3])
 dq.append(4)         # 뒤에 넣기   -&gt; deque([2, 3, 4])
 dq.appendleft(1)     # 앞에 넣기   -&gt; deque([1, 2, 3, 4])
 back = dq.pop()      # 뒤에서 빼기 -&gt; 4, deque([1, 2, 3])
 front = dq.popleft() # 앞에서 빼기 -&gt; 1, deque([2, 3])
-# dq[0]은 맨 앞, dq[-1]은 맨 뒤 엿보기
-</code></pre>
+# dq[0]은 맨 앞, dq[-1]은 맨 뒤 엿보기</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <p>덱은 <strong>양쪽 끝 네 개의 문</strong>을 모두 O(1)로 여닫을 수 있는 자료구조다. 오른쪽 두 문만
 쓰면 스택, 오른쪽으로 넣고 왼쪽으로 빼면 큐가 된다.</p>
@@ -44995,21 +44778,14 @@ front = dq.popleft() # 앞에서 빼기 -&gt; 1, deque([2, 3])
 <ul>
 <li>(4) 큐와 덱의 기본 연산 — <code>list</code> 대신 <code>deque</code>.</li>
 </ul>
-<pre><code class="language-python">from collections import deque
-
-q = deque()
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">q = deque()
 q.append(x)          # 뒤에 넣기      O(1)
 front = q[0]         # 맨 앞 엿보기   O(1)
-x = q.popleft()      # 앞에서 빼기    O(1)   ← list 의 pop(0) 은 O(n)
-
-dq = deque()
+x = q.popleft()      # 앞에서 빼기    O(1)   ← list 의 pop(0) 은 O(n)</code></pre><pre><code class="language-python">dq = deque()
 dq.appendleft(x)     # 앞에 넣기      O(1)
 back = dq[-1]        # 맨 뒤 엿보기   O(1)
-y = dq.pop()         # 뒤에서 빼기    O(1)
-
-while q:             # 비었는지 검사는 반드시 꺼내기 '전에'
-    cur = q.popleft()
-</code></pre>
+y = dq.pop()         # 뒤에서 빼기    O(1)</code></pre><pre><code class="language-python">while q:             # 비었는지 검사는 반드시 꺼내기 '전에'
+    cur = q.popleft()</code></pre></div>
 <ul>
 <li>(5) 슬라이딩 윈도우 최댓값 — 단조 덱. 네 단계의 순서가 곧 불변식이다.</li>
 </ul>
@@ -45028,16 +44804,13 @@ while q:             # 비었는지 검사는 반드시 꺼내기 '전에'
 <ul>
 <li>(6) 회전 명령 처리 — 직접 옮기지 말고 <code>rotate</code>를 쓴다.</li>
 </ul>
-<pre><code class="language-python">dq = deque(range(1, n + 1))
+<div class="exset"><pre><code class="language-python">dq = deque(range(1, n + 1))
 dq.rotate(1)      # 오른쪽으로 1칸: 맨 뒤가 맨 앞으로       O(k)
-dq.rotate(-1)     # 왼쪽으로 1칸 : 맨 앞이 맨 뒤로          O(k)
-
-# 특정 값을 맨 앞으로 가져오는 최소 회전 수 (양방향 중 짧은 쪽)
+dq.rotate(-1)     # 왼쪽으로 1칸 : 맨 앞이 맨 뒤로          O(k)</code></pre><pre><code class="language-python"># 특정 값을 맨 앞으로 가져오는 최소 회전 수 (양방향 중 짧은 쪽)
 i = dq.index(target)                         # ← 탐색은 O(n)
 left_cost  = i                               # 왼쪽으로 i 번
 right_cost = len(dq) - i                     # 오른쪽으로 n-i 번
-dq.rotate(-i) if left_cost &lt;= right_cost else dq.rotate(right_cost)
-</code></pre>
+dq.rotate(-i) if left_cost &lt;= right_cost else dq.rotate(right_cost)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -45219,15 +44992,12 @@ while q:
         q.append(nxt)
 </code></pre>
 <p>왜: <code>list</code>는 원소를 연속된 칸에 붙여 두므로 0번을 빼면 뒤의 n-1개를 전부 앞으로 당긴다. n번 반복하면 이동 횟수가 <code>n(n-1)/2</code>, 즉 <strong>O(n²)</strong>다. n = 100,000이면 약 50억 번이라 시간 초과가 확정이다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
-from collections import deque
-
-q = deque([start])
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
+from collections import deque</code></pre><pre><code class="language-python">q = deque([start])
 while q:
     cur = q.popleft()       # 앞쪽 표시만 한 칸 옮긴다 -&gt; O(1)
     for nxt in nexts(cur):
-        q.append(nxt)
-</code></pre>
+        q.append(nxt)</code></pre></div>
 <p><strong>2) 빈 스택에서 pop하거나 top을 본다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 for c in s:
@@ -45321,22 +45091,16 @@ for i, v in enumerate(arr):
         dq.popleft()
 </code></pre>
 <p><strong>7) 덱을 인덱스로 훑거나, 회전을 슬라이싱으로 처리한다</strong></p>
-<pre><code class="language-python"># ❌ 틀린 코드
+<div class="exset"><pre><code class="language-python"># ❌ 틀린 코드
 for i in range(len(dq)):
     if dq[i] == target:     # dq[i] 하나가 O(n) -&gt; 전체 O(n²)
-        break
-
-lst = lst[1:] + lst[:1]     # 회전할 때마다 리스트를 통째로 새로 만든다
-</code></pre>
+        break</code></pre><pre><code class="language-python">lst = lst[1:] + lst[:1]     # 회전할 때마다 리스트를 통째로 새로 만든다</code></pre></div>
 <p>왜: <code>deque</code>는 작은 블록을 이어 붙인 구조라 중간 인덱스 접근이 O(n)이다. 양 끝이 O(1)이라는 장점만 보고 인덱스로 훑으면 <code>list</code>보다 느려진다. 슬라이싱 회전도 매번 n칸을 복사하므로 회전 m번이면 O(n·m)이다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 i = dq.index(target)        # 탐색은 한 번만 O(n)
-dq.rotate(-i)               # 회전은 옮길 칸 수 k 에만 비례한다
-
-from collections import deque
+dq.rotate(-i)               # 회전은 옮길 칸 수 k 에만 비례한다</code></pre><pre><code class="language-python">from collections import deque
 dq = deque(lst)
-dq.rotate(-1)               # 왼쪽으로 한 칸: 맨 앞이 맨 뒤로
-</code></pre>
+dq.rotate(-1)               # 왼쪽으로 한 칸: 맨 앞이 맨 뒤로</code></pre></div>
 <h4 class="dlabel dl-next">다음 챕터로</h4>
 <ul>
 <li>Ch06(트리)의 순회는 이 챕터의 두 도구를 그대로 쓴다. 깊이 우선(DFS)은 스택, 너비 우선(BFS)은 큐이며, "층 단위로 퍼진다"는 성질은 <code>deque</code>가 FIFO를 지켜 주기 때문에 성립한다.</li>
@@ -46227,24 +45991,19 @@ def search(root, val):
 <p>파이썬 <code>heapq</code>: 리스트를 최소 힙으로 다루는 표준 모듈. 최대 힙이 필요하면 값의 부호를 뒤집어 넣는다(<code>-x</code>).</p>
 </li>
 </ul>
-<pre><code class="language-python">import heapq
+<div class="exset"><pre><code class="language-python">import heapq
 h = []
 heapq.heappush(h, 5)
 heapq.heappush(h, 1)
 heapq.heappush(h, 3)
 print(h[0])            # 1 (항상 최솟값, O(1))
-print(heapq.heappop(h))# 1 (최솟값 꺼내며 제거, O(log N))
-
-# 리스트를 한 번에 힙으로 (O(N))
+print(heapq.heappop(h))# 1 (최솟값 꺼내며 제거, O(log N))</code></pre><pre><code class="language-python"># 리스트를 한 번에 힙으로 (O(N))
 data = [5, 1, 3, 2]
-heapq.heapify(data)
-
-# 최대 힙 흉내: 부호 반전해서 넣고, 꺼낼 때 다시 반전
+heapq.heapify(data)</code></pre><pre><code class="language-python"># 최대 힙 흉내: 부호 반전해서 넣고, 꺼낼 때 다시 반전
 maxh = []
 for x in [5, 1, 3]:
     heapq.heappush(maxh, -x)
-biggest = -heapq.heappop(maxh)   # 5
-</code></pre>
+biggest = -heapq.heappop(maxh)   # 5</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>힙은 "완전 이진 트리 모양"과 "부모 ≤ 자식"이라는 두 규칙만 지킨다. 형제끼리의 크기는 <strong>아무 상관 없다</strong> — 그래서 정렬보다 싸다.</li>
@@ -46554,44 +46313,33 @@ biggest = -heapq.heappop(maxh)   # 5
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) 부모 배열 입력 → 깊이·서브트리 크기 (재귀 없이)</p>
-<pre><code class="language-python">import sys
+<div class="exset"><pre><code class="language-python">import sys
 data = sys.stdin.read().split()
 idx = 0
 n = int(data[idx]); idx += 1
-parent = [int(data[idx + i]) for i in range(n)]; idx += n   # ← 문제마다 바뀜
-
-children = [[] for _ in range(n)]
+parent = [int(data[idx + i]) for i in range(n)]; idx += n   # ← 문제마다 바뀜</code></pre><pre><code class="language-python">children = [[] for _ in range(n)]
 root = -1
 for v in range(n):
     if parent[v] == -1:            # ← 루트 표시 방법은 문제마다 바뀜
         root = v
     else:
-        children[parent[v]].append(v)
-
-order, stack = [], [root]
+        children[parent[v]].append(v)</code></pre><pre><code class="language-python">order, stack = [], [root]
 depth = [0] * n
 while stack:                       # 스택 DFS: 방문 순서를 order에 기록
     v = stack.pop()
     order.append(v)
     for c in children[v]:
         depth[c] = depth[v] + 1    # 내려가며 계산
-        stack.append(c)
-
-size = [1] * n
+        stack.append(c)</code></pre><pre><code class="language-python">size = [1] * n
 for v in reversed(order):          # 역순 = 자식이 먼저 확정된 순서
     if parent[v] != -1:
-        size[parent[v]] += size[v] # 올라오며 계산
-</code></pre>
+        size[parent[v]] += size[v] # 올라오며 계산</code></pre></div>
 <p>2) 무방향 간선 목록 입력 → 인접 리스트 + BFS 깊이</p>
-<pre><code class="language-python">from collections import deque
-
-adj = [[] for _ in range(n + 1)]
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">adj = [[] for _ in range(n + 1)]
 for _ in range(n - 1):
     u = int(data[idx]); v = int(data[idx + 1]); idx += 2
     adj[u].append(v)
-    adj[v].append(u)               # 방향이 없으면 양쪽에 등록
-
-dist = [-1] * (n + 1)
+    adj[v].append(u)               # 방향이 없으면 양쪽에 등록</code></pre><pre><code class="language-python">dist = [-1] * (n + 1)
 start = 1                          # ← 루트 번호는 문제마다 바뀜
 dist[start] = 0
 q = deque([start])
@@ -46600,8 +46348,7 @@ while q:
     for c in adj[v]:
         if dist[c] == -1:          # 미방문 검사 = 부모로 되돌아가지 않기
             dist[c] = dist[v] + 1
-            q.append(c)
-</code></pre>
+            q.append(c)</code></pre></div>
 <p>3) 순회 3종 — 재귀형과 반복형</p>
 <pre><code class="language-python"># 재귀형: 한 번의 DFS로 세 결과를 동시에 만든다
 pre, ino, post = [], [], []
@@ -46640,33 +46387,24 @@ def inorder_iter(root):
     return out
 </code></pre>
 <p>4) heapq 실전 패턴 모음</p>
-<pre><code class="language-python">import heapq
-
-h = []
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">h = []
 heapq.heappush(h, 5)                # 삽입 O(log N)
 peek = h[0]                         # 최솟값 조회 O(1), 제거하지 않음
 smallest = heapq.heappop(h)         # 최솟값 제거 O(log N)
-heapq.heapify(nums)                 # 리스트를 제자리에서 힙으로 O(N)
-
-maxh = []                           # 최대 힙: 부호를 뒤집어 넣는다
+heapq.heapify(nums)                 # 리스트를 제자리에서 힙으로 O(N)</code></pre><pre><code class="language-python">maxh = []                           # 최대 힙: 부호를 뒤집어 넣는다
 for x in nums:
     heapq.heappush(maxh, -x)
-biggest = -heapq.heappop(maxh)      # 꺼낸 뒤 부호를 되돌린다
-
-pq, seq = [], 0                     # 우선순위 큐: (우선순위, 순번, 데이터)
+biggest = -heapq.heappop(maxh)      # 꺼낸 뒤 부호를 되돌린다</code></pre><pre><code class="language-python">pq, seq = [], 0                     # 우선순위 큐: (우선순위, 순번, 데이터)
 for cost, item in tasks:            # ← 튜플 구성은 문제마다 바뀜
     seq += 1
     heapq.heappush(pq, (cost, seq, item))
-                                    # seq는 동점일 때 비교가 멈추게 하는 안전핀
-
-topk = []                           # 가장 큰 k개 유지 → 크기 k 최소 힙
+                                    # seq는 동점일 때 비교가 멈추게 하는 안전핀</code></pre><pre><code class="language-python">topk = []                           # 가장 큰 k개 유지 → 크기 k 최소 힙
 for x in nums:
     if len(topk) &lt; k:
         heapq.heappush(topk, x)
     elif x &gt; topk[0]:
         heapq.heapreplace(topk, x)  # pop + push를 한 번에
-kth_largest = topk[0]               # 상위 k개 중 가장 작은 값
-</code></pre>
+kth_largest = topk[0]               # 상위 k개 중 가장 작은 값</code></pre></div>
 <p>5) BST 삽입·탐색</p>
 <pre><code class="language-python">class Node:
     def __init__(self, val):
@@ -46795,11 +46533,9 @@ def size(v):
 print(size(root))          # 노드 10만 개짜리 사슬 트리 → RecursionError
 </code></pre>
 <p>왜: 파이썬의 기본 재귀 한도는 약 1000이다. 각 노드가 자식을 하나만 갖는 사슬 모양이면 깊이가 N-1이라, 알고리즘이 맞아도 호출 스택이 먼저 무너진다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 import sys
-sys.setrecursionlimit(300000)   # 재귀를 꼭 쓸 때
-
-# 더 안전한 방법: 재귀를 아예 반복문으로 바꾼다
+sys.setrecursionlimit(300000)   # 재귀를 꼭 쓸 때</code></pre><pre><code class="language-python"># 더 안전한 방법: 재귀를 아예 반복문으로 바꾼다
 order, stack = [], [root]
 while stack:
     v = stack.pop()
@@ -46808,8 +46544,7 @@ while stack:
 size = [1] * n
 for v in reversed(order):
     if parent[v] != -1:
-        size[parent[v]] += size[v]
-</code></pre>
+        size[parent[v]] += size[v]</code></pre></div>
 <p><strong>2) 0-based 리스트에 1-based 자식 공식을 쓴다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 h = [3, 1, 4, 1, 5]        # 0-based 파이썬 리스트
@@ -47255,66 +46990,46 @@ d[0].append(&quot;x&quot;)
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) 존재 판정 — <code>set</code>으로 "확인 → 추가"</p>
-<pre><code class="language-python">import sys
+<div class="exset"><pre><code class="language-python">import sys
 data = sys.stdin.read().split()
 n = int(data[0])
-arr = [int(x) for x in data[1:1 + n]]     # ← 파싱은 문제마다 바뀜
-
-seen = set()
+arr = [int(x) for x in data[1:1 + n]]     # ← 파싱은 문제마다 바뀜</code></pre><pre><code class="language-python">seen = set()
 for x in arr:
     if x in seen:            # 확인이 먼저
         print(x)             # ← 찾았을 때 할 일은 문제마다 바뀜
         break
     seen.add(x)              # 추가는 나중
 else:
-    print(-1)                # for가 break 없이 끝났을 때만 실행되는 절
-</code></pre>
+    print(-1)                # for가 break 없이 끝났을 때만 실행되는 절</code></pre></div>
 <p>2) 빈도 세기 — <code>Counter</code> 또는 <code>dict.get</code></p>
-<pre><code class="language-python">from collections import Counter
-
-cnt = Counter(arr)                    # 값 → 등장 횟수를 O(n)에 만든다
-print(cnt['zzz'])                     # 없는 키도 0을 돌려준다(에러 없음)
-
-d = {}                                # Counter 없이 직접 세는 형태
+<div class="exset"><pre><code class="language-python">from collections import Counter</code></pre><pre><code class="language-python">cnt = Counter(arr)                    # 값 → 등장 횟수를 O(n)에 만든다
+print(cnt['zzz'])                     # 없는 키도 0을 돌려준다(에러 없음)</code></pre><pre><code class="language-python">d = {}                                # Counter 없이 직접 세는 형태
 for x in arr:
-    d[x] = d.get(x, 0) + 1            # 없으면 0에서 시작
-
-best = min(cnt.items(), key=lambda kv: (-kv[1], kv[0]))
+    d[x] = d.get(x, 0) + 1            # 없으면 0에서 시작</code></pre><pre><code class="language-python">best = min(cnt.items(), key=lambda kv: (-kv[1], kv[0]))
                                       # ← 정렬 기준은 문제마다 바뀜
                                       # 빈도 내림차순, 동점이면 키 오름차순
-print(best[0])
-</code></pre>
+print(best[0])</code></pre></div>
 <p>3) 그룹화 — <code>defaultdict(list)</code> + 정규화 키</p>
-<pre><code class="language-python">from collections import defaultdict
-
-groups = defaultdict(list)            # 없는 키를 읽으면 빈 리스트가 자동 생성
+<div class="exset"><pre><code class="language-python">from collections import defaultdict</code></pre><pre><code class="language-python">groups = defaultdict(list)            # 없는 키를 읽으면 빈 리스트가 자동 생성
 for s in words:
     key = &quot;&quot;.join(sorted(s))          # ← 정규화 키는 문제마다 바뀜
-    groups[key].append(s)
-
-print(len(groups))                    # 그룹 개수
+    groups[key].append(s)</code></pre><pre><code class="language-python">print(len(groups))                    # 그룹 개수
 for key in sorted(groups):            # 출력 순서가 필요하면 반드시 정렬
-    print(key, sorted(groups[key]))
-</code></pre>
+    print(key, sorted(groups[key]))</code></pre></div>
 <p>4) 매핑·명령 처리와 집합 연산</p>
-<pre><code class="language-python">book = {}                             # 키 → 값 저장소
+<div class="exset"><pre><code class="language-python">book = {}                             # 키 → 값 저장소
 book['apple'] = 'red'                 # 삽입과 수정이 같은 문법
 if 'apple' in book:                   # 존재 확인
     del book['apple']                 # 없는 키를 지우면 KeyError
-print(book.get('apple', 'none'))      # 없을 때 기본값
-
-a = set(list_a)
+print(book.get('apple', 'none'))      # 없을 때 기본값</code></pre><pre><code class="language-python">a = set(list_a)
 b = set(list_b)
 print(sorted(a &amp; b))                  # 교집합 — 출력은 sorted로 순서 고정
 print(sorted(a - b))                  # 차집합
-print(len(a | b))                     # 합집합 크기
-</code></pre>
+print(len(a | b))                     # 합집합 크기</code></pre></div>
 <p>5) 튜플 키와 누적합 + <code>dict</code> 조합</p>
-<pre><code class="language-python">visited = set()                       # 좌표처럼 값 여러 개가 한 키일 때
+<div class="exset"><pre><code class="language-python">visited = set()                       # 좌표처럼 값 여러 개가 한 키일 때
 x, y = 0, 0
-visited.add((x, y))                   # 리스트는 키가 될 수 없어 튜플로 만든다
-
-from collections import defaultdict   # 합이 K인 연속 구간의 개수
+visited.add((x, y))                   # 리스트는 키가 될 수 없어 튜플로 만든다</code></pre><pre><code class="language-python">from collections import defaultdict   # 합이 K인 연속 구간의 개수
 freq = defaultdict(int)
 freq[0] = 1                           # 누적합 0을 한 번 본 것으로 시작
 total, ans = 0, 0
@@ -47322,8 +47037,7 @@ for x in arr:
     total += x
     ans += freq[total - K]            # ← 찾을 값의 정의는 문제마다 바뀜
     freq[total] += 1
-print(ans)
-</code></pre>
+print(ans)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -47426,16 +47140,13 @@ for x in arr:
     d[x] = d[x] + 1        # 처음 보는 x에서 KeyError
 </code></pre>
 <p>왜: 해시 테이블은 "그 칸에 키가 없다"까지만 알려 준다. 없을 때 무엇을 돌려줄지는 자료구조가 정할 수 없어 파이썬은 예외를 던진다. 기본값이 필요하면 그 의도를 코드에 적어야 한다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 d = {}
 for x in arr:
-    d[x] = d.get(x, 0) + 1         # 없으면 0에서 시작
-
-from collections import defaultdict
+    d[x] = d.get(x, 0) + 1         # 없으면 0에서 시작</code></pre><pre><code class="language-python">from collections import defaultdict
 d = defaultdict(int)               # 또는 없는 키를 0으로 자동 생성
 for x in arr:
-    d[x] += 1
-</code></pre>
+    d[x] += 1</code></pre></div>
 <p><strong>2) 리스트를 키로 쓴다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 groups = {}
@@ -47507,13 +47218,10 @@ for k in d:
         del d[k]        # RuntimeError: dictionary changed size during iteration
 </code></pre>
 <p>왜: 순회 도중 원소가 지워지면 내부 자리 배치가 흐트러져 어디까지 훑었는지 알 수 없게 된다. 파이썬은 조용히 틀리는 대신 즉시 에러를 낸다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 for k in list(d):                  # 키 목록을 먼저 복사해 두고 돈다
     if d[k] == 0:
-        del d[k]
-
-d = {k: v for k, v in d.items() if v != 0}   # 또는 새 dict를 만든다
-</code></pre>
+        del d[k]</code></pre><pre><code class="language-python">d = {k: v for k, v in d.items() if v != 0}   # 또는 새 dict를 만든다</code></pre></div>
 <h4 class="dlabel dl-next">다음 챕터로</h4>
 <ul>
 <li>해시는 "값 → 자리"를 계산하는 도구라 순서 정보를 버린다. 그래서 정렬된 순서·범위 질의가 필요한 순간 정렬과 이진탐색이 다시 등장한다. 두 도구는 경쟁 관계가 아니라 묻는 질문이 다르다.</li>
@@ -49122,24 +48830,19 @@ def g(n):
 <ul>
 <li>(2) 유형 1 — 부분문제를 그대로 합치기. 개수 세기는 합, 최적값은 min/max다.</li>
 </ul>
-<pre><code class="language-python">MOD = 1_000_000_007                  # ← 문제마다 바뀜 (10007 등)
-STEPS = (1, 2, 3)                    # ← 한 번에 갈 수 있는 걸음들
-
-cnt = [0] * (n + 1)
+<div class="exset"><pre><code class="language-python">MOD = 1_000_000_007                  # ← 문제마다 바뀜 (10007 등)
+STEPS = (1, 2, 3)                    # ← 한 번에 갈 수 있는 걸음들</code></pre><pre><code class="language-python">cnt = [0] * (n + 1)
 cnt[0] = 1                           # 빈 선택도 한 가지 방법
 for i in range(1, n + 1):
     for s in STEPS:                  # 마지막 한 걸음이 무엇이었나로 나눈다
         if i - s &gt;= 0:
             cnt[i] = (cnt[i] + cnt[i - s]) % MOD   # 덧셈마다 나머지
-# ← 최적값 문제면 cnt를 INF로 채우고 '+' 자리를 min(...) + cost[i] 로 바꾼다
-</code></pre>
+# ← 최적값 문제면 cnt를 INF로 채우고 '+' 자리를 min(...) + cost[i] 로 바꾼다</code></pre></div>
 <ul>
 <li>(3) 유형 2 — 격자 한 칸 전진. 첫 행·첫 열을 따로 쓰지 말고 "없으면 0/INF"로 처리하면 코드가 짧아진다.</li>
 </ul>
-<pre><code class="language-python">R, C = len(grid), len(grid[0])
-dp = [[0] * C for _ in range(R)]     # 행마다 새 리스트로 만들 것
-
-for r in range(R):
+<div class="exset"><pre><code class="language-python">R, C = len(grid), len(grid[0])
+dp = [[0] * C for _ in range(R)]     # 행마다 새 리스트로 만들 것</code></pre><pre><code class="language-python">for r in range(R):
     for c in range(C):
         if grid[r][c] == BLOCK:      # ← 장애물 표시는 문제마다 바뀜
             dp[r][c] = 0             # 경로 수면 0, 최소비용이면 INF
@@ -49150,51 +48853,41 @@ for r in range(R):
         up = dp[r - 1][c] if r &gt; 0 else 0
         left = dp[r][c - 1] if c &gt; 0 else 0
         dp[r][c] = up + left         # ← 결합: 개수면 +, 비용이면 min + 값
-print(dp[R - 1][C - 1])
-</code></pre>
+print(dp[R - 1][C - 1])</code></pre></div>
 <ul>
 <li>(4) 유형 3 — 조건에 맞게 선택적으로 전진. "직전에 무엇을 골랐나"를 상태 축으로 올린다.</li>
 </ul>
-<pre><code class="language-python">S = 2                                # ← 상태 개수: 문제마다 바뀜
+<div class="exset"><pre><code class="language-python">S = 2                                # ← 상태 개수: 문제마다 바뀜
 NEG = float('-inf')
 dp = [[NEG] * S for _ in range(n)]
-dp[0][0], dp[0][1] = 0, a[0]         # ← 0=안 고름, 1=고름
-
-for i in range(1, n):
+dp[0][0], dp[0][1] = 0, a[0]         # ← 0=안 고름, 1=고름</code></pre><pre><code class="language-python">for i in range(1, n):
     dp[i][0] = max(dp[i - 1][0], dp[i - 1][1])   # 안 고름: 직전은 자유
     dp[i][1] = dp[i - 1][0] + a[i]               # 고름: 직전은 반드시 0
-print(max(dp[n - 1]))                # ← 답의 위치: 마지막 칸의 유효 상태들
-</code></pre>
+print(max(dp[n - 1]))                # ← 답의 위치: 마지막 칸의 유효 상태들</code></pre></div>
 <ul>
 <li>(5) 유형 4 — 배낭. 루프 방향 한 글자가 "한 번만"과 "여러 번"을 가른다.</li>
 </ul>
-<pre><code class="language-python"># 0/1 배낭: 각 아이템 최대 1개  -&gt;  용량 역순
+<div class="exset"><pre><code class="language-python"># 0/1 배낭: 각 아이템 최대 1개  -&gt;  용량 역순
 dp = [0] * (W + 1)
 for w, v in items:
     for c in range(W, w - 1, -1):    # 역순! 정순이면 같은 물건을 또 쓴다
-        dp[c] = max(dp[c], dp[c - w] + v)
-
-# 무한 배낭: 각 아이템 무제한  -&gt;  용량 정순
+        dp[c] = max(dp[c], dp[c - w] + v)</code></pre><pre><code class="language-python"># 무한 배낭: 각 아이템 무제한  -&gt;  용량 정순
 dp2 = [0] * (W + 1)
 for w, v in items:
     for c in range(w, W + 1):        # 정순! 방금 넣은 것을 또 쓴다
-        dp2[c] = max(dp2[c], dp2[c - w] + v)
-</code></pre>
+        dp2[c] = max(dp2[c], dp2[c - w] + v)</code></pre></div>
 <ul>
 <li>(6) 유형 5 — 두 문자열. 끝 글자가 같은지로 갈라진다.</li>
 </ul>
-<pre><code class="language-python">n, m = len(A), len(B)
-dp = [[0] * (m + 1) for _ in range(n + 1)]
-
-for i in range(1, n + 1):
+<div class="exset"><pre><code class="language-python">n, m = len(A), len(B)
+dp = [[0] * (m + 1) for _ in range(n + 1)]</code></pre><pre><code class="language-python">for i in range(1, n + 1):
     for j in range(1, m + 1):
         if A[i - 1] == B[j - 1]:               # dp는 1-based, 문자열은 0-based
             dp[i][j] = dp[i - 1][j - 1] + 1    # ← 부분수열이면 대각선 +1
         else:
             dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
             # ← 연속 부분문자열이면 여기가 0 (이어짐이 끊기므로 리셋)
-print(dp[n][m])
-</code></pre>
+print(dp[n][m])</code></pre></div>
 <ul>
 <li>(7) L9 그리디 — 정렬 기준 하나가 알고리즘 전부다.</li>
 </ul>
@@ -49544,24 +49237,19 @@ E = [(0, 1), (0, 2), (1, 2)]
 <li><strong>인접리스트</strong>: 각 정점마다 "그 정점과 이어진 이웃들의 목록"을 저장한다. 파이썬에선 <code>adj = [[] for _ in range(V)]</code> 또는 <code>dict</code>. 실제 간선 수만큼만 저장하므로 희소(sparse) 그래프에 효율적이다.</li>
 <li>언제 무엇을: 정점 수가 작고(대략 <code>V ≤ 1000~2000</code>) 조밀하거나 "연결 여부 즉답"이 잦으면 인접행렬. 대부분의 큰/희소 그래프(도로망 등)와 탐색 문제는 인접리스트가 기본 선택이다.</li>
 </ul>
-<pre><code class="language-python"># 무방향, 정점 0~3, 간선 0-1, 0-2, 1-2
+<div class="exset"><pre><code class="language-python"># 무방향, 정점 0~3, 간선 0-1, 0-2, 1-2
 N = 4
 # (1) 인접행렬
 adj_mat = [[0] * N for _ in range(N)]
 for u, v in [(0, 1), (0, 2), (1, 2)]:
     adj_mat[u][v] = 1
-    adj_mat[v][u] = 1   # 무방향 -&gt; 양쪽
-
-# (2) 인접리스트
+    adj_mat[v][u] = 1   # 무방향 -&gt; 양쪽</code></pre><pre><code class="language-python"># (2) 인접리스트
 adj_list = [[] for _ in range(N)]
 for u, v in [(0, 1), (0, 2), (1, 2)]:
     adj_list[u].append(v)
     adj_list[v].append(u)   # 무방향 -&gt; 양쪽
-# adj_list -&gt; [[1, 2], [0, 2], [0, 1], []]
-
-# 가중치가 있으면 리스트에 (이웃, 비용) 튜플로 저장
-# adj_list[u].append((v, w))
-</code></pre>
+# adj_list -&gt; [[1, 2], [0, 2], [0, 1], []]</code></pre><pre><code class="language-python"># 가중치가 있으면 리스트에 (이웃, 비용) 튜플로 저장
+# adj_list[u].append((v, w))</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <p>같은 그래프를 두 형태로 나란히 그리면 차이가 한눈에 보인다.</p>
 <pre><code class="language-text">  graph (undirected)     adjacency matrix       adjacency list
@@ -50101,17 +49789,14 @@ def bfs_uniform_cost(start, adj, N, w):
 <p>한 줄로 요약하면 이렇다. <strong>저장 방식(행렬/리스트)을 고르고 → 탐색 방식(DFS/BFS)을 고른다.</strong> 거리가 필요 없으면 DFS, 필요하면 BFS다. 격자는 그래프를 따로 만들지 않고 좌표 그대로 쓰는 특수 케이스이고, 간선 가중치가 서로 달라지는 순간 BFS를 버리고 Ch10으로 넘어간다.</p>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>(1) 입력 → 인접 리스트</p>
-<pre><code class="language-python">import sys
-input = sys.stdin.readline
-
-N, M = map(int, input().split())
+<div class="exset"><pre><code class="language-python">import sys
+input = sys.stdin.readline</code></pre><pre><code class="language-python">N, M = map(int, input().split())
 adj = [[] for _ in range(N + 1)]      # ← 0-based면 range(N)
 for _ in range(M):
     u, v = map(int, input().split())
     adj[u].append(v)
     adj[v].append(u)                  # ← 방향 그래프면 이 줄을 지운다
-# for i in range(N + 1): adj[i].sort()   # ← 이웃을 번호순으로 볼 때만
-</code></pre>
+# for i in range(N + 1): adj[i].sort()   # ← 이웃을 번호순으로 볼 때만</code></pre></div>
 <p>(2) DFS — 재귀와 명시적 스택</p>
 <pre><code class="language-python">import sys
 sys.setrecursionlimit(300000)         # ← 정점이 1만을 넘으면 필수
@@ -50182,9 +49867,7 @@ def grid_bfs(grid, H, W, sr, sc):
     return dist
 </code></pre>
 <p>(5) 연결 요소 세기 · 다중 시작 BFS</p>
-<pre><code class="language-python">from collections import deque
-
-count = 0                             # 연결 요소 개수
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">count = 0                             # 연결 요소 개수
 visited = [False] * (N + 1)
 for s in range(1, N + 1):             # ← 0-based면 range(N)
     if not visited[s]:
@@ -50196,15 +49879,12 @@ for s in range(1, N + 1):             # ← 0-based면 range(N)
             for v in adj[u]:
                 if not visited[v]:
                     visited[v] = True
-                    q.append(v)
-
-# 다중 시작 BFS: 시작점을 전부 dist 0 으로 두고 한꺼번에 큐에 넣는다
+                    q.append(v)</code></pre><pre><code class="language-python"># 다중 시작 BFS: 시작점을 전부 dist 0 으로 두고 한꺼번에 큐에 넣는다
 q = deque()
 for v in sources:                     # ← 시작점 목록은 문제마다 바뀜
     dist[v] = 0
     q.append(v)
-# 이후 while 루프는 일반 BFS와 완전히 같다
-</code></pre>
+# 이후 while 루프는 일반 BFS와 완전히 같다</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -67989,13 +67669,9 @@ def bfs(start, graph, V):
                 q.append(nxt)        # push하는 순간 방문 확정
     return dist
 </code></pre>
-<pre><code class="language-python"># (2) 격자 BFS — 칸이 정점, 4방향 이동이 간선(비용 1)
-from collections import deque
-
-dr = (-1, 1, 0, 0)
-dc = (0, 0, -1, 1)                   # 8방향이면 4개 추가 # ← 문제마다 바뀜
-
-dist = [[-1] * M for _ in range(N)]
+<div class="exset"><pre><code class="language-python"># (2) 격자 BFS — 칸이 정점, 4방향 이동이 간선(비용 1)
+from collections import deque</code></pre><pre><code class="language-python">dr = (-1, 1, 0, 0)
+dc = (0, 0, -1, 1)                   # 8방향이면 4개 추가 # ← 문제마다 바뀜</code></pre><pre><code class="language-python">dist = [[-1] * M for _ in range(N)]
 dist[sr][sc] = 0
 q = deque([(sr, sc)])
 while q:
@@ -68009,12 +67685,9 @@ while q:
         if grid[nr][nc] == 1:        # 이동 가능 조건 # ← 문제마다 바뀜
             continue
         dist[nr][nc] = dist[r][c] + 1
-        q.append((nr, nc))
-</code></pre>
-<pre><code class="language-python"># (3) 다중 시작점 BFS — 시작점 전부를 거리 0으로 먼저 넣는다
-from collections import deque
-
-q = deque()
+        q.append((nr, nc))</code></pre></div>
+<div class="exset"><pre><code class="language-python"># (3) 다중 시작점 BFS — 시작점 전부를 거리 0으로 먼저 넣는다
+from collections import deque</code></pre><pre><code class="language-python">q = deque()
 dist = [[-1] * M for _ in range(N)]
 for r in range(N):
     for c in range(M):
@@ -68023,12 +67696,9 @@ for r in range(N):
             q.append((r, c))
 # 이후 루프는 (2)와 글자 하나 다르지 않다.
 # 결과 dist[r][c] = &quot;가장 가까운 시작점까지의 거리&quot;
-# 전체 확산 시간을 묻는다면 도달한 칸들의 dist 최댓값이 답
-</code></pre>
-<pre><code class="language-python"># (4) 상태 BFS — 좌표에 상태를 붙이고 방문 배열의 차원을 늘린다
-from collections import deque
-
-S = K + 1                            # 상태 가짓수 # ← 문제마다 바뀜
+# 전체 확산 시간을 묻는다면 도달한 칸들의 dist 최댓값이 답</code></pre></div>
+<div class="exset"><pre><code class="language-python"># (4) 상태 BFS — 좌표에 상태를 붙이고 방문 배열의 차원을 늘린다
+from collections import deque</code></pre><pre><code class="language-python">S = K + 1                            # 상태 가짓수 # ← 문제마다 바뀜
 dist = [[[-1] * S for _ in range(M)] for _ in range(N)]
 dist[sr][sc][0] = 0
 q = deque([(sr, sc, 0)])
@@ -68045,12 +67715,9 @@ while q:
             continue
         dist[nr][nc][ns] = dist[r][c][s] + 1
         q.append((nr, nc, ns))
-answer = min(d for d in dist[er][ec] if d != -1)   # 도착 칸의 모든 상태 중 최소
-</code></pre>
-<pre><code class="language-python"># (5) 0-1 BFS — 비용이 0과 1 두 종류일 때. 덱의 앞/뒤를 쓴다
-from collections import deque
-
-INF = float('inf')
+answer = min(d for d in dist[er][ec] if d != -1)   # 도착 칸의 모든 상태 중 최소</code></pre></div>
+<div class="exset"><pre><code class="language-python"># (5) 0-1 BFS — 비용이 0과 1 두 종류일 때. 덱의 앞/뒤를 쓴다
+from collections import deque</code></pre><pre><code class="language-python">INF = float('inf')
 dist = [[INF] * M for _ in range(N)]
 dist[sr][sc] = 0
 dq = deque([(sr, sc)])
@@ -68066,13 +67733,10 @@ while dq:
             if w == 0:
                 dq.appendleft((nr, nc))          # 같은 층 -&gt; 앞
             else:
-                dq.append((nr, nc))              # 다음 층 -&gt; 뒤
-</code></pre>
-<pre><code class="language-python"># (6) 경로 복원 — 처음 방문시킨 직전 정점을 남긴다
+                dq.append((nr, nc))              # 다음 층 -&gt; 뒤</code></pre></div>
+<div class="exset"><pre><code class="language-python"># (6) 경로 복원 — 처음 방문시킨 직전 정점을 남긴다
 parent = [-1] * (V + 1)
-# BFS 안에서: dist[nxt] = dist[cur] + 1; parent[nxt] = cur; q.append(nxt)
-
-if dist[goal] == -1:
+# BFS 안에서: dist[nxt] = dist[cur] + 1; parent[nxt] = cur; q.append(nxt)</code></pre><pre><code class="language-python">if dist[goal] == -1:
     print(-1)
 else:
     path = []
@@ -68082,8 +67746,7 @@ else:
         v = parent[v]
     path.reverse()
     print(*path)
-# 격자면 parent[r][c] = (r, c) 튜플로, 또는 &quot;어느 방향에서 왔는가&quot;만 저장
-</code></pre>
+# 격자면 parent[r][c] = (r, c) 튜플로, 또는 &quot;어느 방향에서 왔는가&quot;만 저장</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -69239,46 +68902,38 @@ def knapsack01(items, W):        # items: [(weight, value), ...]
 <ul>
 <li>(1) 0/1 배낭 — 각 아이템 최대 1개. 2차원으로 먼저 이해하고 1차원으로 압축한다.</li>
 </ul>
-<pre><code class="language-python"># 2차원: dp[i][c] = 앞 i개 아이템만 보고 용량 c를 쓸 때 최대 가치
+<div class="exset"><pre><code class="language-python"># 2차원: dp[i][c] = 앞 i개 아이템만 보고 용량 c를 쓸 때 최대 가치
 dp = [[0] * (W + 1) for _ in range(n + 1)]
 for i in range(1, n + 1):
     w, v = items[i - 1]                       # ← 아이템 표현은 문제마다 바뀜
     for c in range(W + 1):
         dp[i][c] = dp[i - 1][c]               # 안 담는다
         if c &gt;= w:
-            dp[i][c] = max(dp[i][c], dp[i - 1][c - w] + v)   # 담는다
-
-# 1차원 압축: 위 식이 '이전 행'만 읽으므로 한 줄로 줄인다
+            dp[i][c] = max(dp[i][c], dp[i - 1][c - w] + v)   # 담는다</code></pre><pre><code class="language-python"># 1차원 압축: 위 식이 '이전 행'만 읽으므로 한 줄로 줄인다
 dp = [0] * (W + 1)
 for w, v in items:
     for c in range(W, w - 1, -1):             # 역순이 '이전 행'을 흉내낸다
         dp[c] = max(dp[c], dp[c - w] + v)
-print(dp[W])
-</code></pre>
+print(dp[W])</code></pre></div>
 <ul>
 <li>(2) 무한 배낭 — 각 아이템 무제한. 정순이면 "방금 담은 것"을 다시 읽는다.</li>
 </ul>
-<pre><code class="language-python">INF = float('inf')
-
-# 최대 가치
+<div class="exset"><pre><code class="language-python">INF = float('inf')</code></pre><pre><code class="language-python"># 최대 가치
 dp = [0] * (W + 1)
 for w, v in items:
     for c in range(w, W + 1):                 # 정순 = 재사용 허용
-        dp[c] = max(dp[c], dp[c - w] + v)
-
-# 최소 개수 변형: 초기값과 결합만 바꾼다
+        dp[c] = max(dp[c], dp[c - w] + v)</code></pre><pre><code class="language-python"># 최소 개수 변형: 초기값과 결합만 바꾼다
 cnt = [INF] * (W + 1)
 cnt[0] = 0                                    # ← 기저: 0을 만드는 데 0개
 for w in weights:
     for c in range(w, W + 1):
         if cnt[c - w] != INF:                 # 도달 불가에서 +1 하지 않는다
             cnt[c] = min(cnt[c], cnt[c - w] + 1)
-print(cnt[W] if cnt[W] != INF else -1)        # ← 불가능일 때 출력은 문제마다
-</code></pre>
+print(cnt[W] if cnt[W] != INF else -1)        # ← 불가능일 때 출력은 문제마다</code></pre></div>
 <ul>
 <li>(3) 개수 제한 배낭 — 아이템 i를 최대 <code>k_i</code>개. 두 가지 방법이 있다.</li>
 </ul>
-<pre><code class="language-python"># 방법 A: 상태에 '몇 개 썼나'를 직접 넣는다. k가 작을 때 가장 안전하다.
+<div class="exset"><pre><code class="language-python"># 방법 A: 상태에 '몇 개 썼나'를 직접 넣는다. k가 작을 때 가장 안전하다.
 dp = [0] * (W + 1)
 for w, v, k in items:                         # ← (무게, 가치, 개수 한도)
     ndp = dp[:]                               # 이번 아이템 '이전' 값을 보존
@@ -69287,9 +68942,7 @@ for w, v, k in items:                         # ← (무게, 가치, 개수 한�
             if c &lt; w * t:
                 break
             ndp[c] = max(ndp[c], dp[c - w * t] + v * t)
-    dp = ndp
-
-# 방법 B: k를 1,2,4,... 로 쪼개 0/1 배낭으로 바꾼다. k가 클 때.
+    dp = ndp</code></pre><pre><code class="language-python"># 방법 B: k를 1,2,4,... 로 쪼개 0/1 배낭으로 바꾼다. k가 클 때.
 packs = []
 for w, v, k in items:
     p = 1
@@ -69302,28 +68955,22 @@ for w, v, k in items:
 dp = [0] * (W + 1)
 for w, v in packs:
     for c in range(W, w - 1, -1):             # 이제 그냥 0/1 배낭
-        dp[c] = max(dp[c], dp[c - w] + v)
-</code></pre>
+        dp[c] = max(dp[c], dp[c - w] + v)</code></pre></div>
 <ul>
 <li>(4) 경우의 수 배낭 — 루프 중첩 순서가 "조합"과 "순열"을 가른다.</li>
 </ul>
-<pre><code class="language-python">MOD = 1_000_000_007                           # ← 문제마다 바뀜
-
-# 조합(고른 집합이 같으면 한 가지): 아이템이 바깥
+<div class="exset"><pre><code class="language-python">MOD = 1_000_000_007                           # ← 문제마다 바뀜</code></pre><pre><code class="language-python"># 조합(고른 집합이 같으면 한 가지): 아이템이 바깥
 comb = [0] * (W + 1)
 comb[0] = 1                                   # ← 빈 선택 = 1가지
 for w in weights:
     for c in range(w, W + 1):
-        comb[c] = (comb[c] + comb[c - w]) % MOD
-
-# 순열(고르는 순서가 다르면 다른 것): 용량이 바깥
+        comb[c] = (comb[c] + comb[c - w]) % MOD</code></pre><pre><code class="language-python"># 순열(고르는 순서가 다르면 다른 것): 용량이 바깥
 perm = [0] * (W + 1)
 perm[0] = 1
 for c in range(1, W + 1):
     for w in weights:
         if c &gt;= w:
-            perm[c] = (perm[c] + perm[c - w]) % MOD
-</code></pre>
+            perm[c] = (perm[c] + perm[c - w]) % MOD</code></pre></div>
 <ul>
 <li>(5) 격자 전진의 변형 — 들어오는 방향과 훑는 방향만 갈아끼운다.</li>
 </ul>
@@ -69349,24 +68996,19 @@ print(max(prev))
 <ul>
 <li>(6) 조건부 전진의 변형 — 후보를 어떻게 거르느냐만 다르다.</li>
 </ul>
-<pre><code class="language-python">INF = float('inf')
-
-# (a) 최근 k칸 중에서만 점프: dp[i] = cost[i] + min(dp[i-k .. i-1])
+<div class="exset"><pre><code class="language-python">INF = float('inf')</code></pre><pre><code class="language-python"># (a) 최근 k칸 중에서만 점프: dp[i] = cost[i] + min(dp[i-k .. i-1])
 dp = [INF] * (n + 1)
 dp[0] = 0
 for i in range(1, n + 1):
     for j in range(max(0, i - k), i):         # ← 점프 폭 제한이 조건
         if dp[j] != INF:
-            dp[i] = min(dp[i], dp[j] + cost[i])
-
-# (b) 뒤에서 앞으로: &quot;지금 고르면 t칸 뒤로 건너뛴다&quot;
+            dp[i] = min(dp[i], dp[j] + cost[i])</code></pre><pre><code class="language-python"># (b) 뒤에서 앞으로: &quot;지금 고르면 t칸 뒤로 건너뛴다&quot;
 dp = [0] * (n + 2)
 for i in range(n - 1, -1, -1):
     dp[i] = dp[i + 1]                         # 이번 것을 건너뛴다
     if i + t[i] &lt;= n:                         # ← 기한 안에 끝나야 채택 가능
         dp[i] = max(dp[i], p[i] + dp[i + t[i]])
-print(dp[0])
-</code></pre>
+print(dp[0])</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <ul>
 <li>먼저 배낭 세 종류를 구분한다. 지문에서 "각 물건을 몇 번 쓸 수 있는가"만 찾으면 된다.</li>
@@ -69659,22 +69301,17 @@ for c in range(W, w - 1, -1):        # w 까지 포함하려면 끝값은 w - 1
 <li>상태 설계의 원칙은 "미래의 결정에 영향을 주는 최소한의 과거 정보만 담는다"이다. 이를 만족하면 그 이전 과정을 잊어도 되는데(무기억성), 이 성질 덕분에 DP가 성립한다. 상태가 너무 적으면 전이가 불가능하고, 너무 많으면 시간·메모리가 폭발한다. 딱 필요한 만큼만 상태에 넣는 감각이 관건이다.</li>
 <li>절차는 (1) "i번째 칸에서 결정을 내리려면 무엇을 알아야 하는가?"를 자문해 상태 축을 찾고, (2) <code>dp[i][state]</code>의 의미를 한국어 한 문장으로 명확히 적고, (3) 각 상태에서 취할 수 있는 선택지마다 다음 상태로의 전이를 쓰고, (4) 초기값과 답의 위치(마지막 칸의 어느 상태를 봐야 하나)를 정한다.</li>
 </ul>
-<pre><code class="language-python"># 뼈대: dp[i][s] = i번째까지 처리했고 현재 상태가 s일 때의 최적값
+<div class="exset"><pre><code class="language-python"># 뼈대: dp[i][s] = i번째까지 처리했고 현재 상태가 s일 때의 최적값
 # s는 &quot;다음 결정에 필요한 최소 정보&quot;(예: 직전에 샀다/팔았다, 쉬는 중이다 등)
 NEG = float('-inf')
 dp = [[NEG] * S for _ in range(n + 1)]
-dp[0][init_state] = 0                     # 시작 상태 초기화
-
-for i in range(1, n + 1):
+dp[0][init_state] = 0                     # 시작 상태 초기화</code></pre><pre><code class="language-python">for i in range(1, n + 1):
     for s in range(S):
         if dp[i-1][s] == NEG:
             continue
         for choice in actions(s):         # 상태 s에서 가능한 행동들
             ns, gain = transit(s, choice, i)
-            dp[i][ns] = max(dp[i][ns], dp[i-1][s] + gain)
-
-ans = max(dp[n][s] for s in range(S))     # 마지막 칸에서 허용되는 상태들 중 최적
-</code></pre>
+            dp[i][ns] = max(dp[i][ns], dp[i-1][s] + gain)</code></pre><pre><code class="language-python">ans = max(dp[n][s] for s in range(S))     # 마지막 칸에서 허용되는 상태들 중 최적</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>상태 축을 하나 붙인다는 것은 <strong>DP 표가 한 장에서 여러 장으로 늘어난다</strong>는 뜻이다. <code>dp[i]</code>가 한 줄짜리 표였다면 <code>dp[i][s]</code>는 상태 개수만큼 층이 쌓인 표다.</li>
@@ -69846,13 +69483,11 @@ ans = max(dp[n][s] for s in range(S))     # 마지막 칸에서 허용되는 상
 <li>Kadane의 상태는 <code>cur = i를 끝으로 하는 연속 구간의 최대합</code>이다. 전이는 단 한 줄: <code>cur = max(a[i], cur + a[i])</code>. "이전 구간에 붙이는 게 이득이면 붙이고, 아니면 a[i]에서 새로 시작한다"는 직관 그대로다. 전역 답은 매 칸 <code>cur</code>의 최댓값을 따로 기록한다(cur 자체는 i를 끝으로 하는 값이라 전역 최대와 다르다).</li>
 <li>LIS의 상태는 <code>dp[i] = i번째 원소를 마지막으로 쓰는 증가 수열의 최대 길이</code>이다. <code>dp[i] = 1 + max(dp[j] for j&lt;i and a[j]&lt;a[i])</code>로 O(n²). 여기서 "i를 마지막으로"라는 제약이 핵심 — 이 제약이 있어야 <code>a[j]&lt;a[i]</code> 비교가 성립한다. 더 빠른 O(n log n) 방법은 <code>tails[k] = 길이 k+1짜리 증가수열의 가능한 최소 끝값</code>을 이분탐색으로 갱신하는 것.</li>
 </ul>
-<pre><code class="language-python"># Kadane: i를 끝으로 하는 최대 연속합
+<div class="exset"><pre><code class="language-python"># Kadane: i를 끝으로 하는 최대 연속합
 best = cur = a[0]
 for x in a[1:]:
     cur = max(x, cur + x)      # 이어붙이기 vs 새로 시작
-    best = max(best, cur)
-
-# LIS O(n log n): tails[k] = 길이(k+1) 증가수열의 최소 마지막값
+    best = max(best, cur)</code></pre><pre><code class="language-python"># LIS O(n log n): tails[k] = 길이(k+1) 증가수열의 최소 마지막값
 import bisect
 tails = []
 for x in a:
@@ -69861,8 +69496,7 @@ for x in a:
         tails.append(x)                # 더 긴 수열 발견
     else:
         tails[i] = x                   # 같은 길이를 더 낮은 끝값으로 갱신
-# 답은 len(tails)  (tails 자체는 실제 LIS가 아님에 주의)
-</code></pre>
+# 답은 len(tails)  (tails 자체는 실제 LIS가 아님에 주의)</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>이 유형의 상태는 배열이 아니라 <strong>"지금 이어오고 있는 구간"</strong> 하나다. 매 칸에서 결정은 딱 둘 — 지금 구간에 이어 붙이거나, 여기서 새 구간을 시작하거나.</li>
@@ -70055,7 +69689,7 @@ for x in a:
 <li><strong>Edit Distance(레벤슈타인)</strong>: <code>dp[i][j]</code> = A의 앞 i글자를 B의 앞 j글자로 바꾸는 최소 연산 수(삽입/삭제/교체 각 1). 같으면 그대로 대각선 <code>dp[i-1][j-1]</code>. 다르면 세 연산 중 최소 +1: 삭제 <code>dp[i-1][j]</code>, 삽입 <code>dp[i][j-1]</code>, 교체 <code>dp[i-1][j-1]</code>. 경계(빈 문자열로/에서의 변환)를 <code>dp[i][0]=i</code>, <code>dp[0][j]=j</code>로 초기화하는 게 핵심.</li>
 <li>표를 채우는 방향은 왼쪽 위 → 오른쪽 아래. 각 칸은 항상 자기보다 먼저 계산된 세 칸(위·왼쪽·대각선)만 참조하므로 반복문 두 겹으로 안전하게 채울 수 있다.</li>
 </ul>
-<pre><code class="language-python"># LCS: dp[i][j] = A[:i], B[:j]의 최장 공통 부분수열 길이
+<div class="exset"><pre><code class="language-python"># LCS: dp[i][j] = A[:i], B[:j]의 최장 공통 부분수열 길이
 n, m = len(A), len(B)
 dp = [[0]*(m+1) for _ in range(n+1)]
 for i in range(1, n+1):
@@ -70064,13 +69698,10 @@ for i in range(1, n+1):
             dp[i][j] = dp[i-1][j-1] + 1          # 대각선 + 1
         else:
             dp[i][j] = max(dp[i-1][j], dp[i][j-1])  # 위 vs 왼쪽
-# 답: dp[n][m]
-
-# Edit Distance: 경계 초기화가 필수
+# 답: dp[n][m]</code></pre><pre><code class="language-python"># Edit Distance: 경계 초기화가 필수
 for i in range(n+1): dp[i][0] = i    # A[:i]를 빈 문자열로 → i번 삭제
 for j in range(m+1): dp[0][j] = j    # 빈 문자열을 B[:j]로 → j번 삽입
-# 채우기: 같으면 대각선, 다르면 1 + min(위, 왼쪽, 대각선)
-</code></pre>
+# 채우기: 같으면 대각선, 다르면 1 + min(위, 왼쪽, 대각선)</code></pre></div>
 <p><strong>접근 전략</strong></p>
 <ul>
 <li>"두 문자열/수열을 비교", "공통", "몇 번 고쳐야", "정렬" 같은 단어가 보이면 2차원 <code>dp[i][j]</code>를 떠올린다. 먼저 <code>dp[i][j]</code>의 의미를 한국어로 못 박고, "A[i-1]와 B[j-1]가 같을 때 / 다를 때"로 사례를 나눠 각각 어느 칸에서 오는지 그림으로 그린다. LCS·편집거리·최소삽입(문자열을 팰린드롬으로 만들기 = 원문과 뒤집은 문자열의 LCS)·두 수열 정렬 비용 등은 전부 이 프레임의 변주다. 실제 부분수열/연산 순서까지 복원하려면 표를 다 채운 뒤 <code>dp[n][m]</code>에서 역추적(어느 칸에서 왔는지 따라 되돌아가기)한다.</li>
@@ -70244,21 +69875,16 @@ for j in range(m+1): dp[0][j] = j    # 빈 문자열을 B[:j]로 → j번 삽입
 <ul>
 <li>(1) <code>dp[i][s]</code> 일반형. 상태 축을 붙이는 모든 문제가 이 모양이다.</li>
 </ul>
-<pre><code class="language-python">NEG = float('-inf')
+<div class="exset"><pre><code class="language-python">NEG = float('-inf')
 S = 2                                    # ← 상태 개수: 문제마다 바뀜
 dp = [[NEG] * S for _ in range(n + 1)]
-dp[0][START] = 0                         # ← 시작 상태만 유효하게 연다
-
-for i in range(1, n + 1):
+dp[0][START] = 0                         # ← 시작 상태만 유효하게 연다</code></pre><pre><code class="language-python">for i in range(1, n + 1):
     for s in range(S):
         if dp[i - 1][s] == NEG:          # 도달 못 한 상태에서 잇지 않는다
             continue
         for ns, gain in moves(s, i):     # ← 허용된 전이만 돌려주는 함수
-            dp[i][ns] = max(dp[i][ns], dp[i - 1][s] + gain)
-
-print(max(dp[n][s] for s in range(S) if dp[n][s] != NEG))
-# ← 답의 위치: 마지막 칸에서 '허용되는' 상태만 후보다
-</code></pre>
+            dp[i][ns] = max(dp[i][ns], dp[i - 1][s] + gain)</code></pre><pre><code class="language-python">print(max(dp[n][s] for s in range(S) if dp[n][s] != NEG))
+# ← 답의 위치: 마지막 칸에서 '허용되는' 상태만 후보다</code></pre></div>
 <ul>
 <li>(2) 직전 선택 의존형. 상태가 곧 "직전에 무엇을 했는가"다.</li>
 </ul>
@@ -70273,32 +69899,27 @@ print(max(da, db))
 <ul>
 <li>(3) 연속(이어짐) DP. "이어붙일까, 여기서 새로 시작할까"의 한 줄 전이다.</li>
 </ul>
-<pre><code class="language-python"># Kadane: cur = i를 반드시 포함하는 연속 구간의 최대합
+<div class="exset"><pre><code class="language-python"># Kadane: cur = i를 반드시 포함하는 연속 구간의 최대합
 best = cur = a[0]                        # ← 0이 아니라 a[0]으로 연다
 for x in a[1:]:
     cur = max(x, cur + x)                # 새로 시작 vs 이어붙이기
-    best = max(best, cur)                # 전역 답은 따로 기록
-
-# 한 번 삭제 허용: 상태 축 하나로 확장된다
+    best = max(best, cur)                # 전역 답은 따로 기록</code></pre><pre><code class="language-python"># 한 번 삭제 허용: 상태 축 하나로 확장된다
 keep = drop = a[0]                       # keep=삭제 안 씀, drop=한 번 씀
 ans = a[0]
 for x in a[1:]:
     drop = max(keep, drop + x)           # 지금 x를 버리거나, 이미 버렸거나
     keep = max(x, keep + x)
-    ans = max(ans, keep, drop)
-</code></pre>
+    ans = max(ans, keep, drop)</code></pre></div>
 <ul>
 <li>(4) LIS. 조건을 만족하는 이전 것만 골라 잇는다.</li>
 </ul>
-<pre><code class="language-python"># O(n^2): dp[i] = a[i]를 마지막으로 쓰는 증가 수열의 최대 길이
+<div class="exset"><pre><code class="language-python"># O(n^2): dp[i] = a[i]를 마지막으로 쓰는 증가 수열의 최대 길이
 dp = [1] * n
 for i in range(n):
     for j in range(i):
         if a[j] &lt; a[i]:                  # ← 조건: '&lt;' 인가 '&lt;=' 인가 확인
             dp[i] = max(dp[i], dp[j] + 1)
-print(max(dp))
-
-# O(n log n): tails[k] = 길이 k+1 증가수열이 가질 수 있는 최소 끝값
+print(max(dp))</code></pre><pre><code class="language-python"># O(n log n): tails[k] = 길이 k+1 증가수열이 가질 수 있는 최소 끝값
 import bisect
 tails = []
 for x in a:
@@ -70307,23 +69928,18 @@ for x in a:
         tails.append(x)
     else:
         tails[i] = x
-print(len(tails))                        # 길이만 답. tails는 실제 LIS가 아니다
-</code></pre>
+print(len(tails))                        # 길이만 답. tails는 실제 LIS가 아니다</code></pre></div>
 <ul>
 <li>(5) 두 문자열 표. LCS와 편집 거리는 초기화와 세 칸 결합만 다르다.</li>
 </ul>
-<pre><code class="language-python">n, m = len(A), len(B)
-dp = [[0] * (m + 1) for _ in range(n + 1)]   # 행마다 새 리스트로 만들 것
-
-# LCS
+<div class="exset"><pre><code class="language-python">n, m = len(A), len(B)
+dp = [[0] * (m + 1) for _ in range(n + 1)]   # 행마다 새 리스트로 만들 것</code></pre><pre><code class="language-python"># LCS
 for i in range(1, n + 1):
     for j in range(1, m + 1):
         if A[i - 1] == B[j - 1]:             # dp는 1-based, 문자열은 0-based
             dp[i][j] = dp[i - 1][j - 1] + 1
         else:
-            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-
-# 편집 거리: 경계 초기화가 필수다
+            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])</code></pre><pre><code class="language-python"># 편집 거리: 경계 초기화가 필수다
 ed = [[0] * (m + 1) for _ in range(n + 1)]
 for i in range(n + 1):
     ed[i][0] = i                             # A의 i글자를 전부 삭제
@@ -70336,8 +69952,7 @@ for i in range(1, n + 1):
         else:
             ed[i][j] = 1 + min(ed[i - 1][j - 1],   # 교체
                                ed[i - 1][j],       # 삭제
-                               ed[i][j - 1])       # 삽입
-</code></pre>
+                               ed[i][j - 1])       # 삽입</code></pre></div>
 <ul>
 <li>(6) 부분수열 등장 횟수. 한 줄짜리 표로 압축하려면 방향이 중요하다.</li>
 </ul>
@@ -77176,20 +76791,13 @@ main()</code></pre><div class="sol-h">📝 풀이</div><div class="sol-expl"><p>
 <p>동작 단계: (1) 키를 해시값으로 변환 → (2) 해시값으로 버킷 위치 결정 → (3) 충돌 시 같은 버킷 안에서 키를 비교. 파이썬 dict는 삽입 순서를 보존(3.7+)하지만 이는 "정렬"이 아니라 "삽입 순서"임에 유의.</p>
 </li>
 </ul>
-<pre><code class="language-python">from collections import defaultdict, Counter
-
-# 1) 빈도수 세기
-cnt = Counter(arr)              # {값: 등장횟수}
-
-# 2) 그룹핑 (기본값 자동 생성)
+<div class="exset"><pre><code class="language-python">from collections import defaultdict, Counter</code></pre><pre><code class="language-python"># 1) 빈도수 세기
+cnt = Counter(arr)              # {값: 등장횟수}</code></pre><pre><code class="language-python"># 2) 그룹핑 (기본값 자동 생성)
 groups = defaultdict(list)
 for name, score in data:
-    groups[name].append(score)
-
-# 3) 안전한 조회
+    groups[name].append(score)</code></pre><pre><code class="language-python"># 3) 안전한 조회
 v = d.get(key, 0)              # 없으면 기본값 0
-if key in d: ...              # 존재 여부는 in
-</code></pre>
+if key in d: ...              # 존재 여부는 in</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>dict는 "키를 해시값으로 바꾸고, 그 값으로 들어갈 칸(버킷)을 계산해 저장하는" 표다. 위치가 계산으로 정해지므로, 찾을 때도 앞에서부터 훑지 않고 곧장 그 칸으로 간다.</li>
@@ -77247,14 +76855,11 @@ if key in d: ...              # 존재 여부는 in
 <p>핵심 연산은 "정렬된 키 배열에서의 이분 위치 찾기"다. <code>bisect_left(a, x)</code>는 x를 넣을 왼쪽 위치 = "x 미만 원소 개수", <code>bisect_right(a, x)</code>는 "x 이하 원소 개수"를 준다. 이 둘로 "x 이상 첫 원소", "x 이하 마지막 원소", "[lo, hi] 구간 개수"를 모두 계산한다.</p>
 </li>
 </ul>
-<pre><code class="language-python">import bisect
-
-a = []                          # 정렬 상태 유지
+<div class="exset"><pre><code class="language-python">import bisect</code></pre><pre><code class="language-python">a = []                          # 정렬 상태 유지
 bisect.insort(a, x)            # 정렬 위치에 삽입 O(n)
 i = bisect.bisect_left(a, x)  # x 이상 첫 원소 위치
 j = bisect.bisect_right(a, x) # x 초과 첫 원소 위치
-# [L,R] 구간 원소 수 = bisect_right(a,R) - bisect_left(a,L)
-</code></pre>
+# [L,R] 구간 원소 수 = bisect_right(a,R) - bisect_left(a,L)</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>정렬 리스트 + <code>bisect</code>는 TreeMap을 흉내 내는 가장 가벼운 방법이다. 들어갈 자리는 이분탐색으로 O(log n)에 찾지만, 실제로 끼워 넣으려면 뒤쪽 원소를 전부 한 칸씩 밀어야 한다.</li>
@@ -77357,16 +76962,13 @@ j = bisect.bisect_right(a, x) # x 초과 첫 원소 위치
 <p>집합 연산이 언어 차원에서 매우 빠르고 간결하다: <code>a &amp; b</code>(교집합), <code>a | b</code>(합집합), <code>a - b</code>(차집합), <code>a ^ b</code>(대칭차). frozenset은 불변이라 다른 set의 원소나 dict 키가 될 수 있다.</p>
 </li>
 </ul>
-<pre><code class="language-python">seen = set()
+<div class="exset"><pre><code class="language-python">seen = set()
 for x in stream:
     if x in seen:          # 존재 판정 O(1)
         ...                # 중복 발견
-    seen.add(x)
-
-inter = A &amp; B              # 교집합
+    seen.add(x)</code></pre><pre><code class="language-python">inter = A &amp; B              # 교집합
 uni   = A | B              # 합집합
-only_a = A - B            # 차집합
-</code></pre>
+only_a = A - B            # 차집합</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>set은 dict에서 "값" 칸만 뺀 것이다. 같은 해시 표 위에 키만 놓이므로 존재 판정 비용이 dict와 똑같다. 리스트와의 차이를 한 장으로 보자.</li>
@@ -77541,20 +77143,13 @@ def predecessor(x):           # x보다 작은 최대 원소
 <p>파이썬 heapq는 최소 힙만 제공한다. 최대 힙이 필요하면 값의 부호를 뒤집어 <code>-x</code>로 넣거나, 튜플 <code>(우선순위, 데이터)</code>로 넣어 우선순위 기준 정렬을 만든다. 동점일 때 데이터끼리 비교가 일어나 에러가 날 수 있으니 <code>(우선순위, 삽입순번, 데이터)</code>처럼 타이브레이커를 끼운다.</p>
 </li>
 </ul>
-<pre><code class="language-python">import heapq
-
-h = []
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">h = []
 heapq.heappush(h, (dist, node))   # (우선순위, 데이터)
-d, u = heapq.heappop(h)           # 최소 우선순위 pop
-
-# 최대 힙: 부호 반전
+d, u = heapq.heappop(h)           # 최소 우선순위 pop</code></pre><pre><code class="language-python"># 최대 힙: 부호 반전
 heapq.heappush(maxh, -x)
-biggest = -heapq.heappop(maxh)
-
-# 상위 K개 유지: 크기 K인 최소 힙
+biggest = -heapq.heappop(maxh)</code></pre><pre><code class="language-python"># 상위 K개 유지: 크기 K인 최소 힙
 if len(h) &lt; K: heapq.heappush(h, x)
-elif x &gt; h[0]: heapq.heapreplace(h, x)  # K번째로 큰 값 유지
-</code></pre>
+elif x &gt; h[0]: heapq.heapreplace(h, x)  # K번째로 큰 값 유지</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>힙은 개념적으로 완전이진트리지만 실제로는 <strong>배열 하나</strong>다. 부모·자식 관계가 인덱스 산술로 정해지므로 포인터가 필요 없다.</li>
@@ -77986,26 +77581,17 @@ def insert_after(p, x):        # p 뒤에 x 삽입 O(1)
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) <code>heapq</code> 5종 — 최소/최대, 튜플 우선순위, 상위 K 유지.</p>
-<pre><code class="language-python">import heapq
-
-h = []
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">h = []
 heapq.heappush(h, x)                  # 최소 힙: 항상 h[0]이 최솟값 (O(1) peek)
 smallest = heapq.heappop(h)
-h2 = arr[:]; heapq.heapify(h2)        # 배열이 이미 다 있으면 O(n)에 힙화
-
-maxh = []
+h2 = arr[:]; heapq.heapify(h2)        # 배열이 이미 다 있으면 O(n)에 힙화</code></pre><pre><code class="language-python">maxh = []
 heapq.heappush(maxh, -x)              # 최대 힙은 부호를 뒤집어 흉내낸다
-largest = -heapq.heappop(maxh)        # 꺼낼 때 반드시 되돌린다
-
-seq += 1
+largest = -heapq.heappop(maxh)        # 꺼낼 때 반드시 되돌린다</code></pre><pre><code class="language-python">seq += 1
 heapq.heappush(h, (pri, seq, obj))    # ← 문제마다 바뀜: 우선순위 키
-#                       ^^^ 타이브레이커. obj끼리 비교되는 사고를 막는다
-
-if len(topk) &lt; K:                     # 상위 K개 유지: top이 K개 중 최솟값
+#                       ^^^ 타이브레이커. obj끼리 비교되는 사고를 막는다</code></pre><pre><code class="language-python">if len(topk) &lt; K:                     # 상위 K개 유지: top이 K개 중 최솟값
     heapq.heappush(topk, x)
 elif x &gt; topk[0]:
-    heapq.heapreplace(topk, x)        # pop + push를 한 번에
-</code></pre>
+    heapq.heapreplace(topk, x)        # pop + push를 한 번에</code></pre></div>
 <p>2) 두 힙으로 중앙값 — 작은 절반과 큰 절반의 경계 두 개를 O(1)에 본다.</p>
 <pre><code class="language-python">lo, hi = [], []                       # lo: 작은 절반(최대 힙), hi: 큰 절반(최소 힙)
 
@@ -78021,16 +77607,13 @@ def median():
     return (-lo[0] + hi[0]) / 2       # ← 문제마다 바뀜: 짝수 개일 때의 규칙
 </code></pre>
 <p>3) <code>bisect</code> 4종 — 정렬 배열 위의 모든 경계 질의는 이 두 함수로 만든다.</p>
-<pre><code class="language-python">import bisect
+<div class="exset"><pre><code class="language-python">import bisect
 # a는 항상 정렬 상태여야 한다
 i = bisect.bisect_left(a, x)          # x 미만 개수 == x 이상인 첫 위치
-j = bisect.bisect_right(a, x)         # x 이하 개수 == x 초과인 첫 위치
-
-cnt_x  = j - i                                   # x의 등장 횟수
+j = bisect.bisect_right(a, x)         # x 이하 개수 == x 초과인 첫 위치</code></pre><pre><code class="language-python">cnt_x  = j - i                                   # x의 등장 횟수
 cnt_LR = bisect.bisect_right(a, R) - bisect.bisect_left(a, L)   # [L, R] 개수
 ge     = a[i]   if i &lt; len(a) else None          # x 이상 최솟값 (successor 계열)
-le     = a[j-1] if j &gt; 0      else None          # x 이하 최댓값 (predecessor 계열)
-</code></pre>
+le     = a[j-1] if j &gt; 0      else None          # x 이하 최댓값 (predecessor 계열)</code></pre></div>
 <p>4) 정렬 리스트로 TreeSet 흉내 — 삽입이 O(n)이라는 대가를 알고 쓴다.</p>
 <pre><code class="language-python">a = []
 
@@ -78047,14 +77630,11 @@ def remove(v):
 kth = a[k-1] if k &lt;= len(a) else None # ← k번째로 작은 값은 인덱스 하나
 </code></pre>
 <p>5) <code>deque</code> — 양끝만 쓴다면 직접 만들지 않는다.</p>
-<pre><code class="language-python">from collections import deque
-
-dq = deque()
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">dq = deque()
 dq.append(x);   dq.appendleft(x)      # 양끝 삽입 O(1)
 r = dq.pop();   l = dq.popleft()      # 양끝 삭제 O(1)
 window = deque(maxlen=W)              # ← 문제마다 바뀜: 고정 크기 창
-# dq[0], dq[-1]은 O(1)이지만 dq[i]는 O(n) — 인덱스 접근이 잦으면 list
-</code></pre>
+# dq[0], dq[-1]은 O(1)이지만 dq[i]는 O(n) — 인덱스 접근이 잦으면 list</code></pre></div>
 <p>6) 센티넬 이중 연결 리스트 — 삽입·삭제·복원의 세 줄짜리 정석.</p>
 <pre><code class="language-python">H, T = 0, n + 1                       # 양끝 센티넬 두 칸(경계 분기를 없앤다)
 nxt = [i + 1 for i in range(n + 2)]
@@ -78333,15 +77913,12 @@ for x in arr:
     cnt[x] += 1              # 처음 보는 x에서 KeyError
 </code></pre>
 <p>왜: <code>cnt[x] += 1</code>은 "읽고 → 더하고 → 쓴다"인데, 첫 단계인 읽기에서 키가 없어 터진다. 반대로 <code>defaultdict</code>는 <strong>읽기만 해도 키를 만들어 넣기 때문에</strong>, 그 성질을 모르고 존재 확인에 쓰면 dict가 조용히 부풀어 오른다. 존재만 볼 때는 <code>in</code>을 쓰거나 <code>get</code>을 쓴다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
-from collections import Counter, defaultdict
-
-cnt = Counter(arr)                  # 빈도 세기는 이 한 줄
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
+from collections import Counter, defaultdict</code></pre><pre><code class="language-python">cnt = Counter(arr)                  # 빈도 세기는 이 한 줄
 group = defaultdict(list)           # 누적·append에는 defaultdict
 for k, v in data:
     group[k].append(v)
-print(cnt.get(9, 0))                # 없는 키를 &quot;읽기만&quot; 할 때는 get (키가 안 생긴다)
-</code></pre>
+print(cnt.get(9, 0))                # 없는 키를 &quot;읽기만&quot; 할 때는 get (키가 안 생긴다)</code></pre></div>
 <p><strong>5) 리스트를 dict 키나 set 원소로 넣는다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 seen = set()
@@ -78953,7 +78530,7 @@ while i * i &lt;= n:
 <li>동작을 단계로(윈도우형): (1) <code>right</code>를 오른쪽으로 확장하며 원소를 윈도우에 넣는다. (2) 조건이 깨지면 <code>left</code>를 오른쪽으로 밀어 조건을 회복한다. (3) 매 단계에서 답(최대 길이/개수)을 갱신한다. 각 포인터가 최대 N번 전진하므로 전체 O(N).</li>
 <li>정당성의 핵심은 "단조성"이다. right를 늘리면 합이 커지고 left를 늘리면 줄어드는 식으로, 포인터를 되돌릴 필요가 없어야 한다.</li>
 </ul>
-<pre><code class="language-python"># 슬라이딩 윈도우: 합 &lt;= K인 가장 긴 연속 구간 길이 (원소 양수)
+<div class="exset"><pre><code class="language-python"># 슬라이딩 윈도우: 합 &lt;= K인 가장 긴 연속 구간 길이 (원소 양수)
 left = 0
 cur = 0
 best = 0
@@ -78962,16 +78539,13 @@ for right in range(n):
     while cur &gt; K:            # 조건 회복
         cur -= a[left]
         left += 1
-    best = max(best, right - left + 1)
-
-# 마주보는 포인터: 정렬 배열에서 합이 T인 쌍 찾기
+    best = max(best, right - left + 1)</code></pre><pre><code class="language-python"># 마주보는 포인터: 정렬 배열에서 합이 T인 쌍 찾기
 i, j = 0, n - 1
 while i &lt; j:
     s = a[i] + a[j]
     if s == T: break
     elif s &lt; T: i += 1
-    else: j -= 1
-</code></pre>
+    else: j -= 1</code></pre></div>
 <h4 class="dlabel dl-fig">그림으로 보기</h4>
 <ul>
 <li>가변 창은 <code>right</code>가 오른쪽으로 늘리고, 조건이 깨지면 <code>left</code>가 따라 붙어 줄인다. <strong>두 인덱스 모두 오른쪽으로만 간다.</strong></li>
@@ -79334,56 +78908,40 @@ def rect(r1, c1, r2, c2):             # 1-인덱스, 양끝 포함
     #        전체       위쪽 띠        왼쪽 띠       두 번 빠진 모서리 복구
 </code></pre>
 <p>3) 차분 배열(imos) — 갱신은 두 칸, 복원은 한 번의 누적합.</p>
-<pre><code class="language-python">diff = [0] * (n + 2)                  # r+1 이 최대 n+1 이므로 여유 두 칸
+<div class="exset"><pre><code class="language-python">diff = [0] * (n + 2)                  # r+1 이 최대 n+1 이므로 여유 두 칸
 for l, r, v in updates:               # 1-인덱스 폐구간 [l, r]에 v 더하기
     diff[l] += v
-    diff[r + 1] -= v                  # ← 끄는 위치는 구간 &quot;밖&quot; 첫 칸
-
-arr, run = [0] * (n + 1), 0
+    diff[r + 1] -= v                  # ← 끄는 위치는 구간 &quot;밖&quot; 첫 칸</code></pre><pre><code class="language-python">arr, run = [0] * (n + 1), 0
 for i in range(1, n + 1):
     run += diff[i]
-    arr[i] = run                      # 겹침 최댓값이 필요하면 v=1로 두고 max(run)
-</code></pre>
+    arr[i] = run                      # 겹침 최댓값이 필요하면 v=1로 두고 max(run)</code></pre></div>
 <p>4) LR 접두·접미 — 정의를 먼저 한 줄로 적고 시작한다.</p>
-<pre><code class="language-python"># L[i] = op(a[0..i-1]) , R[i] = op(a[i+1..n-1])   ← 자기 자신은 빠진다
-E = float('-inf')                     # ← 문제마다 바뀜: 항등원(합 0, 곱 1, min +inf)
-
-L = [E] * n
+<div class="exset"><pre><code class="language-python"># L[i] = op(a[0..i-1]) , R[i] = op(a[i+1..n-1])   ← 자기 자신은 빠진다
+E = float('-inf')                     # ← 문제마다 바뀜: 항등원(합 0, 곱 1, min +inf)</code></pre><pre><code class="language-python">L = [E] * n
 for i in range(1, n):
-    L[i] = max(L[i-1], a[i-1])        # 이웃이 계산해 둔 결과를 재사용
-
-R = [E] * n
+    L[i] = max(L[i-1], a[i-1])        # 이웃이 계산해 둔 결과를 재사용</code></pre><pre><code class="language-python">R = [E] * n
 for i in range(n - 2, -1, -1):
-    R[i] = max(R[i+1], a[i+1])
-
-ans = [max(L[i], R[i]) for i in range(n)]   # 결합법칙이 있는 연산이어야 성립
-</code></pre>
+    R[i] = max(R[i+1], a[i+1])</code></pre><pre><code class="language-python">ans = [max(L[i], R[i]) for i in range(n)]   # 결합법칙이 있는 연산이어야 성립</code></pre></div>
 <p>5) 투 포인터 2종 — 고정 창과 가변 창.</p>
-<pre><code class="language-python"># (A) 고정 창: 길이 W 구간의 통계. 창이 한 칸 움직이면 두 칸만 바뀐다.
+<div class="exset"><pre><code class="language-python"># (A) 고정 창: 길이 W 구간의 통계. 창이 한 칸 움직이면 두 칸만 바뀐다.
 cur = sum(a[:W])
 best = cur
 for r in range(W, n):
     cur += a[r] - a[r - W]            # 들어온 값 - 나간 값
-    best = max(best, cur)             # ← 문제마다 바뀜: max / min / 조건 카운트
-
-# (B) 가변 창: 조건을 만족하는 최장·최단 구간. 두 포인터 모두 오른쪽으로만.
+    best = max(best, cur)             # ← 문제마다 바뀜: max / min / 조건 카운트</code></pre><pre><code class="language-python"># (B) 가변 창: 조건을 만족하는 최장·최단 구간. 두 포인터 모두 오른쪽으로만.
 l = cur = best = 0
 for r in range(n):
     cur += a[r]                       # 오른쪽 확장
     while cur &gt; K:                    # ← 문제마다 바뀜: 조건이 깨졌을 때의 회복
         cur -= a[l]
         l += 1
-    best = max(best, r - l + 1)       # 불변식이 회복된 직후에 답 갱신
-</code></pre>
+    best = max(best, r - l + 1)       # 불변식이 회복된 직후에 답 갱신</code></pre></div>
 <p>6) 좌표 압축 — 정렬 + 중복 제거 + 인덱스 매핑, 그리고 실제 폭 복원.</p>
-<pre><code class="language-python">order = sorted(set(xs))               # set이 빠지면 같은 값에 다른 순위가 붙는다
+<div class="exset"><pre><code class="language-python">order = sorted(set(xs))               # set이 빠지면 같은 값에 다른 순위가 붙는다
 rank = {v: i for i, v in enumerate(order)}
-comp = [rank[v] for v in xs]          # 조회는 bisect_left(order, v)로도 가능
-
-# 되돌리기: 압축은 &quot;순서&quot;만 보존하고 &quot;간격&quot;은 버린다
+comp = [rank[v] for v in xs]          # 조회는 bisect_left(order, v)로도 가능</code></pre><pre><code class="language-python"># 되돌리기: 압축은 &quot;순서&quot;만 보존하고 &quot;간격&quot;은 버린다
 real = order[idx]                     # 실제 값
-width = order[idx + 1] - order[idx]   # ← 길이·면적을 물으면 반드시 이 폭을 곱한다
-</code></pre>
+width = order[idx + 1] - order[idx]   # ← 길이·면적을 물으면 반드시 이 폭을 곱한다</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <p>먼저 "단순하게 짜면 얼마인가 → 무엇이 반복되는가 → 어떤 기법인가 → 얼마가 되는가"를 대응표로 못 박는다. 기법 선택은 사실상 이 표의 왼쪽 열을 알아보는 일이다.</p>
 <div class="tablewrap"><table>
@@ -80824,68 +80382,49 @@ def solve(a, target):
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) 정렬 후 순차 선택 — 모든 그리디의 공통 골격.</p>
-<pre><code class="language-python">items.sort(key=lambda x: x[0])       # ← 문제마다 바뀜: 이 한 줄이 문제의 90%
-result, state = [], INIT             # ← 문제마다 바뀜: last_end / 잔여 용량 ...
-
-for x in items:
+<div class="exset"><pre><code class="language-python">items.sort(key=lambda x: x[0])       # ← 문제마다 바뀜: 이 한 줄이 문제의 90%
+result, state = [], INIT             # ← 문제마다 바뀜: last_end / 잔여 용량 ...</code></pre><pre><code class="language-python">for x in items:
     if feasible(state, x):           # 지금 확정해도 규칙을 안 깨는가
         result.append(x)
         state = update(state, x)     # 확정, 되돌아보지 않음
-print(len(result))
-</code></pre>
+print(len(result))</code></pre></div>
 <p>2) 구간 스케줄링 — 겹치지 않게 <strong>최대 개수</strong>. 기준은 <strong>종료 시각</strong>.</p>
-<pre><code class="language-python">meetings.sort(key=lambda x: (x[1], x[0]))   # 종료 오름차순, 동점은 시작 순
-cnt, last_end = 0, -1                       # ← 시각이 음수면 -inf 로
-
-for s, e in meetings:
+<div class="exset"><pre><code class="language-python">meetings.sort(key=lambda x: (x[1], x[0]))   # 종료 오름차순, 동점은 시작 순
+cnt, last_end = 0, -1                       # ← 시각이 음수면 -inf 로</code></pre><pre><code class="language-python">for s, e in meetings:
     if s &gt;= last_end:      # ← 문제마다 바뀜: 끝==시작 허용이면 &gt;=, 아니면 &gt;
         cnt += 1
         last_end = e
-print(cnt)
-</code></pre>
+print(cnt)</code></pre></div>
 <p>3) heapq 교체형 — 마감이 있고 <strong>넣었다가 넘치면 가장 나쁜 것을 버린다</strong>.</p>
-<pre><code class="language-python">import heapq
-
-tasks.sort()                     # (마감, 점수) 마감 오름차순
-chosen = []                      # 선택한 것들의 최소 힙
-
-for d, p in tasks:
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">tasks.sort()                     # (마감, 점수) 마감 오름차순
+chosen = []                      # 선택한 것들의 최소 힙</code></pre><pre><code class="language-python">for d, p in tasks:
     heapq.heappush(chosen, p)    # 일단 넣고
     if len(chosen) &gt; d:          # ← 문제마다 바뀜: 용량 조건
         heapq.heappop(chosen)    # 넘치면 지금까지 중 최소를 포기
-print(sum(chosen))
-</code></pre>
+print(sum(chosen))</code></pre></div>
 <p>4) 두 배열 짝짓기 — 정렬 후 한 방향 투 포인터.</p>
-<pre><code class="language-python">boxes.sort()
+<div class="exset"><pre><code class="language-python">boxes.sort()
 items.sort()
-i = j = cnt = 0
-
-while i &lt; len(items) and j &lt; len(boxes):
+i = j = cnt = 0</code></pre><pre><code class="language-python">while i &lt; len(items) and j &lt; len(boxes):
     if boxes[j] &gt;= items[i]:     # ← 문제마다 바뀜: 매칭 조건
         cnt += 1
         i += 1                   # 담았을 때만 물건을 넘긴다
     j += 1                       # 상자는 성공/실패와 무관하게 소진
-print(cnt)
-</code></pre>
+print(cnt)</code></pre></div>
 <p>양끝에서 좁혀 오는 변형(무거운 사람 + 가벼운 사람 짝짓기)은 <code>lo</code>/<code>hi</code>를 양끝에 두고 <code>w[lo] + w[hi] &lt;= LIMIT</code>이면 둘 다, 아니면 <code>hi</code>만 당기는 같은 틀이다.</p>
 <p>5) 스택 그리디 — K개를 지워 <strong>사전순(수치) 최소</strong> 만들기.</p>
-<pre><code class="language-python">stack = []
+<div class="exset"><pre><code class="language-python">stack = []
 for ch in num:
     while stack and k &gt; 0 and stack[-1] &gt; ch:   # ← 최대를 원하면 부등호 반대
         stack.pop()
         k -= 1
-    stack.append(ch)
-
-if k &gt; 0:                       # 오름차순이라 한 번도 못 지운 경우
+    stack.append(ch)</code></pre><pre><code class="language-python">if k &gt; 0:                       # 오름차순이라 한 번도 못 지운 경우
     stack = stack[:-k]          # 남은 몫은 반드시 뒤에서 지운다
 ans = &quot;&quot;.join(stack).lstrip(&quot;0&quot;)
-print(ans if ans else &quot;0&quot;)
-</code></pre>
+print(ans if ans else &quot;0&quot;)</code></pre></div>
 <p>6) 구간 커버 최소 개수 — <code>[0, L]</code>을 왼쪽부터 덮어 나간다.</p>
-<pre><code class="language-python">iv.sort()                       # 시작점 오름차순
-covered, cnt, i = 0, 0, 0
-
-while covered &lt; L:
+<div class="exset"><pre><code class="language-python">iv.sort()                       # 시작점 오름차순
+covered, cnt, i = 0, 0, 0</code></pre><pre><code class="language-python">while covered &lt; L:
     best = covered
     while i &lt; len(iv) and iv[i][0] &lt;= covered:   # 끊김 없이 이을 수 있는 것들
         best = max(best, iv[i][1])               # 그중 가장 멀리 뻗는 것
@@ -80896,8 +80435,7 @@ while covered &lt; L:
     covered = best
     cnt += 1
 else:
-    print(cnt)
-</code></pre>
+    print(cnt)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <p>먼저 "이 문제가 그리디인가"를 절차로 판정한다. 순서를 지키면 감으로 찍는 일이 없어진다.</p>
 <div class="tablewrap"><table>
@@ -81686,15 +81224,11 @@ def dijkstra_state(n, graph, start):
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) 다익스트라 — 지연 삭제 + 경로 복원. 이 챕터의 기본형이다.</p>
-<pre><code class="language-python">import heapq
-
-INF = float('inf')
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">INF = float('inf')
 dist = [INF] * (n + 1)
 parent = [0] * (n + 1)          # 경로 복원이 필요할 때만
 dist[start] = 0
-pq = [(0, start)]
-
-while pq:
+pq = [(0, start)]</code></pre><pre><code class="language-python">while pq:
     d, u = heapq.heappop(pq)
     if d &gt; dist[u]:             # 낡은 항목 — visited 배열 대신 이 한 줄
         continue
@@ -81703,44 +81237,32 @@ while pq:
         if nd &lt; dist[v]:
             dist[v] = nd
             parent[v] = u       # 갱신하는 그 순간에 기록
-            heapq.heappush(pq, (nd, v))
-
-path, cur = [], goal            # 복원: 목표에서 거꾸로 따라 올라간다
+            heapq.heappush(pq, (nd, v))</code></pre><pre><code class="language-python">path, cur = [], goal            # 복원: 목표에서 거꾸로 따라 올라간다
 while cur != start:
     path.append(cur)
     cur = parent[cur]
 path.append(start)
-path.reverse()
-</code></pre>
+path.reverse()</code></pre></div>
 <p>2) 플로이드-워셜 — 모든 쌍. <strong><code>k</code>가 반드시 최외곽.</strong></p>
-<pre><code class="language-python">INF = float('inf')
+<div class="exset"><pre><code class="language-python">INF = float('inf')
 dist = [[INF] * (n + 1) for _ in range(n + 1)]   # 행 공유 버그 방지 형태
 for i in range(1, n + 1):
     dist[i][i] = 0                               # 자기 자신은 0
 for u, v, w in edges:
     dist[u][v] = min(dist[u][v], w)              # 중복 간선은 최솟값
-    # dist[v][u] = min(dist[v][u], w)            # ← 무방향이면 이 줄도
-
-for k in range(1, n + 1):            # 경유지 — 반드시 가장 바깥
+    # dist[v][u] = min(dist[v][u], w)            # ← 무방향이면 이 줄도</code></pre><pre><code class="language-python">for k in range(1, n + 1):            # 경유지 — 반드시 가장 바깥
     for i in range(1, n + 1):
         if dist[i][k] == INF:        # 못 가는 경유는 건너뛴다
             continue
         dik, rk, ri = dist[i][k], dist[k], dist[i]
         for j in range(1, n + 1):
             if dik + rk[j] &lt; ri[j]:
-                ri[j] = dik + rk[j]
-
-neg_cycle = any(dist[i][i] &lt; 0 for i in range(1, n + 1))
-</code></pre>
+                ri[j] = dik + rk[j]</code></pre><pre><code class="language-python">neg_cycle = any(dist[i][i] &lt; 0 for i in range(1, n + 1))</code></pre></div>
 <p>3) 0-1 BFS — 가중치가 0과 1(또는 0과 c) 두 가지뿐일 때. 힙 없이 덱만으로 O(V+E).</p>
-<pre><code class="language-python">from collections import deque
-
-INF = float('inf')
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">INF = float('inf')
 dist = [INF] * (n + 1)
 dist[start] = 0
-dq = deque([start])
-
-while dq:
+dq = deque([start])</code></pre><pre><code class="language-python">while dq:
     u = dq.popleft()
     for v, w in graph[u]:           # w 는 0 또는 1
         if dist[u] + w &lt; dist[v]:
@@ -81748,18 +81270,13 @@ while dq:
             if w == 0:
                 dq.appendleft(v)    # 비용 0 → 같은 층, 앞에 넣는다
             else:
-                dq.append(v)        # 비용 1 → 다음 층, 뒤에 넣는다
-</code></pre>
+                dq.append(v)        # 비용 1 → 다음 층, 뒤에 넣는다</code></pre></div>
 <p>4) 상태 확장 다익스트라 — 연료·열쇠·남은 쿠폰처럼 <strong>가짓수가 작은</strong> 부가 상태.</p>
-<pre><code class="language-python">import heapq
-
-S = 1 &lt;&lt; K                    # ← 문제마다 바뀜: 연료 잔량이면 FUEL+1
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">S = 1 &lt;&lt; K                    # ← 문제마다 바뀜: 연료 잔량이면 FUEL+1
 INF = float('inf')
 dist = [[INF] * S for _ in range(n + 1)]
 dist[start][0] = 0
-pq = [(0, start, 0)]
-
-while pq:
+pq = [(0, start, 0)]</code></pre><pre><code class="language-python">while pq:
     d, u, s = heapq.heappop(pq)
     if d &gt; dist[u][s]:                    # 상태별로 따로 판정한다
         continue
@@ -81771,10 +81288,7 @@ while pq:
             ns = s | (1 &lt;&lt; key[v])        # 열쇠를 주우면 상태가 바뀐다
         if d + w &lt; dist[v][ns]:
             dist[v][ns] = d + w
-            heapq.heappush(pq, (d + w, v, ns))
-
-print(min(dist[goal]))                    # 목표 정점의 모든 상태 중 최소
-</code></pre>
+            heapq.heappush(pq, (d + w, v, ns))</code></pre><pre><code class="language-python">print(min(dist[goal]))                    # 목표 정점의 모든 상태 중 최소</code></pre></div>
 <p>5) 벨만-포드 — 음수 간선이 있고 출발점이 하나일 때.</p>
 <pre><code class="language-python">dist = [float('inf')] * (n + 1)
 dist[start] = 0
@@ -88422,16 +87936,13 @@ def dfs(u, p):
 dfs(1, 0)                   # 정점 10만 개짜리 일자 트리 -&gt; RecursionError
 </code></pre>
 <p>왜: 파이썬 기본 재귀 한도는 약 1000이다. 각 정점이 자식을 하나만 갖는 사슬 트리면 깊이가 V-1이라, 알고리즘이 맞아도 호출 스택이 먼저 무너진다. 트리 문제의 최악 입력은 거의 항상 일자 트리다.</p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 import sys
-sys.setrecursionlimit(300000)   # 재귀를 꼭 써야 할 때의 응급 처치
-
-# 더 안전한 방법: 애초에 반복 DFS + order 역순 스윕으로 짠다
+sys.setrecursionlimit(300000)   # 재귀를 꼭 써야 할 때의 응급 처치</code></pre><pre><code class="language-python"># 더 안전한 방법: 애초에 반복 DFS + order 역순 스윕으로 짠다
 size = [1] * (n + 1)
 for u in reversed(order):
     if parent[u]:
-        size[parent[u]] += size[u]
-</code></pre>
+        size[parent[u]] += size[u]</code></pre></div>
 <p><strong>3) LCA에서 깊이를 맞추지 않고 함께 올린다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 def lca_bad(u, v):
@@ -89169,13 +88680,11 @@ def union(a, b):
     return True                            # 실제로 합쳐졌다
 </code></pre>
 <p>2) 크루스칼 — 정렬 + 유니온-파인드</p>
-<pre><code class="language-python">edges = []
+<div class="exset"><pre><code class="language-python">edges = []
 for _ in range(m):                         # ← 간선 수·입력 형식은 문제마다 바뀜
     a, b, w = map(int, sys.stdin.readline().split())
     edges.append((w, a, b))                # 가중치를 앞에 두면 sort()만으로 끝
-edges.sort()                               # ← 최대 신장 트리면 reverse=True
-
-total, cnt, used = 0, 0, []
+edges.sort()                               # ← 최대 신장 트리면 reverse=True</code></pre><pre><code class="language-python">total, cnt, used = 0, 0, []
 for w, a, b in edges:
     if union(a, b):                        # 다른 컴포넌트일 때만 True
         total += w
@@ -89183,8 +88692,7 @@ for w, a, b in edges:
         used.append((a, b, w))             # ← MST 간선 목록이 필요할 때만
         if cnt == n - 1:                   # V-1개 모으면 더 볼 필요 없음
             break
-print(total if cnt == n - 1 else -1)       # 못 채우면 비연결
-</code></pre>
+print(total if cnt == n - 1 else -1)       # 못 채우면 비연결</code></pre></div>
 <p>3) 프림 — heapq 버전(희소~중간 밀도)</p>
 <pre><code class="language-python">import heapq
 
@@ -89237,7 +88745,7 @@ for w, a, b in edges:
 print(answer)                              # s == t 는 루프 전에 0으로 처리
 </code></pre>
 <p>6) k개 군집 분할 · 최대 신장 트리</p>
-<pre><code class="language-python"># (1) k개 군집: MST 간선을 오름차순으로 모으되 앞에서 n-k개만 더한다
+<div class="exset"><pre><code class="language-python"># (1) k개 군집: MST 간선을 오름차순으로 모으되 앞에서 n-k개만 더한다
 edges.sort()
 picked, total = 0, 0
 for w, a, b in edges:
@@ -89245,16 +88753,11 @@ for w, a, b in edges:
         picked += 1
         if picked &lt;= n - k:                # ← 군집 수 k는 문제마다 바뀜
             total += w                     # 비싼 k-1개는 자동으로 잘린다
-print(total if picked == n - 1 else -1)    # n-1개를 못 채우면 비연결
-
-# (2) 최대 신장 트리: 정렬 방향만 뒤집는다
+print(total if picked == n - 1 else -1)    # n-1개를 못 채우면 비연결</code></pre><pre><code class="language-python"># (2) 최대 신장 트리: 정렬 방향만 뒤집는다
 edges.sort(reverse=True)                   # 내림차순
-# 이후 채택 루프는 크루스칼과 한 글자도 다르지 않다
-
-# (3) 일부 간선이 이미 건설됨: 그것부터 union 하고 시작
+# 이후 채택 루프는 크루스칼과 한 글자도 다르지 않다</code></pre><pre><code class="language-python"># (3) 일부 간선이 이미 건설됨: 그것부터 union 하고 시작
 for a, b in prebuilt:                      # ← 비용 0으로 미리 합친 셈
-    union(a, b)
-</code></pre>
+    union(a, b)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -89931,15 +89434,11 @@ def count_paths(graph, s, memo):
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) Kahn — 진입차수 큐. 이 챕터의 기본형이다.</p>
-<pre><code class="language-python">from collections import deque
-
-graph = [[] for _ in range(n + 1)]
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">graph = [[] for _ in range(n + 1)]
 indeg = [0] * (n + 1)
 for u, v in edges:                 # u 를 먼저, 그다음 v
     graph[u].append(v)
-    indeg[v] += 1                  # 화살표가 '들어오는' 쪽에 센다
-
-q = deque(v for v in range(1, n + 1) if indeg[v] == 0)
+    indeg[v] += 1                  # 화살표가 '들어오는' 쪽에 센다</code></pre><pre><code class="language-python">q = deque(v for v in range(1, n + 1) if indeg[v] == 0)
 order = []
 while q:
     u = q.popleft()
@@ -89947,15 +89446,10 @@ while q:
     for v in graph[u]:
         indeg[v] -= 1              # 먼저 깎고
         if indeg[v] == 0:          # 그다음에 0인지 본다
-            q.append(v)
-
-if len(order) &lt; n:                 # 사이클 판정은 항상 이 한 줄
-    print(-1)
-</code></pre>
+            q.append(v)</code></pre><pre><code class="language-python">if len(order) &lt; n:                 # 사이클 판정은 항상 이 한 줄
+    print(-1)</code></pre></div>
 <p>2) 사전순 최소 — 큐를 최소 힙으로 바꾸기만 한다.</p>
-<pre><code class="language-python">import heapq
-
-h = [v for v in range(1, n + 1) if indeg[v] == 0]
+<div class="exset"><pre><code class="language-python">import heapq</code></pre><pre><code class="language-python">h = [v for v in range(1, n + 1) if indeg[v] == 0]
 heapq.heapify(h)
 order = []
 while h:
@@ -89964,8 +89458,7 @@ while h:
     for v in graph[u]:
         indeg[v] -= 1
         if indeg[v] == 0:
-            heapq.heappush(h, v)   # ← 사전순 최대면 -v 를 넣고 꺼낼 때 -를 뗀다
-</code></pre>
+            heapq.heappush(h, v)   # ← 사전순 최대면 -v 를 넣고 꺼낼 때 -를 뗀다</code></pre></div>
 <p>3) 사이클 판정 — 못 꺼낸 정점이 곧 사이클에 얽힌 정점이다.</p>
 <pre><code class="language-python"># 위 Kahn 을 그대로 돌린 뒤
 if len(order) &lt; n:
@@ -89976,9 +89469,7 @@ else:
     print(*order)
 </code></pre>
 <p>4) DAG DP — 위상 순서로 밀면서(Push) 값을 확정한다. <code>op</code>만 갈아 끼운다.</p>
-<pre><code class="language-python">from collections import deque
-
-dp = [0] * (n + 1)                 # ← 문제마다 바뀜: 아래 세 갈래 참고
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">dp = [0] * (n + 1)                 # ← 문제마다 바뀜: 아래 세 갈래 참고
 q = deque(v for v in range(1, n + 1) if indeg[v] == 0)
 while q:
     u = q.popleft()                # u 를 꺼낸 순간 dp[u] 는 확정
@@ -89990,10 +89481,7 @@ while q:
             dp[v] = dp[u] + w
         indeg[v] -= 1
         if indeg[v] == 0:
-            q.append(v)
-
-print(max(dp[1:]))                 # ← 끝점이 자유면 max, 고정이면 dp[goal]
-</code></pre>
+            q.append(v)</code></pre><pre><code class="language-python">print(max(dp[1:]))                 # ← 끝점이 자유면 max, 고정이면 dp[goal]</code></pre></div>
 <p>도달 불가를 값 0과 구분해야 하면 초기값을 바꾼다.</p>
 <pre><code class="language-python">NEG = float('-inf')
 dp = [NEG] * (n + 1)
@@ -90003,9 +89491,7 @@ for v in range(1, n + 1):
 # 출발점이 하나로 고정이면 dp[start] = 0 하나만 두고 나머지는 NEG
 </code></pre>
 <p>5) 위상 순서 유일성 판정 — 매 단계 큐 크기를 본다.</p>
-<pre><code class="language-python">from collections import deque
-
-q = deque(v for v in range(1, n + 1) if indeg[v] == 0)
+<div class="exset"><pre><code class="language-python">from collections import deque</code></pre><pre><code class="language-python">q = deque(v for v in range(1, n + 1) if indeg[v] == 0)
 order, unique = [], True
 while q:
     if len(q) &gt; 1:                 # 지금 놓을 수 있는 후보가 둘 이상
@@ -90015,15 +89501,12 @@ while q:
     for v in graph[u]:
         indeg[v] -= 1
         if indeg[v] == 0:
-            q.append(v)
-
-if len(order) &lt; n:
+            q.append(v)</code></pre><pre><code class="language-python">if len(order) &lt; n:
     print(&quot;IMPOSSIBLE&quot;)            # 사이클 — 순서가 아예 없음
 elif not unique:
     print(&quot;AMBIGUOUS&quot;)             # 순서가 여러 개 — 확정 불가
 else:
-    print(*order)
-</code></pre>
+    print(*order)</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <p>먼저 "이 문제가 위상 정렬인가"를 신호로 판정한다.</p>
 <div class="tablewrap"><table>
@@ -92384,7 +91867,7 @@ answer = min(dp[full][u] + dist[u][0] for u in range(1, n))
 </code></pre>
 <h4 class="dlabel dl-skel">뼈대 코드</h4>
 <p>1) 비트 연산 관용구 — 집합 하나가 정수 하나</p>
-<pre><code class="language-python">if (mask &gt;&gt; i) &amp; 1:                  # 원소 i 포함 여부 (괄호는 가독성용)
+<div class="exset"><pre><code class="language-python">if (mask &gt;&gt; i) &amp; 1:                  # 원소 i 포함 여부 (괄호는 가독성용)
     ...
 mask | (1 &lt;&lt; i)                      # 원소 i 추가
 mask &amp; ~(1 &lt;&lt; i)                     # 원소 i 제거
@@ -92396,20 +91879,15 @@ bin(mask).count(&quot;1&quot;)                 # 켜진 비트 수 (3.10+ 는 ma
 FULL = (1 &lt;&lt; n) - 1                  # 전체 집합 = 비트 n개가 전부 1
 rest = FULL ^ mask                   # 여집합
 if mask &amp; other == 0:                # 서로소인가 — &amp; 가 == 보다 먼저 묶인다
-    ...
-
-for mask in range(1 &lt;&lt; n):           # 모든 마스크. 끝값은 1 &lt;&lt; n 이다
-    ...                              # ← 마스크마다 할 일은 문제마다 바뀜
-
-sub = mask                           # mask의 모든 부분집합을 한 번씩
+    ...</code></pre><pre><code class="language-python">for mask in range(1 &lt;&lt; n):           # 모든 마스크. 끝값은 1 &lt;&lt; n 이다
+    ...                              # ← 마스크마다 할 일은 문제마다 바뀜</code></pre><pre><code class="language-python">sub = mask                           # mask의 모든 부분집합을 한 번씩
 while True:
     ...                              # ← sub 를 쓰는 자리 (빈 집합도 여기 들어온다)
     if sub == 0:
         break                        # 검사·탈출이 갱신보다 뒤에 와야 한다
-    sub = (sub - 1) &amp; mask
-</code></pre>
+    sub = (sub - 1) &amp; mask</code></pre></div>
 <p>2) 비트마스크 DP — TSP형 <code>dp[mask][i]</code>와 배정형 <code>dp[mask]</code></p>
-<pre><code class="language-python">INF = 10 ** 18
+<div class="exset"><pre><code class="language-python">INF = 10 ** 18
 FULL = (1 &lt;&lt; n) - 1
 dp = [[INF] * n for _ in range(1 &lt;&lt; n)]      # 행 수는 1 &lt;&lt; n (마스크 개수)
 dp[1][0] = 0                                 # 초기 상태 — 이 한 줄이 빠지면 전부 INF
@@ -92425,9 +91903,7 @@ for mask in range(1 &lt;&lt; n):                   # 오름차순 순회가 그�
             nm = mask | (1 &lt;&lt; v)
             if cur + dist[u][v] &lt; dp[nm][v]:
                 dp[nm][v] = cur + dist[u][v]
-ans = min(dp[FULL][u] + dist[u][0] for u in range(1, n))   # ← 복귀가 없으면 min(dp[FULL])
-
-# 배정형: '지금 몇 번째 사람 차례인가'가 popcount로 정해져 1차원이면 충분
+ans = min(dp[FULL][u] + dist[u][0] for u in range(1, n))   # ← 복귀가 없으면 min(dp[FULL])</code></pre><pre><code class="language-python"># 배정형: '지금 몇 번째 사람 차례인가'가 popcount로 정해져 1차원이면 충분
 dp = [INF] * (1 &lt;&lt; n)
 dp[0] = 0
 for mask in range(1 &lt;&lt; n):
@@ -92441,15 +91917,12 @@ for mask in range(1 &lt;&lt; n):
             nm = mask | (1 &lt;&lt; j)
             if dp[mask] + cost[i][j] &lt; dp[nm]:
                 dp[nm] = dp[mask] + cost[i][j]   # ← 비용표는 문제마다 바뀜
-ans = dp[FULL]
-</code></pre>
+ans = dp[FULL]</code></pre></div>
 <p>3) 구간 DP — 바깥 루프는 반드시 구간 길이</p>
-<pre><code class="language-python">INF = 10 ** 18
+<div class="exset"><pre><code class="language-python">INF = 10 ** 18
 pre = [0] * (n + 1)
 for i in range(n):
-    pre[i + 1] = pre[i] + a[i]               # 구간 합을 O(1)로
-
-dp = [[0] * n for _ in range(n)]             # 길이 1 구간은 0 — base case
+    pre[i + 1] = pre[i] + a[i]               # 구간 합을 O(1)로</code></pre><pre><code class="language-python">dp = [[0] * n for _ in range(n)]             # 길이 1 구간은 0 — base case
 for length in range(2, n + 1):               # 짧은 구간부터 바깥으로
     for i in range(0, n - length + 1):
         j = i + length - 1
@@ -92460,42 +91933,32 @@ for length in range(2, n + 1):               # 짧은 구간부터 바깥으로
             if v &lt; best:
                 best = v
         dp[i][j] = best + cost
-ans = dp[0][n - 1]
-
-# 변형: 분할점 없이 '양끝만 비교'하는 형태(회문 계열)는 안쪽 칸 하나만 읽는다
+ans = dp[0][n - 1]</code></pre><pre><code class="language-python"># 변형: 분할점 없이 '양끝만 비교'하는 형태(회문 계열)는 안쪽 칸 하나만 읽는다
 for length in range(2, n + 1):
     for i in range(0, n - length + 1):
         j = i + length - 1
         if s[i] == s[j]:
             dp[i][j] = dp[i + 1][j - 1]                    # ← 양끝이 같으면 그대로
         else:
-            dp[i][j] = min(dp[i + 1][j], dp[i][j - 1]) + 1
-</code></pre>
+            dp[i][j] = min(dp[i + 1][j], dp[i][j - 1]) + 1</code></pre></div>
 <p>4) Bitonic — 양방향 LIS를 따로 채워 꼭대기에서 붙인다</p>
-<pre><code class="language-python">inc = [1] * n                                # i에서 '끝나는' 증가 최대 길이
+<div class="exset"><pre><code class="language-python">inc = [1] * n                                # i에서 '끝나는' 증가 최대 길이
 for i in range(n):
     for j in range(i):                       # 왼쪽 -&gt; 오른쪽
         if a[j] &lt; a[i] and inc[j] + 1 &gt; inc[i]:
-            inc[i] = inc[j] + 1
-
-dec = [1] * n                                # i에서 '시작하는' 감소 최대 길이
+            inc[i] = inc[j] + 1</code></pre><pre><code class="language-python">dec = [1] * n                                # i에서 '시작하는' 감소 최대 길이
 for i in range(n - 1, -1, -1):               # 반드시 오른쪽 끝부터
     for j in range(i + 1, n):
         if a[j] &lt; a[i] and dec[j] + 1 &gt; dec[i]:
-            dec[i] = dec[j] + 1
-
-ans = max(inc[i] + dec[i] - 1 for i in range(n))   # 꼭대기가 두 번 세어지므로 -1
+            dec[i] = dec[j] + 1</code></pre><pre><code class="language-python">ans = max(inc[i] + dec[i] - 1 for i in range(n))   # 꼭대기가 두 번 세어지므로 -1
 # ← 길이가 아니라 '합'을 최대화하는 문제면 초기값을 a[i]로 두고 마지막에 - a[i]
-# ← 양쪽이 모두 비어 있으면 안 되는 문제면 inc[i] &gt; 1 and dec[i] &gt; 1 조건을 추가
-</code></pre>
+# ← 양쪽이 모두 비어 있으면 안 되는 문제면 inc[i] &gt; 1 and dec[i] &gt; 1 조건을 추가</code></pre></div>
 <p>5) 부분집합 합 — 마스크별 합과 값 기반 DP</p>
-<pre><code class="language-python"># (A) 모든 마스크의 원소 합을 O(2^n)에. 마스크마다 다시 더하면 O(2^n * n)이 된다
+<div class="exset"><pre><code class="language-python"># (A) 모든 마스크의 원소 합을 O(2^n)에. 마스크마다 다시 더하면 O(2^n * n)이 된다
 ssum = [0] * (1 &lt;&lt; n)
 for mask in range(1, 1 &lt;&lt; n):
     low = mask &amp; (-mask)                     # 최하위 원소 하나를 떼어내고
-    ssum[mask] = ssum[mask ^ low] + a[low.bit_length() - 1]   # 나머지는 이미 계산됨
-
-# (B) n이 커도 값의 합이 작으면 '집합'이 아니라 '값'을 상태로 잡는다
+    ssum[mask] = ssum[mask ^ low] + a[low.bit_length() - 1]   # 나머지는 이미 계산됨</code></pre><pre><code class="language-python"># (B) n이 커도 값의 합이 작으면 '집합'이 아니라 '값'을 상태로 잡는다
 S = sum(a)
 dp = [False] * (S + 1)                       # dp[w] = 합이 정확히 w인 부분집합이 있나
 dp[0] = True
@@ -92503,8 +91966,7 @@ for x in a:                                  # ← 원소를 한 번씩만 쓰�
     for w in range(S, x - 1, -1):            #    반드시 내림차순 (오름차순이면 중복 사용)
         if dp[w - x]:
             dp[w] = True
-best = min(abs(S - 2 * w) for w in range(S + 1) if dp[w])   # ← 목적식은 문제마다 바뀜
-</code></pre>
+best = min(abs(S - 2 * w) for w in range(S + 1) if dp[w])   # ← 목적식은 문제마다 바뀜</code></pre></div>
 <h4 class="dlabel dl-pick">언제 무엇을 쓰나</h4>
 <div class="tablewrap"><table>
 <thead>
@@ -92696,19 +92158,16 @@ while sub:                       # sub == 0 이면 들어가지도 않는다
     sub = (sub - 1) &amp; mask
 </code></pre>
 <p>왜: <code>while sub:</code>는 <code>sub</code>가 0이 되는 순간 본문을 건너뛰고 끝난다. "한 그룹을 통째로 비우는" 분할이 후보에서 빠지는데, 그것이 유효한 선택인 문제에서는 답이 어긋난다. 반대로 빈 집합을 넣으면 <code>mask ^ sub</code>가 <code>mask</code> 자신이 되어 <code>dp[mask]</code>가 자기 값을 읽는 순환 참조가 생긴다 — 대개는 값이 그대로라 무해하지만 "그룹은 비어 있을 수 없다" 같은 제약이 붙은 문제에서는 잘못된 값이 굳는다. <strong>빈 집합을 넣을지 말지는 문제를 보고 정하고, 그 판단이 코드 형태에 드러나야 한다.</strong></p>
-<pre><code class="language-python"># ✅ 고친 코드
+<div class="exset"><pre><code class="language-python"># ✅ 고친 코드
 sub = mask                       # 빈 집합까지 포함해 한 번씩 도는 형태
 while True:
     ...                          # sub 를 쓰는 자리
     if sub == 0:
         break                    # 사용 -&gt; 검사 -&gt; 갱신 순서
-    sub = (sub - 1) &amp; mask
-
-sub = (mask - 1) &amp; mask          # 진부분집합만 필요할 때(자기 자신 제외)
+    sub = (sub - 1) &amp; mask</code></pre><pre><code class="language-python">sub = (mask - 1) &amp; mask          # 진부분집합만 필요할 때(자기 자신 제외)
 while sub:
     ...
-    sub = (sub - 1) &amp; mask
-</code></pre>
+    sub = (sub - 1) &amp; mask</code></pre></div>
 <p><strong>6) n이 큰데 비트마스크를 적용한다</strong></p>
 <pre><code class="language-python"># ❌ 틀린 코드
 # 제한: 1 &lt;= n &lt;= 100000, 부분집합의 합을 목표 S에 맞춘다
@@ -98803,54 +98262,33 @@ main()</code></pre><div class="sol-h">📝 풀이</div><div class="sol-expl"><p>
 <li>틀린 문제는 풀이의 <strong>「스스로 다시 짤 때 생각 순서」</strong> 를 보며 <strong>다음 날 백지에서 다시</strong> 짠다. 3일 뒤 한 번 더.</li>
 </ol>
 <h2>파이썬 코딩테스트 치트시트</h2>
-<pre><code class="language-python"># ── 빠른 입력 (입력이 수만 줄 이상이면 input() 대신) ──
+<div class="exset"><pre><code class="language-python"># ── 빠른 입력 (입력이 수만 줄 이상이면 input() 대신) ──
 import sys
 input = sys.stdin.readline          # 끝의 '\n' 포함 → .rstrip() 또는 int() 로 처리
 n = int(input())
 arr = list(map(int, input().split()))
-data = sys.stdin.read().split()      # 전체를 한 번에 토큰으로
-
-# ── 재귀 한도 (DFS 깊이가 1000을 넘을 수 있으면) ──
-sys.setrecursionlimit(10**6)
-
-# ── 자주 쓰는 표준 라이브러리 ──
+data = sys.stdin.read().split()      # 전체를 한 번에 토큰으로</code></pre><pre><code class="language-python"># ── 재귀 한도 (DFS 깊이가 1000을 넘을 수 있으면) ──
+sys.setrecursionlimit(10**6)</code></pre><pre><code class="language-python"># ── 자주 쓰는 표준 라이브러리 ──
 from collections import deque, Counter, defaultdict
 q = deque([start]); q.popleft(); q.appendleft(x)      # BFS 큐 · 덱
 cnt = Counter(arr); cnt.most_common(1)                 # 빈도
-g = defaultdict(list); g[u].append(v)                  # 인접 리스트
-
-import heapq
-heapq.heappush(h, (dist, node)); d, u = heapq.heappop(h)   # 최소 힙 (최대 힙은 -값)
-
-from bisect import bisect_left, bisect_right
+g = defaultdict(list); g[u].append(v)                  # 인접 리스트</code></pre><pre><code class="language-python">import heapq
+heapq.heappush(h, (dist, node)); d, u = heapq.heappop(h)   # 최소 힙 (최대 힙은 -값)</code></pre><pre><code class="language-python">from bisect import bisect_left, bisect_right
 lo = bisect_left(sorted_arr, x)      # x 이상 첫 위치 = lower_bound
-hi = bisect_right(sorted_arr, x)     # x 초과 첫 위치 = upper_bound → 개수는 hi - lo
-
-from itertools import permutations, combinations, product, accumulate
-list(combinations(arr, 2)); list(permutations(arr)); list(accumulate(arr))  # 누적합
-
-import math
-math.gcd(a, b); math.lcm(a, b); math.isqrt(n); math.comb(n, r)
-
-# ── 정렬 관용구 ──
+hi = bisect_right(sorted_arr, x)     # x 초과 첫 위치 = upper_bound → 개수는 hi - lo</code></pre><pre><code class="language-python">from itertools import permutations, combinations, product, accumulate
+list(combinations(arr, 2)); list(permutations(arr)); list(accumulate(arr))  # 누적합</code></pre><pre><code class="language-python">import math
+math.gcd(a, b); math.lcm(a, b); math.isqrt(n); math.comb(n, r)</code></pre><pre><code class="language-python"># ── 정렬 관용구 ──
 arr.sort(key=lambda x: (-x[1], x[0]))       # 2차 기준: 값 내림차순, 같으면 이름 오름차순
-INF = float('inf')
-
-# ── 격자 4방향/8방향 ──
+INF = float('inf')</code></pre><pre><code class="language-python"># ── 격자 4방향/8방향 ──
 dx = [-1, 1, 0, 0]; dy = [0, 0, -1, 1]
 for d in range(4):
     nx, ny = x + dx[d], y + dy[d]
-    if 0 &lt;= nx &lt; n and 0 &lt;= ny &lt; m: ...
-
-# ── 2차원 배열 생성 (얕은 복사 함정 피하기) ──
+    if 0 &lt;= nx &lt; n and 0 &lt;= ny &lt; m: ...</code></pre><pre><code class="language-python"># ── 2차원 배열 생성 (얕은 복사 함정 피하기) ──
 grid = [[0] * m for _ in range(n)]       # OK
-# grid = [[0] * m] * n                    # 금지: 모든 행이 같은 객체
-
-# ── 출력 모아서 한 번에 (print 수만 번은 느림) ──
+# grid = [[0] * m] * n                    # 금지: 모든 행이 같은 객체</code></pre><pre><code class="language-python"># ── 출력 모아서 한 번에 (print 수만 번은 느림) ──
 out = []
 out.append(str(ans))
-print(&quot;\n&quot;.join(out))
-</code></pre>
+print(&quot;\n&quot;.join(out))</code></pre></div>
 <p><strong>시간 감각</strong>: 파이썬은 초당 대략 2~5천만 회 단순 연산. N=10⁵면 O(N log N)까지, N=10³이면 O(N²)까지, N=20이면 O(2ᴺ)까지 안전하다.</p></div></div></div>
 </div>
 <footer><b>Tutorial</b> 코스는 © Branch &amp; Bound(Codetree) 원문을 개인 학습용으로 요약·분석한 자료입니다. 상위 트레일 탭(novice-low 등)은 공개된 레슨 제목·구조만 참고해 새로 창작한 원본 학습자료이며, 각 챕터의 「추가 연습」 레슨과 📚 자료 탭도 창작·정리 자료입니다.</footer>
@@ -98941,6 +98379,27 @@ async function judge(runner){
   }
   resultEl.className='run-result pass'; resultEl.textContent='✅ 정답! 예제 '+tests.length+'개를 모두 통과했습니다.';
 }
+/* 코드 입력칸 자동 높이 — 길어지면 박스가 늘어나 전부 보이게(내부 스크롤 없음) */
+function autoGrow(ta){
+  if(!ta) return;
+  ta.style.height = 'auto';
+  ta.style.height = (ta.scrollHeight + 2) + 'px';
+}
+function growAll(){
+  Array.prototype.forEach.call(document.querySelectorAll('.runner .code'), autoGrow);
+}
+['input','keyup','change','paste','cut'].forEach(function(ev){
+  document.addEventListener(ev, function(e){
+    var t = e.target;
+    if(t && t.classList && t.classList.contains('code')) setTimeout(function(){autoGrow(t);}, 0);
+  }, true);
+});
+document.addEventListener('click', function(e){
+  if(e.target.closest('.tab')||e.target.closest('.jump-nav')) setTimeout(growAll, 60);
+});
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', growAll);
+else growAll();
+
 document.addEventListener('click', function(e){
   var rb = e.target.closest('.run-btn');
   if(rb){ judge(rb.closest('.runner')); return; }
