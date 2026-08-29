@@ -79,10 +79,31 @@ def fix_lists(text):
         out.append(line)
     return "\n".join(out)
 
+# 심화 보완(DEPTH_SPEC) 라벨 → 소제목으로 승격해 스캔이 쉽게
+DEPTH_LABELS = {
+    "그림으로 보기": "fig",
+    "손으로 따라가기": "trace",
+    "왜 이렇게 되는가": "why",
+    "개념 지도": "map",
+    "뼈대 코드": "skel",
+    "언제 무엇을 쓰나": "pick",
+    "다음 챕터로": "next",
+}
+_DEPTH_RE = re.compile(
+    r"<p><strong>((?:[✅⚠️\s]*)?(" + "|".join(map(re.escape, DEPTH_LABELS)) +
+    r"|마스터 체크리스트|자주 하는 실수))</strong></p>")
+
+def _depth_head(m):
+    full, core = m.group(1), m.group(2)
+    kind = DEPTH_LABELS.get(core, "check" if "체크리스트" in core else "warn")
+    return f'<h4 class="dlabel dl-{kind}">{full.strip()}</h4>'
+
 def md2html(text):
     h = markdown.markdown(text or "", extensions=["tables", "fenced_code", "sane_lists"])
     h = re.sub(r"<li>\s*\[ \]\s*", '<li class="task"><input type="checkbox" disabled> ', h)
     h = re.sub(r"<li>\s*\[[xX]\]\s*", '<li class="task done"><input type="checkbox" checked disabled> ', h)
+    h = _DEPTH_RE.sub(_depth_head, h)
+    h = h.replace("<table>", '<div class="tablewrap"><table>').replace("</table>", "</table></div>")
     return h
 
 # ============ 코드 실행 채점 러너 ============

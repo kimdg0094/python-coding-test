@@ -117,6 +117,31 @@ def resources_pane(md2html):
             + head + '<div class="res-body">' + body + '</div></div></div>')
 
 RES_CSS = """
+/* ── 심화 보완(DEPTH_SPEC) 라벨: 그림/추적/유도/정리 ── */
+.dlabel{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;
+  letter-spacing:-.02em;color:var(--accent-d);margin:26px 0 10px;padding:7px 13px;
+  background:var(--accent-l);border-left:3px solid var(--accent);border-radius:0 9px 9px 0}
+.dlabel::before{font-weight:400;font-size:15px;line-height:1;opacity:.95}
+.dl-fig::before{content:"🖼"}
+.dl-trace::before{content:"✍"}
+.dl-why::before{content:"💡"}
+.dl-map::before{content:"🗺"}
+.dl-skel::before{content:"🧰"}
+.dl-pick::before{content:"🧭"}
+.dl-next::before{content:"➡"}
+.dl-check{color:#0f7a4f;background:rgba(22,163,101,.10);border-left-color:#16a365}
+.dl-warn{color:#9a5b00;background:rgba(217,138,10,.12);border-left-color:#d98a0a}
+@media (prefers-color-scheme:dark){
+  .dl-check{color:#5fd6a0;background:rgba(95,214,160,.12);border-left-color:#3fbc86}
+  .dl-warn{color:#f0b95c;background:rgba(240,185,92,.12);border-left-color:#d99f3c}
+}
+.dlabel + p,.dlabel + ul,.dlabel + ol,.dlabel + pre,.dlabel + .tablewrap{margin-top:8px}
+/* 도식(```text)은 줄바꿈 없이 그대로 — 넘치면 블록 안에서만 스크롤 */
+pre>code.language-text,pre>code.language-diagram{white-space:pre}
+/* 넓은 표는 페이지가 아니라 표 안에서 스크롤 */
+.tablewrap{overflow-x:auto;margin:14px 0}
+.tablewrap table{margin:0}
+
 .res-body h2{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:30px 0 10px;color:var(--ink)}
 .res-body h4{font-size:15px;font-weight:700;margin:20px 0 6px;color:var(--accent-d)}
 .res-body p{margin:9px 0;line-height:1.7}
