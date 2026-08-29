@@ -98,7 +98,12 @@ def check_file(path):
         if seen["sol"] != 1 or seen["tests"] != 1 or seen["expl"] != 1:
             errors.append(f"문제 {p['num']}: @@SOLUTION/@@TESTS/@@EXPL 각각 정확히 1번 필요 (현재 {seen})")
         if not code: errors.append(f"문제 {p['num']}: 정답 코드가 비어 있음"); continue
-        if len(tests) < 2: errors.append(f"문제 {p['num']} '{p['name']}': 테스트 {len(tests)}개 (최소 2개)")
+        # 입력이 없는 문제(출력 전용)는 두 번째 테스트가 첫 번째의 완전한 중복이라 1개를 허용
+        input_free = all(not t["in"].strip() for t in tests)
+        if not tests:
+            errors.append(f"문제 {p['num']} '{p['name']}': 테스트가 없음")
+        elif not input_free and len(tests) < 2:
+            errors.append(f"문제 {p['num']} '{p['name']}': 테스트 {len(tests)}개 (입력 있는 문제는 최소 2개)")
         if len(expl) < 80: errors.append(f"문제 {p['num']}: @@EXPL 풀이가 너무 짧음/없음")
         if re.search(r"^\s*(import|from)\s+(numpy|pandas|scipy|requests|sympy)", code, re.M):
             errors.append(f"문제 {p['num']}: 외부 패키지 사용 금지")
