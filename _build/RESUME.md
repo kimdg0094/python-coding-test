@@ -1,4 +1,4 @@
-# 프로젝트 상태 (최종 갱신: 2026-08-28 — Python 전용 「추가 연습」 496문제 + 📚 자료 탭 추가)
+# 프로젝트 상태 (최종 갱신: 2026-08-29 — GitHub Pages 배포)
 
 ## 산출물
 - **python_learning.html**: Python 학습 사이트. 7코스·733문제·733러너(브라우저 Pyodide 실행·채점 + 숨김 정답·풀이).
@@ -46,3 +46,12 @@
 ## 재개가 필요할 때 (2026-08-28 이후)
 - 문제 추가: 해당 챕터의 `ch{NN}x.md`에 문제 카드 이어 붙이기(번호 연속) → `python _build/verify_file.py <파일>` → `PYTHONUTF8=1 python _build/build_html.py`.
 - 새 레슨/챕터 유형이 필요하면 `EXTRA_SPEC.md` 규격을 그대로 따른다.
+
+## 2026-08-29 GitHub Pages 배포
+- **공개 주소**: https://kimdg0094.github.io/python-coding-test/ — 저장소 `kimdg0094/python-coding-test` (public, `main` 브랜치 `/` 루트)
+- **사용자 선택**: 저작권 주의(README의 "무단 배포 금지", Tutorial 탭 69문제가 © Codetree)를 안내했고, 사용자가 "전체 배포 + 검색엔진 차단"을 선택함. Tutorial 포함 1,229문제 전부 배포.
+- **색인 차단 2중**: `robots.txt`(User-agent: * Disallow: / + GPTBot·ClaudeBot·Google-Extended·CCBot·PerplexityBot·Bytespider) / `<meta name='robots' content='noindex, nofollow, noarchive, nosnippet'>` — 메타는 `build_html.py`의 viewport 줄 다음에 삽입되어 재빌드해도 유지됨.
+- **추가 파일**: `index.html`(python_learning.html로 리다이렉트, 테마 맞춤), `.nojekyll`(`_build/` 등 언더스코어 폴더가 Jekyll에 무시되지 않게), `.gitignore`(cpp·로그·venv·pycache 제외), `robots.txt`
+- **커밋 범위**: 124파일 9.4MB. `cpp/`·`cpp_learning.html`은 동결이라 제외 — 다시 포함하려면 `.gitignore`에서 두 줄 삭제.
+- **검증**: 루트/학습페이지 200 OK, gzip 전송 1.17MB, robots.txt 서빙 확인, noindex 메타 확인, 실제 브라우저에서 Hard 문제(장르별 인기곡 플레이리스트) Pyodide 채점 ✅ 통과.
+- **갱신 절차**: md 수정 → `python _build/build_html.py` → `git add -A && git commit && git push` → 1~2분 후 반영.

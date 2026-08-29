@@ -1,5 +1,9 @@
 # Codetree 101 「프로그래밍 시작」 스터디 가이드
 
+> 🌐 **학습 사이트**: <https://kimdg0094.github.io/python-coding-test/>
+> 브라우저에서 바로 코드를 실행·채점할 수 있습니다. 검색엔진 색인은 차단되어 있으나(robots.txt + noindex),
+> **저장소가 공개(public)이므로 주소를 아는 사람은 누구나 열람할 수 있습니다.** 아래 「출처·저작권 주의」를 함께 읽어 주세요.
+
 > 언어: **Python3** · **10개 챕터 · 34개 레슨 · 103개 카드**(개념 34 / 문제 69)
 
 ## 📌 개요
@@ -102,3 +106,23 @@ for문 안에 for문을 넣는 2중(중첩) 반복문을 다룹니다. 외부=�
   - 단일 파일 검증: `python _build/verify_file.py trails/<trail>/chNNx.md` (구조 + 정답 실행 대조)
   - 전체 검증: `python _build/verify_runners.py` · 빌드: `PYTHONUTF8=1 python _build/build_html.py`
 - 이 시점부터 **Python 버전(`python_learning.html`)만** 업그레이드합니다. `cpp_learning.html`은 동결.
+
+## 🌐 배포 (GitHub Pages)
+
+- **주소**: <https://kimdg0094.github.io/python-coding-test/> (루트 접속 시 `python_learning.html`로 이동)
+- **저장소**: `kimdg0094/python-coding-test` (public, 브랜치 `main`, 폴더 `/`)
+- **색인 차단**: `robots.txt`(전체 Disallow + 주요 AI 크롤러 명시 차단) + 각 HTML의 `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">`
+  - noindex 메타는 `_build/build_html.py`에 들어 있어 재빌드해도 유지됩니다.
+  - 다만 이는 **검색 노출만 막을 뿐, 접근 제한이 아닙니다.** 링크를 아는 사람은 전부 열람할 수 있습니다.
+- **배포 제외 대상**(`.gitignore`): `cpp/`, `cpp_learning.html`(동결), `*.log`, `.venv/`, `__pycache__/`
+- **전송 용량**: 원본 5.4MB → gzip 약 1.17MB
+
+### 갱신 방법
+
+```bash
+python _build/build_html.py          # md 수정 후 재빌드
+python _build/verify_runners.py      # 전체 정답 검증(선택)
+git add -A && git commit -m "..." && git push
+```
+
+푸시 후 1~2분 내 Pages에 반영됩니다.
