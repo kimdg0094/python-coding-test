@@ -53,6 +53,15 @@ def check_diagrams(path, lines, errors, warns):
                     errors.append(
                         f"line {k+1}: 도식(```text) 정렬 칸에 한글 — 폰트 폴백으로 어긋납니다. "
                         f"'#' 주석으로 옮기거나 도식 밖 캡션으로 → {ln.strip()[:50]!r}")
+            # 박스드로잉·도형·화살표는 폰트마다 폭이 0.92/1.79/2.00 으로 달라 칸이 깨진다.
+            # 어떤 폰트에서도 1.00 인 것은 ASCII 뿐이므로 ASCII만 허용한다.
+            for ch in ln:
+                if ord(ch) > 127 and not HANGUL.match(ch):
+                    errors.append(
+                        f"line {k+1}: 도식에 비ASCII 문자 {ch!r}(U+{ord(ch):04X}) — "
+                        f"폰트에 따라 폭이 달라져 칸이 깨집니다. "
+                        f"ASCII로 바꾸세요(- | + ^ v < > * o #)")
+                    break
             if len(ln.rstrip()) > MAX_DIAGRAM_WIDTH:
                 warns.append(f"line {k+1}: 도식 줄이 {len(ln.rstrip())}자 (권장 {MAX_DIAGRAM_WIDTH}자 이하)")
     return n

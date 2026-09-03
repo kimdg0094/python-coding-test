@@ -7,21 +7,21 @@
 재귀는 문법이 아니라 **구조**다. 아래 한 장에 이 챕터의 전부가 들어 있다 — 반드시 필요한 세 부분, 값을 돌려주느냐 마느냐, 그리고 한 번에 얼마나 줄이느냐.
 
 ```text
-                    ┌─────────────────────┐
-                    │      recursion      │
-                    └──────────┬──────────┘
-             ┌─────────────────┴─────────────────┐
-             │                                   │
+                    +---------------------+
+                    |      recursion      |
+                    +----------+----------+
+             +-----------------+-----------------+
+             |                                   |
        3 required parts                    2 return shapes
-             │                                   │
+             |                                   |
    1. base case : stop here            void  : print / update
    2. shrink    : get closer           value : return + combine
    3. combine   : build the answer     both  : same 3 parts
-             │                                   │
-             └─────────────────┬─────────────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
+             |                                   |
+             +-----------------+-----------------+
+                               |
+              +----------------+----------------+
+              |                |                |
         shrink by 1      shrink by half    two branches
         depth n          depth log n       depth n, 2^n calls
         n-1, n//10       b//2, (lo+hi)//2  f(n-1) + f(n-2)
@@ -32,8 +32,8 @@
 
 ```text
    unfold  f(4) -> f(3) -> f(2) -> f(1)          # shrink each step
-                                     │
-                                     ▼ base case
+                                     |
+                                     v base case
    fold    24  <-   6  <-   2  <-   1            # combine on the way back
 ```
 

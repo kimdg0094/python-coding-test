@@ -22,9 +22,9 @@ print(s)      # apple
 ```text
  typed line:  apple
  s = input()          # no int() here : input() already gives a string
-      ┌───┬───┬───┬───┬───┐
-      │ a │ p │ p │ l │ e │
-      └───┴───┴───┴───┴───┘
+      +---+---+---+---+---+
+      | a | p | p | l | e |
+      +---+---+---+---+---+
         0   1   2   3   4      # each box is one letter
  print(s)  ->  apple
 ```
@@ -165,9 +165,9 @@ print(len(s))      # 11  (공백 2개 포함)
 
 ```text
  s = "I love code"
-      ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-      │ I │ _ │ l │ o │ v │ e │ _ │ c │ o │ d │ e │   # _ = one space
-      └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+      +---+---+---+---+---+---+---+---+---+---+---+
+      | I | _ | l | o | v | e | _ | c | o | d | e |   # _ = one space
+      +---+---+---+---+---+---+---+---+---+---+---+
   idx   0   1   2   3   4   5   6   7   8   9  10
  len(s) = 11      # 4 + 1 + 4 + ... : spaces are counted too
 ```
@@ -310,15 +310,15 @@ print(words[0])         # 첫 번째 문자열
 
 ```text
  words = ["red", "green", "blue"]
-      ┌─────────┬─────────┬─────────┐
-      │  "red"  │ "green" │ "blue"  │
-      └─────────┴─────────┴─────────┘
+      +---------+---------+---------+
+      |  "red"  | "green" | "blue"  |
+      +---------+---------+---------+
           0          1          2         # words[1] = "green"
 
  words[1]     -> "green"
-      ┌───┬───┬───┬───┬───┐
-      │ g │ r │ e │ e │ n │              # words[1][0] = "g"
-      └───┴───┴───┴───┴───┘
+      +---+---+---+---+---+
+      | g | r | e | e | n |              # words[1][0] = "g"
+      +---+---+---+---+---+
         0   1   2   3   4
  words[len(words) - 1] -> "blue"          # the last word
 ```
@@ -500,9 +500,9 @@ print(s[0], s[2])   # a c
 
 ```text
  s = "banana"
-      ┌───┬───┬───┬───┬───┬───┐
-      │ b │ a │ n │ a │ n │ a │
-      └───┴───┴───┴───┴───┴───┘
+      +---+---+---+---+---+---+
+      | b | a | n | a | n | a |
+      +---+---+---+---+---+---+
   +i    0   1   2   3   4   5      # s[0] = "b" , s[5] = "a"
   -i   -6  -5  -4  -3  -2  -1      # s[-1] = "a" , same box as s[5]
  len(s) = 6   ->  last index is 5, and s[6] is an error
@@ -698,9 +698,9 @@ print(s[::-1])    # elppa (뒤집기)
 
 ```text
  s = "apple"                     s[1:4] -> "ppl"
-      ┌───┬───┬───┬───┬───┐
-      │ a │ p │ p │ l │ e │
-      └───┴───┴───┴───┴───┘
+      +---+---+---+---+---+
+      | a | p | p | l | e |
+      +---+---+---+---+---+
  cut  0   1   2   3   4   5      # cut points sit BETWEEN letters
           ^           ^
           a=1         b=4        # take 1, 2, 3 : b is NOT included
@@ -881,9 +881,9 @@ print(pos)   # 2
 
 ```text
  s = "banana",  target = "n"
-      ┌───┬───┬───┬───┬───┬───┐
-      │ b │ a │ n │ a │ n │ a │
-      └───┴───┴───┴───┴───┴───┘
+      +---+---+---+---+---+---+
+      | b | a | n | a | n | a |
+      +---+---+---+---+---+---+
    i    0   1   2   3   4   5
                 ^       ^          # match at i = 2 and i = 4
  "n" in s     -> True              # only yes / no
@@ -1068,9 +1068,9 @@ print(result)   # hat
 
 ```text
  s = "cat"   (never changes)      s[0] = "h"  ->  TypeError
-      ┌───┬───┬───┐
-      │ c │ a │ t │
-      └───┴───┴───┘
+      +---+---+---+
+      | c | a | t |
+      +---+---+---+
         0   1   2
 
  build a NEW string, one letter at a time:

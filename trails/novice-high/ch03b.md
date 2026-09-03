@@ -339,8 +339,8 @@ def quick_sort(arr):
  quick sort on [7, 2, 9, 4, 1, 8, 5]      pivot = 4
    less        equal      greater
    [2 1]        [4]       [7 9 8 5]
-     │                        │
-     ▼                        ▼            # 각 구간을 같은 방식으로 재귀
+     |                        |
+     v                        v            # 각 구간을 같은 방식으로 재귀
    [1 2]                  [5 7 8 9]
    result = [1 2] + [4] + [5 7 8 9] = 1 2 4 5 7 8 9
  # 분할이 끝나면 피벗은 이미 최종 자리. 합치는 단계가 필요 없다
@@ -349,12 +349,12 @@ def quick_sort(arr):
 ```text
  balanced split                 skewed split (worst)
    n                              n
-   ├── n/2                        ├── 1
-   │    ├── n/4                   └── n-1
-   │    └── n/4                        ├── 1
-   └── n/2                             └── n-2
-        ├── n/4                              ├── 1
-        └── n/4                              └── n-3
+   +-- n/2                        +-- 1
+   |    +-- n/4                   +-- n-1
+   |    +-- n/4                        +-- 1
+   +-- n/2                             +-- n-2
+        +-- n/4                              +-- 1
+        +-- n/4                              +-- n-3
    depth = log2(n)                depth = n-1
    total = n * log2(n)            total = n + (n-1) + ... = n^2/2
 ```

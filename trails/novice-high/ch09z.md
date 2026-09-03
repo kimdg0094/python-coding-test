@@ -8,24 +8,24 @@ Ch9에서 배운 것을 한 장으로 묶고, 문제를 만나면 바로 꺼내 
 
 ```text
                     graph = (V, E)
-                          │
-              ┌───────────┴───────────┐
+                          |
+              +-----------+-----------+
         adjacency matrix        adjacency list
         O(V^2) space            O(V+E) space
         edge query O(1)         neighbor scan O(deg)
-              └───────────┬───────────┘
-                          │  traversal
-              ┌───────────┴───────────┐
+              +-----------+-----------+
+                          |  traversal
+              +-----------+-----------+
         DFS (stack/recursion)     BFS (queue)
         go deep, backtrack        expand layer by layer
-              │                       │
+              |                       |
     components, path, cycle     shortest dist (unweighted)
-              │                       │
-              └───────────┬───────────┘
-                          │
+              |                       |
+              +-----------+-----------+
+                          |
               grid : cell is a vertex, 4-dir is an edge
-                          │
-              ┌───────────┴───────────┐
+                          |
+              +-----------+-----------+
         multi-source BFS         all weights = w
         (push every source)      dist x w  -> Ch10 dijkstra
 ```

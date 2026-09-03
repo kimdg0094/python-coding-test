@@ -6,19 +6,19 @@
 
 ```text
                         sequence container
-                                 │
-              ┌──────────────────┴───────────────────┐
+                                 |
+              +------------------+-------------------+
          contiguous                            linked nodes
-              │                                      │
-    ┌─────────┴─────────┐            ┌───────────────┼───────────────┐
+              |                                      |
+    +---------+---------+            +---------------+---------------+
   array           dynamic array    singly         doubly         circular
   fixed size      grow x 2         val + next     prev + next    tail.next
   a[i] O(1)       append O(1)*     push_front     erase(node)    = head
   insert O(n)     * amortized      search O(n)    sentinels      rotate
   shift back      size vs cap      dummy head     deque          josephus
-              │                                      │
-              └──────────────────┬───────────────────┘
-                                 │
+              |                                      |
+              +------------------+-------------------+
+                                 |
                             Iterator
               __iter__ / __next__ / StopIteration / yield
               # 내부 구조를 숨기고 for 문 하나로 순회한다

@@ -11,11 +11,11 @@ Ch02는 문법이 많은 챕터가 아니다. 도구는 `input()`, `split()`, `i
 ```text
   read a line   ->   cut it   ->   convert   ->   compute & print
 
-  ┌───────────┐    ┌───────────┐   ┌────────────┐   ┌──────────┐
-  │ input()   │ -> │ split()   │ ->│ int()      │ ->│ + - * // │
-  │ one line  │    │ pieces    │   │ float()    │   │ print()  │
-  │ (string)  │    │ (strings) │   │ or keep    │   │          │
-  └───────────┘    └───────────┘   └────────────┘   └──────────┘
+  +-----------+    +-----------+   +------------+   +----------+
+  | input()   | -> | split()   | ->| int()      | ->| + - * // |
+  | one line  |    | pieces    |   | float()    |   | print()  |
+  | (string)  |    | (strings) |   | or keep    |   |          |
+  +-----------+    +-----------+   +------------+   +----------+
      L1 L4 L5         L3 L6           L1 L2 L5          L1..L6
                                   # everything left
                                   # of here is TEXT
@@ -46,12 +46,12 @@ Ch02는 문법이 많은 챕터가 아니다. 도구는 `input()`, `split()`, `i
 
 ```text
                 value arrives as a STRING
-                          │
-          ┌───────────────┴───────────────┐
+                          |
+          +---------------+---------------+
      compute with it?                just show / cut it?
-          │                               │
+          |                               |
      int() or float()                keep the string
-          │                               │
+          |                               |
    int   : digits and sign         s[0]  ,  s + '!'  ,  split()
    float : digits, sign and '.'
 ```

@@ -7,22 +7,22 @@
 Ch1은 "함수 하나를 어떻게 만드는가"에서 출발해, "값이 어떻게 오가는가"와 "이름이 어디까지 살아 있는가"로 갈라진다. 이 세 갈래가 한 장에 들어가면 챕터가 끝난 것이다.
 
 ```text
-                        ┌─────────────┐
-                        │  function   │
-                        └──────┬──────┘
-                 ┌─────────────┴─────────────┐
-                 │                           │
+                        +-------------+
+                        |  function   |
+                        +------+------+
+                 +-------------+-------------+
+                 |                           |
           no return value              returns a value
           (side effect only)           (a reusable part)
-                 │                           │
+                 |                           |
           print / draw / log           return x  |  return a, b
-                 │                           │
-                 └─────────────┬─────────────┘
-                               │
-                    ┌──────────┴──────────┐
-                    │                     │
+                 |                           |
+                 +-------------+-------------+
+                               |
+                    +----------+----------+
+                    |                     |
             argument passing         name scope
-                    │                     │
+                    |                     |
         immutable -> rebind only    local  : dies at return
         mutable   -> in-place edit  global : 'global' to assign
 ```
@@ -31,10 +31,10 @@ Ch1은 "함수 하나를 어떻게 만드는가"에서 출발해, "값이 어떻
 
 ```text
    want the function to change the caller's data?
-        │
-        ├── it is int / str / tuple  ──▶ impossible : return a new value
-        │
-        └── it is list / dict / set  ──▶ edit in place (no return needed)
+        |
+        +-- it is int / str / tuple  --> impossible : return a new value
+        |
+        +-- it is list / dict / set  --> edit in place (no return needed)
                                          or copy first to protect it
 ```
 

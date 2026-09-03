@@ -6,20 +6,20 @@
 
 ```text
                                sorting
-                                  │
-                ┌─────────────────┴─────────────────┐
+                                  |
+                +-----------------+-----------------+
          comparison based                     non-comparison
-                │                                   │
-         ┌──────┴────────────┐               radix (LSD)
+                |                                   |
+         +------+------------+               radix (LSD)
    O(n^2) family     O(n log n) family       bucket by digit
    bubble : swap     merge : split + merge   stable = correctness
    select : pick min quick : partition       O(d * n), space O(n)
    insert : shift    heap  : tree in array   # 키가 고정폭 정수일 때만
    space O(1)        merge stable + O(n)
    n <= 3000         quick, heap : in-place
-                │                                   │
-                └─────────────────┬─────────────────┘
-                                  │
+                |                                   |
+                +-----------------+-----------------+
+                                  |
    lower bound : n! leaves -> height >= log2(n!) = Omega(n log n)
    Timsort (python sorted / list.sort) = merge + insertion, stable
 ```

@@ -11,12 +11,12 @@ Ch01은 결국 세 단계다. **값을 만들고 → 상자에 담고 → 화면
 ```text
   make a value    ->    keep it in a box    ->    show it
 
-  ┌────────────┐        ┌──────────────┐          ┌────────────────┐
-  │ 5          │  ====> │   name       │  =====>  │ print(x)       │
-  │ 5.0        │ assign │   ┌──────┐   │   read   │ print(a, b)    │
-  │ 'five'     │        │   │  5   │   │          │ f'{x:.2f}'     │
-  └────────────┘        │   └──────┘   │          └────────────────┘
-     L1  L2             └──────────────┘             L1  L3  L4
+  +------------+        +--------------+          +----------------+
+  | 5          |  ====> |   name       |  =====>  | print(x)       |
+  | 5.0        | assign |   +------+   |   read   | print(a, b)    |
+  | 'five'     |        |   |  5   |   |          | f'{x:.2f}'     |
+  +------------+        |   +------+   |          +----------------+
+     L1  L2             +--------------+             L1  L3  L4
                          L2 L5 L6 L7 L8
 ```
 
@@ -41,12 +41,12 @@ Ch01은 결국 세 단계다. **값을 만들고 → 상자에 담고 → 화면
   two things on one line
 
            print(a, b)                    print(a + b)
-                │                               │
+                |                               |
         comma: ONE space                 + : glued, no space
-                │                               │
+                |                               |
         any types are fine              both sides must be the
-                │                       SAME type
-                │                               │
+                |                       SAME type
+                |                               |
     'Age:' , 20   -> Age: 20        'Sea' + 'side' -> Seaside
                                     'Age:' + 20    -> TypeError
 ```

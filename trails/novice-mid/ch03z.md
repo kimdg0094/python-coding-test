@@ -7,27 +7,27 @@
 Ch3은 "어떤 도구로 정렬하나"와 "무엇을 기준으로 정렬하나"라는 두 축으로 이루어져 있다. 도구는 두 개뿐이고, 기준은 `key`가 전부다.
 
 ```text
-                   ┌─────────────────────┐
-                   │       sorting       │
-                   └──────────┬──────────┘
-            ┌─────────────────┴─────────────────┐
-            │                                   │
+                   +---------------------+
+                   |       sorting       |
+                   +----------+----------+
+            +-----------------+-----------------+
+            |                                   |
       which tool                          which order
-            │                                   │
+            |                                   |
    sorted(a) : returns a new list      key=f        : what to compare
    a.sort()  : in place, returns None  reverse=True : flip everything
-            │                                   │
-            └─────────────────┬─────────────────┘
-                              │
-             ┌────────────────┼────────────────┐
-             │                │                │
+            |                                   |
+            +-----------------+-----------------+
+                              |
+             +----------------+----------------+
+             |                |                |
        single value    object (tuple)    many criteria
        a[0], a[-1]     (name, score)     key=lambda x:
        a[k-1], a[n//2] fields stay glued   (-x[1], x[0])
-             │                │                │
-             └────────────────┼────────────────┘
-                              │
-                              ▼
+             |                |                |
+             +----------------+----------------+
+                              |
+                              v
                 stable sort : ties keep input order
 ```
 
@@ -35,10 +35,10 @@ Ch3은 "어떤 도구로 정렬하나"와 "무엇을 기준으로 정렬하나"�
 
 ```text
    how many criteria?
-        │
-        ├── one, ascending   ──▶ sort()
-        ├── one, descending  ──▶ sort(reverse=True)
-        └── two or more      ──▶ sort(key=lambda x: (k1, k2, ...))
+        |
+        +-- one, ascending   --> sort()
+        +-- one, descending  --> sort(reverse=True)
+        +-- two or more      --> sort(key=lambda x: (k1, k2, ...))
                                  numbers : put '-' on descending keys
                                  input order ties : leave it to stability
 ```

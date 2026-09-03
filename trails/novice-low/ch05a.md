@@ -30,9 +30,9 @@ for i in range(1, 6):   # 6은 포함되지 않으므로 1,2,3,4,5
 
 ```text
    range(1, 6)
-   ┌───┬───┬───┬───┬───┐   ( 6 )
-   │ 1 │ 2 │ 3 │ 4 │ 5 │    ...          # stop is NOT a value
-   └───┴───┴───┴───┴───┘
+   +---+---+---+---+---+   ( 6 )
+   | 1 | 2 | 3 | 4 | 5 |    ...          # stop is NOT a value
+   +---+---+---+---+---+
      ^                       ^
      start = 1               stop = 6, the first value NOT taken
 
@@ -222,7 +222,7 @@ for i in range(0, 10, 2):
 ```text
    range(1, 10, 2)
    1   2   3   4   5   6   7   8   9   10
-   ●       ●       ●       ●       ●   |
+   *       *       *       *       *   |
    ^   +2  ^   +2  ^   +2  ^   +2  ^   stop (not taken)
    start                               next would be 11 > 10
 ```
@@ -389,9 +389,9 @@ for i in range(5, 0, -1):   # 0은 포함되지 않으므로 5,4,3,2,1
 ```text
    range(5, 0, -1)
    (0)  1   2   3   4   5
-    X   ●   ●   ●   ●   ●
+    X   *   *   *   *   *
     ^                   ^
-    stop (not taken)    start        ◀── direction of travel
+    stop (not taken)    start        <-- direction of travel
 
    reach 1 ?  stop = 0     ->  range(N, 0, -1)
    reach 0 ?  stop = -1    ->  range(N, -1, -1)
@@ -555,17 +555,17 @@ while i <= 5:      # i가 5 이하인 동안 반복
 
 ```text
    i = 1                       # (1) init : done once, outside
-     │
-     ▼
-   ┌──────────┐  False
-   │ i <= N ? │──────────► exit the loop
-   └────┬─────┘
-        │ True               # (2) check : before EVERY pass
-        ▼
+     |
+     v
+   +----------+  False
+   | i <= N ? |----------> exit the loop
+   +----+-----+
+        | True               # (2) check : before EVERY pass
+        v
      print(i)
      i = i + 1               # (3) update : or it never ends
-        │
-        └──────────► back to the check
+        |
+        +----------> back to the check
 ```
 
 **손으로 따라가기**
@@ -741,7 +741,7 @@ while i <= 10:
 ```text
    i = 1, step +2, stop when i > 10
    1   2   3   4   5   6   7   8   9   10  11
-   ●       ●       ●       ●       ●       X
+   *       *       *       *       *       X
    ^                                       ^
    start                                   first i with i > 10
 ```

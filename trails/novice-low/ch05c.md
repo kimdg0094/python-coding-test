@@ -31,16 +31,16 @@ while i < 5:
 
 ```text
    for i in range(1, 6):
-        │
-        ▼
-   ┌─────────────┐  True
-   │  i == 3 ?   │────────► continue ──┐    # skip the rest
-   └──────┬──────┘                     │
-          │ False                      │
-          ▼                            │
-       print(i)                        │
-          │                            │
-          └────────► next i ◄──────────┘    # the loop keeps going
+        |
+        v
+   +-------------+  True
+   |  i == 3 ?   |--------> continue --+    # skip the rest
+   +------+------+                     |
+          | False                      |
+          v                            |
+       print(i)                        |
+          |                            |
+          +--------> next i <----------+    # the loop keeps going
 
    i    :  1   2   3   4   5
    out  :  1   2   .   4   5               # '.' = skipped
@@ -233,16 +233,16 @@ while True:           # 조건이 항상 참이라도
 
 ```text
    for i in range(1, 100):
-        │
-        ▼
-   ┌─────────────┐  True
-   │  i == 4 ?   │────────► break ─────────┐   # leave the loop
-   └──────┬──────┘                         │
-          │ False                          │
-          ▼                                │
-       print(i)                            │
-          │                                ▼
-          └────────► next i           after the loop
+        |
+        v
+   +-------------+  True
+   |  i == 4 ?   |--------> break ---------+   # leave the loop
+   +------+------+                         |
+          | False                          |
+          v                                |
+       print(i)                            |
+          |                                v
+          +--------> next i           after the loop
 
    i    :  1   2   3   4   5 ... 99
    out  :  1   2   3   X   .     .            # X = break, . = never
@@ -424,14 +424,14 @@ while True:
 
 ```text
    while True :                       # condition is always True
-   ┌────────────────────┐
-   │   body             │
-   │   if done :        │
-   │       break ───────┼──────► out of the loop
-   │   ( more body )    │
-   └─────────┬──────────┘
-             │
-             └──► back to the top, forever
+   +--------------------+
+   |   body             |
+   |   if done :        |
+   |       break -------+------> out of the loop
+   |   ( more body )    |
+   +---------+----------+
+             |
+             +--> back to the top, forever
 ```
 
 `while True:` 자체에는 멈추는 장치가 없다. **반드시 도달하는 `break`가 하나 있어야** 반복이 끝난다.
@@ -629,11 +629,11 @@ print(total)
 
 ```text
    input stream :  5   3   2   0   (no more)
-                   │   │   │   │
-                   ▼   ▼   ▼   ▼
+                   |   |   |   |
+                   v   v   v   v
    total        :  5   8   10  --            # 0 is NOT added
-                                │
-                                └──► break, then print(total) = 10
+                                |
+                                +--> break, then print(total) = 10
 ```
 
 종료를 알리는 값(여기서는 `0`)은 데이터가 아니라 **신호**다. 그래서 처리하지 않고 그 자리에서 빠져나온다.

@@ -51,16 +51,16 @@
   two-word table : every problem reads the same three cells
 
           j-1   j
-        ┌────┬────┐
-    i-1 │ ↘  │ ▲  │
-        ├────┼────┤
-     i  │ ◀  │ ●  │
-        └────┴────┘
+        +----+----+
+    i-1 | \  | ^  |
+        +----+----+
+     i  | <  | *  |
+        +----+----+
 
-  LCS             same -> ↘ + 1      diff -> max( ▲ , ◀ )
-  edit distance   same -> ↘          diff -> 1 + min( ↘ , ▲ , ◀ )
-  count subseq    same -> ↘ + ▲      diff -> ▲
-  common substr   same -> ↘ + 1      diff -> 0     # 이어짐이 끊긴다
+  LCS             same -> \ + 1      diff -> max( ^ , < )
+  edit distance   same -> \          diff -> 1 + min( \ , ^ , < )
+  count subseq    same -> \ + ^      diff -> ^
+  common substr   same -> \ + 1      diff -> 0     # 이어짐이 끊긴다
 
   base   LCS      all zero
          edit     dp[i][0] = i , dp[0][j] = j

@@ -10,17 +10,17 @@ Ch3의 도구는 전부 "재귀 + `visited`" 하나에서 갈라져 나온다. �
 
 ```text
             DFS = go deep, come back on return
-                             │
-   ┌─────────────────┬───────┴─────────┬────────────────┐
-   ▼                 ▼                 ▼                ▼
+                             |
+   +-----------------+-------+---------+----------------+
+   v                 v                 v                v
    adjacency list    2-D grid          tree             backtracking
    visited[v]        visited[r][c]     parent arg       mark / unmark
-   │                 │                 │                │
-   ▼                 ▼                 ▼                ▼
+   |                 |                 |                |
+   v                 v                 v                v
    reachability      flood fill        depth on entry   all simple
    components        area, label       size on return   paths, counts
-   │                 │
-   ▼                 ▼
+   |                 |
+   v                 v
    2-coloring        8 offsets
    3-color cycle     explicit stack
 ```

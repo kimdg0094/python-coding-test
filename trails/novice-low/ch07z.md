@@ -10,26 +10,26 @@ Ch7의 핵심은 하나다. **여러 값을 이름 하나로 묶어 두면, 그�
   Ch7 core :  many values  ->  one name ( list )  ->  index  /  loop
 
   step 1 : GET the list
-  ├─ list(map(int, input().split()))     one line of numbers      L1
-  ├─ arr = []   then   arr.append(v)     build it up              L3
-  └─ cnt = [0] * SIZE                    fixed size , all zeros   L4
+  +- list(map(int, input().split()))     one line of numbers      L1
+  +- arr = []   then   arr.append(v)     build it up              L3
+  +- cnt = [0] * SIZE                    fixed size , all zeros   L4
 
   step 2 : REACH one value
-  ├─ arr[0]                              first                    L2
-  ├─ arr[len(arr) - 1]   ==   arr[-1]    last                     L2
-  └─ arr[k - 1]                          k-th , counted from 1    L2
+  +- arr[0]                              first                    L2
+  +- arr[len(arr) - 1]   ==   arr[-1]    last                     L2
+  +- arr[k - 1]                          k-th , counted from 1    L2
 
   step 3 : WALK the list
-  ├─ for v in arr:                       value only               L1 L4 L6
-  └─ for i in range(len(arr)):           position needed          L5 L6
+  +- for v in arr:                       value only               L1 L4 L6
+  +- for i in range(len(arr)):           position needed          L5 L6
 
   step 4 : SUMMARISE while walking
-  ├─ total += v                          sum                      L1
-  ├─ if v > t: count += 1                count by condition       L5
-  ├─ if arr[i] == x: pos = i ; break     first position           L5
-  ├─ if arr[i] == x: pos = i             last position            L5
-  ├─ if v > mx: mx = v                   max  /  min              L6
-  └─ cnt[v] += 1                         how many times each      L4
+  +- total += v                          sum                      L1
+  +- if v > t: count += 1                count by condition       L5
+  +- if arr[i] == x: pos = i ; break     first position           L5
+  +- if arr[i] == x: pos = i             last position            L5
+  +- if v > mx: mx = v                   max  /  min              L6
+  +- cnt[v] += 1                         how many times each      L4
 ```
 
 step 4의 다섯 줄은 전부 같은 자리에 들어간다. 그래서 여러 집계를 한 번의 순회로 동시에 처리할 수 있다.

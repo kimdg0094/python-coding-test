@@ -35,14 +35,14 @@ print("끝")
 
 ```text
    cond = True                cond = False
-   ┌───────────┐              ┌───────────┐
-   │  if cond  │              │  if cond  │
-   └─────┬─────┘              └─────┬─────┘
-         │ enter                    │ skip
-   ┌─────▼─────┐                    │
-   │   body    │                    │
-   └─────┬─────┘                    │
-         ▼                          ▼
+   +-----------+              +-----------+
+   |  if cond  |              |  if cond  |
+   +-----+-----+              +-----+-----+
+         | enter                    | skip
+   +-----v-----+                    |
+   |   body    |                    |
+   +-----+-----+                    |
+         v                          v
        after                      after
 ```
 
@@ -198,16 +198,16 @@ else:
 **그림으로 보기**
 
 ```text
-              ┌───────────┐
-              │  if cond  │
-              └──┬─────┬──┘
-            True │     │ False
-       ┌─────────▼─┐ ┌─▼─────────┐
-       │  if body  │ │ else body │
-       └─────────┬─┘ └─┬─────────┘
-                 │     │
-                 └──┬──┘
-                    ▼
+              +-----------+
+              |  if cond  |
+              +--+-----+--+
+            True |     | False
+       +---------v-+ +-v---------+
+       |  if body  | | else body |
+       +---------+-+ +-+---------+
+                 |     |
+                 +--+--+
+                    v
                   after
 ```
 
@@ -375,10 +375,10 @@ print(a if a > b else b)
 
 ```text
    value  =  A  if  cond  else  B
-             │       │          │
-             │       │          └─── taken when cond is False
-             │       └───────────── checked FIRST
-             └───────────────────── taken when cond is True
+             |       |          |
+             |       |          +--- taken when cond is False
+             |       +------------- checked FIRST
+             +--------------------- taken when cond is True
 
    cond = True   ->  value = A
    cond = False  ->  value = B
@@ -538,16 +538,16 @@ else:
 
 ```text
    score
-     │
-     ▼
-  [ >= 90 ] ──True──► print("A") ──┐
-     │ False                       │
-     ▼                             │
-  [ >= 60 ] ──True──► print("B") ──┤
-     │ False                       │
-     ▼                             │
-   else     ─────────► print("F") ─┤
-                                   ▼
+     |
+     v
+  [ >= 90 ] --True--> print("A") --+
+     | False                       |
+     v                             |
+  [ >= 60 ] --True--> print("B") --+
+     | False                       |
+     v                             |
+   else     ---------> print("F") -+
+                                   v
                                  after
 ```
 
@@ -936,13 +936,13 @@ if n % 5 == 0:
 
 ```text
    if / if                        if / elif
-   ┌────────────┐                 ┌────────────┐
-   │ n % 3 == 0 │──T──► "fizz"    │ n % 3 == 0 │──T──► "fizz"
-   └──────┬─────┘                 └──────┬─────┘
-          │ (always checked)             │ (skipped)
-   ┌──────▼─────┐                        X
-   │ n % 5 == 0 │──T──► "buzz"
-   └────────────┘
+   +------------+                 +------------+
+   | n % 3 == 0 |--T--> "fizz"    | n % 3 == 0 |--T--> "fizz"
+   +------+-----+                 +------+-----+
+          | (always checked)             | (skipped)
+   +------v-----+                        X
+   | n % 5 == 0 |--T--> "buzz"
+   +------------+
    n = 15  ->  fizz + buzz        n = 15  ->  fizz only
 ```
 

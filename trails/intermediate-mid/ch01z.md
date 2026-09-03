@@ -32,9 +32,9 @@
   how much order does each structure actually keep ?
 
   dict / set : none          slot = hash(x) % size
-      ┌────┬────┬────┬────┬────┐
-      │  7 │  1 │  9 │  3 │  5 │
-      └────┴────┴────┴────┴────┘
+      +----+----+----+----+----+
+      |  7 |  1 |  9 |  3 |  5 |
+      +----+----+----+----+----+
 
   heap : only "parent <= child"
               1                    root is the minimum
@@ -44,9 +44,9 @@
          7   9
 
   sorted list : total order
-      ┌────┬────┬────┬────┬────┐
-      │  1 │  3 │  5 │  7 │  9 │   bisect can search here
-      └────┴────┴────┴────┴────┘
+      +----+----+----+----+----+
+      |  1 |  3 |  5 |  7 |  9 |   bisect can search here
+      +----+----+----+----+----+
 
   more order kept   ->   more work per insert
   dict O(1)    <    heap O(log n)    <    sorted list O(n) to shift

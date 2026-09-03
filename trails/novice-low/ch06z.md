@@ -11,21 +11,21 @@ Ch6에서 배운 것은 결국 한 문장으로 줄어든다. **바깥 `for`가 
                                                   ->  print()    # row end
 
   decide 1 : HOW MANY cells in this row      ( inner loop range )
-  ├─ fixed w                -> rectangle                   L1
-  ├─ i + 1   /   n - i      -> right triangle              L2  L3
-  ├─ 2*i + 1  ( + spaces )  -> centered pyramid , diamond  L4  L5
-  └─ always n , use if      -> border , diagonal , checker L5  L6  L7
+  +- fixed w                -> rectangle                   L1
+  +- i + 1   /   n - i      -> right triangle              L2  L3
+  +- 2*i + 1  ( + spaces )  -> centered pyramid , diamond  L4  L5
+  +- always n , use if      -> border , diagonal , checker L5  L6  L7
 
   decide 2 : WHAT to put in each cell        ( the printed value )
-  ├─ "*"                    -> star patterns               L1..L7
-  ├─ j    or    i           -> column / row number         L8  L11
-  ├─ cnt  ( cnt += 1 )      -> running number              L10
-  ├─ i + j   ,   i * j      -> formula table , times table L9  L12
-  ├─ f"{v:3d}"              -> aligned columns             L14
-  └─ chr(ord("A") + k)      -> alphabet                    L15
+  +- "*"                    -> star patterns               L1..L7
+  +- j    or    i           -> column / row number         L8  L11
+  +- cnt  ( cnt += 1 )      -> running number              L10
+  +- i + j   ,   i * j      -> formula table , times table L9  L12
+  +- f"{v:3d}"              -> aligned columns             L14
+  +- chr(ord("A") + k)      -> alphabet                    L15
 
   decide 3 : REPEAT the whole drawing        ( test cases )
-  └─ for t in range(T)      -> read , draw , blank line    L16
+  +- for t in range(T)      -> read , draw , blank line    L16
 ```
 
 세 결정은 서로 독립이다. 모양(decide 1)을 그대로 두고 값(decide 2)만 바꾸면 별 삼각형이 숫자 삼각형이 되고, 알파벳 삼각형이 된다.

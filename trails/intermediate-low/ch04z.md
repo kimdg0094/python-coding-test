@@ -10,17 +10,17 @@ BFS는 "큐로 층을 하나씩 밀어낸다" 하나에서 갈라져 나온다. 
 
 ```text
          BFS = expand layer by layer with a queue
-                             │
-   ┌─────────────────┬───────┴─────────┬────────────────┐
-   ▼                 ▼                 ▼                ▼
+                             |
+   +-----------------+-------+---------+----------------+
+   v                 v                 v                v
    graph BFS         grid BFS          multi-source     state BFS
    dist[v]           dist[r][c]        all start at 0   dist[r][c][s]
-   │                 │                 │                │
-   ▼                 ▼                 ▼                ▼
+   |                 |                 |                |
+   v                 v                 v                v
    min edge count    shortest path     nearest source   key, wall break
    components        maze escape       spread time      direction, mod
-   │                                                    │
-   ▼                                                    ▼
+   |                                                    |
+   v                                                    v
    parent[] kept                                        0-1 BFS
    path restore                                         cost 0 -> front
 ```

@@ -35,10 +35,10 @@ def solve(a):
 
 ```text
    from i-1                to i
-   s=0  ──────────────▶  s=0     # skip : previous may be anything
-   s=1  ──────────────▶  s=0
-   s=0  ──────────────▶  s=1     # take : previous MUST be s=0
-   s=1  ────── X ─────▶  s=1     # forbidden : two in a row
+   s=0  -------------->  s=0     # skip : previous may be anything
+   s=1  -------------->  s=0
+   s=0  -------------->  s=1     # take : previous MUST be s=0
+   s=1  ------ X ----->  s=1     # forbidden : two in a row
 ```
 
 - 이 전이를 위치축으로 펼치면 2행짜리 격자가 된다. `a = [2, 7, 9, 3, 1]`일 때 실제 값이 흐르는 모습이다.
@@ -47,8 +47,8 @@ def solve(a):
    i =       0     1     2     3     4
    s=0       0     2     7    11    11     # a[i] NOT taken
    s=1       2     7    11    10    12     # a[i] taken
-                                     ▲
-                                     └──── answer = max(11, 12) = 12
+                                     ^
+                                     +---- answer = max(11, 12) = 12
 ```
 
 마지막 열의 두 칸 중 큰 값이 답이다. 답을 특정 상태 하나에서만 읽으면 틀리는 대표적인 예다.
@@ -316,9 +316,9 @@ def knapsack01(items, cap):     # items = [(w, v), ...]
 - 배낭 DP를 이해하는 출발점은 2차원 표다. 행은 "몇 번째 물건까지 고려했는가", 열은 "쓸 수 있는 용량"이다. 한 칸은 딱 두 곳만 본다.
 
 ```text
-   dp[i-1][c-w] ──── take item i, add v ────┐
-                                            ▼
-   dp[i-1][c]   ──── skip item i ─────────▶ dp[i][c] = max of the two
+   dp[i-1][c-w] ---- take item i, add v ----+
+                                            v
+   dp[i-1][c]   ---- skip item i ---------> dp[i][c] = max of the two
 ```
 
 - 물건 3개, 용량 5일 때 표가 채워지는 순서는 위에서 아래로, 각 행 안에서는 어느 방향이든 상관없다(2차원일 때).
@@ -612,13 +612,13 @@ def lcs(a, b):
 ```text
    case 1 : A[i-1] == B[j-1]        use that letter
 
-        dp[i-1][j-1]  ──(+1)──▶  dp[i][j]
+        dp[i-1][j-1]  --(+1)-->  dp[i][j]
 
    case 2 : A[i-1] != B[j-1]        drop one side
 
-        dp[i-1][j]    ──┐
-                        ├──▶  dp[i][j] = max of the two
-        dp[i][j-1]    ──┘
+        dp[i-1][j]    --+
+                        +-->  dp[i][j] = max of the two
+        dp[i][j-1]    --+
 ```
 
 - A = "abcb", B = "bdcb"의 LCS 표. 표는 위에서 아래로, 각 행은 왼쪽에서 오른쪽으로 채운다.
@@ -628,9 +628,9 @@ def lcs(a, b):
              B :  -    b    d    c    b
    i=0  A=-       0    0    0    0    0
    i=1  a         0    0    0    0    0
-   i=2  b         0    1 ●  1 ◀  1    1
-   i=3  c         0    1    1    2 ●  2
-   i=4  b         0    1    1    2    3 ●
+   i=2  b         0    1 *  1 <  1    1
+   i=3  c         0    1    1    2 *  2
+   i=4  b         0    1    1    2    3 *
 ```
 
 역추적은 오른쪽 아래 `dp[4][4]=3`에서 시작한다. ●는 두 글자가 같아 대각선으로 내려온 칸(그 글자를 답에 넣는다), ◀는 값이 왼쪽에서 온 칸(글자를 버리고 옆으로 이동)이다. 경로에서 모은 글자를 뒤집으면 `"bcb"`, 길이 3이다.

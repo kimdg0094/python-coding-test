@@ -27,9 +27,9 @@ print("banana".replace("a", "", 1))  # 처음 a 하나만 → "bnana"
 
 ```text
  s = "apple",  i = 1
-      ┌───┬───┬───┬───┬───┐
-      │ a │ p │ p │ l │ e │
-      └───┴───┴───┴───┴───┘
+      +---+---+---+---+---+
+      | a | p | p | l | e |
+      +---+---+---+---+---+
  cut  0   1   2   3   4   5
           ^   ^                    # cut at i and at i+1
         s[:1]="a"   s[2:]="ple"    # the box between them is dropped
@@ -709,9 +709,9 @@ print(ord('7') - ord('0'))  # 7
  "12" + "3"        ->  "123"     # text + text  : glue the boxes
  int("12") + 3     ->  15        # int + int    : add the values
 
-      ┌───┬───┐                  ┌────┐
-      │ 1 │ 2 │  ---- int() ---> │ 12 │
-      └───┴───┘                  └────┘
+      +---+---+                  +----+
+      | 1 | 2 |  ---- int() ---> | 12 |
+      +---+---+                  +----+
       two boxes of text          one number
 ```
 
@@ -878,9 +878,9 @@ print(str(12321)[::-1])     # "12321"  (뒤집기)
 
 ```text
  n = 1000  (one number)      str(n) = "1000"  (four boxes)
-                              ┌───┬───┬───┬───┐
-                              │ 1 │ 0 │ 0 │ 0 │
-                              └───┴───┴───┴───┘
+                              +---+---+---+---+
+                              | 1 | 0 | 0 | 0 |
+                              +---+---+---+---+
                                 0   1   2   3
  len(str(n)) = 4        # digits of the number
  str(n)[0]   = "1"      # the leading digit

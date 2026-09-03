@@ -8,13 +8,13 @@ Ch10의 다섯 알고리즘은 각각 다른 질문에 답한다. 그 질문이 
 
 ```text
                     weighted / directed graph
-                              │
-        ┌─────────────────────┼─────────────────────┐
+                              |
+        +---------------------+---------------------+
    shortest path        spanning tree            ordering
-        │                     │                      │
-   ┌────┴─────┐          ┌────┴────┐          topological sort
-   │          │          │         │          (Kahn, in-degree)
- dijkstra   floyd     kruskal    prim                │
+        |                     |                      |
+   +----+-----+          +----+----+          topological sort
+   |          |          |         |          (Kahn, in-degree)
+ dijkstra   floyd     kruskal    prim                |
  1 source   all pair  edge sort  vertex grow    cycle if len < N
  w >= 0     w may<0   + union    + heap
  heap       no neg    -find

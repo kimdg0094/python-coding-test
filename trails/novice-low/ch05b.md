@@ -26,9 +26,9 @@ for i in range(3):
 
 ```text
    range(5)  ==  range(0, 5)
-   ┌───┬───┬───┬───┬───┐   ( 5 )
-   │ 0 │ 1 │ 2 │ 3 │ 4 │    ...        # 5 is the stop, not a value
-   └───┴───┴───┴───┴───┘
+   +---+---+---+---+---+   ( 5 )
+   | 0 | 1 | 2 | 3 | 4 |    ...        # 5 is the stop, not a value
+   +---+---+---+---+---+
      1   2   3   4   5                 # pass number : 1st .. 5th
 
    last value = 4      but      number of passes = 5
@@ -971,7 +971,7 @@ print(prod)              # 120  (=5!)
 ```text
    sum                              product
    start : 0                        start : 1
-   0 ─+1─► 1 ─+2─► 3 ─+3─► 6        1 ─x1─► 1 ─x2─► 2 ─x3─► 6
+   0 -+1-> 1 -+2-> 3 -+3-> 6        1 -x1-> 1 -x2-> 2 -x3-> 6
    ^                                ^
    adding 0 changes nothing         multiplying by 1 changes nothing
 ```

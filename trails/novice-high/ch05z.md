@@ -36,15 +36,15 @@
 ```text
        appendleft              append
            v                      v
-        ┌──────┬──────┬──────┬──────┐
-        │  10  │  20  │  30  │  40  │
-        └──────┴──────┴──────┴──────┘
+        +------+------+------+------+
+        |  10  |  20  |  30  |  40  |
+        +------+------+------+------+
            ^                      ^
         popleft                  pop
 
   append + pop      -> STACK  (LIFO)   # 오른쪽 문 두 개만 쓴다
   append + popleft  -> QUEUE  (FIFO)   # 들어가는 문과 나오는 문이 반대
-  all four doors    -> DEQUE           # 회문·회전·단조 덱
+  all four doors    -> DEQUE           # 회문.회전.단조 덱
   list.pop(0)       -> O(n) trap       # 큐를 list 로 만들면 안 되는 이유
 ```
 
