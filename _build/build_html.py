@@ -323,7 +323,7 @@ def render_trail_problems(lines):
                    f'<span class="pname">{html.escape(b["name"])}</span>{badge}</div>{body}{runner}</div>')
     return "\n".join(out), len(blocks)
 
-def render_trail_lesson_split(title, body_lines):
+def _lesson_parts(body_lines):
     prob_idx = None
     for i, line in enumerate(body_lines):
         if line.strip() == "**문제**":
@@ -335,6 +335,10 @@ def render_trail_lesson_split(title, body_lines):
     concept_lines = [l for l in concept_lines if l.strip() != "**개념**"]
     concept_html = md2html("\n".join(concept_lines).strip())
     problems_html, pc = render_trail_problems(problem_lines)
+    return concept_html, problems_html, pc
+
+def render_trail_lesson_split(title, body_lines):
+    concept_html, problems_html, pc = _lesson_parts(body_lines)
     c = (f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
          f'<div class="lconcept">{concept_html}</div></div>')
     p = ""
@@ -342,7 +346,7 @@ def render_trail_lesson_split(title, body_lines):
         p = f'<div class="lesson-p"><h3 class="lesson-title">{html.escape(title)}</h3>{problems_html}</div>'
     return c, p, pc
 
-def render_trail_chapter(text):
+def split_trail_text(text):
     text = fix_lists(text)
     intro, lessons, cur = "", [], None
     for line in text.split("\n"):
@@ -356,6 +360,10 @@ def render_trail_chapter(text):
         else:
             cur[1].append(line)
     if cur: lessons.append(cur)
+    return intro, lessons
+
+def render_trail_chapter(text):
+    intro, lessons = split_trail_text(text)
     c_parts, p_parts, total_p = [], [], 0
     intro_html = f'<div class="tr-intro">{html.escape(intro)}</div>' if intro else ""
     for title, blines in lessons:
@@ -368,8 +376,23 @@ def render_trail_chapter(text):
                     + "\n".join(p_parts)) if p_parts else "<p>문제 없음</p>"
     return concept_body, problem_body, len(lessons), total_p
 
+# 「추가 연습」(ch{NN}x.md) → ✨ Extra 모드. 레슨 머리(반복 개념·출제 맵·구성표)와 문제를 한 화면에 이어 붙인다.
+# 제목은 한 번만(개념 카드) 두어 완료 토글이 챕터당 1개가 되게 한다.
+def render_extra_chapter(text):
+    _, lessons = split_trail_text(text)
+    parts, total_p = [], 0
+    for title, blines in lessons:
+        concept_html, problems_html, pc = _lesson_parts(blines)
+        parts.append(f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
+                     f'<div class="lconcept">{concept_html}</div></div>')
+        if pc:
+            parts.append(f'<div class="lesson-p">{problems_html}</div>')
+        total_p += pc
+    return "\n".join(parts), len(lessons), total_p
+
 trail_top_tabs, trail_panes = [], []
 trail_stat = []
+EXTRA_P = 0   # ✨ Extra(추가 연습) 문제 수 합계 — 루프에서 누적
 for trail in TRAILS:
     folder = os.path.join(SRC, trail["folder"])
     files = [f for f in os.listdir(folder) if re.match(r"ch\d\d[a-z]?\.md$", f)]
@@ -380,55 +403,83 @@ for trail in TRAILS:
         m = re.match(r"ch(\d\d)([a-z]?)\.md$", f)
         groups.setdefault(int(m.group(1)), []).append((m.group(2), f))
     alias = trail["alias"]
-    c_tabs, c_panes, p_tabs, p_panes = [], [], [], []
-    t_lessons = t_probs = 0
+    c_tabs, c_panes, p_tabs, p_panes, x_tabs, x_panes = [], [], [], [], [], []
+    t_lessons = t_probs = t_extra = 0
     chlist = sorted(groups)
+    def _chname(cn):
+        return trail["chapters"][cn - 1] if cn - 1 < len(trail["chapters"]) else f"Ch{cn}"
+    def _read(ffs):
+        return "\n\n".join(open(os.path.join(folder, ff), encoding="utf-8").read() for _, ff in ffs)
     for idx, cnum in enumerate(chlist):
         frags = sorted(groups[cnum], key=lambda x: x[0])
-        text = "\n\n".join(open(os.path.join(folder, ff), encoding="utf-8").read() for _, ff in frags)
-        cname = trail["chapters"][cnum - 1] if cnum - 1 < len(trail["chapters"]) else f"Ch{cnum}"
+        # 접미사 x(추가 연습)는 Learn/Test에서 빼서 ✨ Extra 모드로 보낸다
+        text = _read([fr for fr in frags if fr[0] != "x"])
+        xtext = _read([fr for fr in frags if fr[0] == "x"])
+        cname = _chname(cnum)
         cbody, pbody, nlessons, nprob = render_trail_chapter(text)
-        t_lessons += nlessons; t_probs += nprob
+        xbody, xlessons, xprob = render_extra_chapter(xtext) if xtext.strip() else ("", 0, 0)
+        t_lessons += nlessons; t_probs += nprob; t_extra += xprob
         active = " active" if idx == 0 else ""
-        cid, pid = f"{alias}-c-ch{cnum}", f"{alias}-p-ch{cnum}"
+        cid, pid, xid = f"{alias}-c-ch{cnum}", f"{alias}-p-ch{cnum}", f"{alias}-x-ch{cnum}"
         chlabel = f"Ch{cnum}. {html.escape(cname)}"
         chead = (f'<div class="ch-head"><h1>Ch{cnum}. {html.escape(cname)}</h1>'
                  f'<div class="chips"><span class="chip">레슨 {nlessons}</span><span class="chip">문제 {nprob}</span></div></div>')
-        c_tabs.append(f'<button class="tab{active}" data-target="{cid}">{chlabel}</button>')
-        _ljump = (f'<div class="test-jump">🧩 이 챕터에는 문제 <b>{nprob}개</b>가 있습니다. '
-                  + jump_btn("Test에서 문제 풀기 →", f"pane-{alias}", f"{alias}-test", f"{alias}-p-ch{cnum}") + '</div>')
-        c_panes.append(f'<div class="pane{active}" id="{cid}">{chead}{cbody}{_ljump}</div>')
-        p_tabs.append(f'<button class="tab{active}" data-target="{pid}">{chlabel}</button>')
+        # 다음 챕터/레벨 이동 버튼 (Test·Extra 하단 공용)
         _pos = chlist.index(cnum)
         if _pos + 1 < len(chlist):
             _nn = chlist[_pos + 1]
-            _nname = trail["chapters"][_nn - 1] if _nn - 1 < len(trail["chapters"]) else f"Ch{_nn}"
-            _nav = ('<div class="test-jump">✅ 문제를 다 풀었다면 '
-                    + jump_btn(f"다음: Ch{_nn}. {_nname} Learn →", f"pane-{alias}", f"{alias}-tut", f"{alias}-c-ch{_nn}") + '</div>')
+            _next_btn = jump_btn(f"다음: Ch{_nn}. {_chname(_nn)} Learn →", f"pane-{alias}", f"{alias}-tut", f"{alias}-c-ch{_nn}")
+            _next_txt, _next_txt_x = "✅ 문제를 다 풀었다면 ", "✅ 추가 연습까지 마쳤다면 "
         else:
             _na, _nf = next_course_of(alias)
             if _na:
-                _nav = ('<div class="test-jump">✅ 이 레벨 완료! '
-                        + jump_btn(f"다음 레벨: {_na} →", f"pane-{_na}", f"{_na}-tut", f"{_na}-c-ch{_nf}") + '</div>')
+                _next_btn = jump_btn(f"다음 레벨: {_na} →", f"pane-{_na}", f"{_na}-tut", f"{_na}-c-ch{_nf}")
+                _next_txt, _next_txt_x = "✅ 이 레벨 완료! ", "✅ 이 레벨의 추가 연습까지 완료! "
             else:
-                _nav = '<div class="test-jump">🎉 모든 레벨을 완주했습니다! 수고하셨습니다.</div>'
+                _next_btn = ""
+                _next_txt = _next_txt_x = "🎉 모든 레벨을 완주했습니다! 수고하셨습니다."
+        _extra_btn = jump_btn("✨ Extra에서 추가 연습 →", f"pane-{alias}", f"{alias}-x", xid) if xprob else ""
+        # Learn
+        c_tabs.append(f'<button class="tab{active}" data-target="{cid}">{chlabel}</button>')
+        _ljump = (f'<div class="test-jump">🧩 이 챕터에는 문제 <b>{nprob}개</b>'
+                  + (f' · 추가 연습 <b>{xprob}개</b>' if xprob else '') + '가 있습니다. '
+                  + jump_btn("Test에서 문제 풀기 →", f"pane-{alias}", f"{alias}-test", pid) + _extra_btn + '</div>')
+        c_panes.append(f'<div class="pane{active}" id="{cid}">{chead}{cbody}{_ljump}</div>')
+        # Test
+        p_tabs.append(f'<button class="tab{active}" data-target="{pid}">{chlabel}</button>')
+        _nav = f'<div class="test-jump">{_next_txt}{_extra_btn}{_next_btn}</div>'
         p_panes.append(f'<div class="pane{active}" id="{pid}">{chead}{pbody}{_nav}</div>')
-    tut_id, test_id = f"{alias}-tut", f"{alias}-test"
+        # Extra
+        if xprob:
+            xactive = " active" if not x_tabs else ""
+            xhead = (f'<div class="ch-head"><h1>Ch{cnum}. {html.escape(cname)} — 추가 연습</h1>'
+                     f'<div class="chips"><span class="chip">문제 {xprob}</span></div>'
+                     f'<div class="test-note">Learn·Test를 마친 뒤, 이 챕터의 핵심을 소재만 바꿔 <b>반복</b>하고 '
+                     f'코딩테스트 단골 유형으로 <b>확장</b>하는 문제입니다. 요구사항·입출력·예제만 보고 스스로 푼 뒤 채점하세요.</div></div>')
+            _xnav = f'<div class="test-jump">{_next_txt_x}{_next_btn}</div>'
+            x_tabs.append(f'<button class="tab{xactive}" data-target="{xid}">{chlabel}</button>')
+            x_panes.append(f'<div class="pane{xactive}" id="{xid}">{xhead}{xbody}{_xnav}</div>')
+    tut_id, test_id, x_id = f"{alias}-tut", f"{alias}-test", f"{alias}-x"
     banner = (f'<div class="trail-banner"><b>{html.escape(alias)}</b> · {html.escape(trail["name"])} '
-              f'&nbsp;—&nbsp; 레슨 {t_lessons} · 문제 {t_probs}. '
-              f'<b>📖 Learn</b>에서 개념을 익히고 <b>🧩 Test</b>에서 문제를 스스로 푸세요.</div>')
+              f'&nbsp;—&nbsp; 레슨 {t_lessons} · 문제 {t_probs}' + (f' · 추가 연습 {t_extra}' if t_extra else '') + '. '
+              f'<b>📖 Learn</b>에서 개념을 익히고 <b>🧩 Test</b>에서 문제를 스스로 푼 뒤'
+              + (' <b>✨ Extra</b>로 반복·확장하세요.' if t_extra else ' 마무리하세요.') + '</div>')
     mode = ('<div class="tab-scope">'
             f'<div class="modebar tabbar"><button class="tab active" data-target="{tut_id}">📖 Learn</button>'
-            f'<button class="tab" data-target="{test_id}">🧩 Test</button></div>'
+            f'<button class="tab" data-target="{test_id}">🧩 Test</button>'
+            + (f'<button class="tab" data-target="{x_id}">✨ Extra</button>' if x_panes else '') + '</div>'
             f'<div class="pane active" id="{tut_id}"><div class="tab-scope"><div class="chapters tabbar">'
             + "\n".join(c_tabs) + '</div>\n' + "\n".join(c_panes) + '</div></div>'
             f'<div class="pane" id="{test_id}"><div class="tab-scope"><div class="chapters tabbar">'
             + "\n".join(p_tabs) + '</div>\n' + "\n".join(p_panes) + '</div></div>'
-            '</div>')
+            + (f'<div class="pane" id="{x_id}"><div class="tab-scope"><div class="chapters tabbar">'
+               + "\n".join(x_tabs) + '</div>\n' + "\n".join(x_panes) + '</div></div>' if x_panes else '')
+            + '</div>')
     pane_id = f"pane-{alias}"
     trail_top_tabs.append(f'<button class="tab" data-target="{pane_id}">{html.escape(alias)}</button>')
     trail_panes.append(f'<div class="pane" id="{pane_id}"><div class="wrap">{banner}{mode}</div></div>')
-    trail_stat.append(f"{alias}({t_lessons}L/{t_probs}P)")
+    trail_stat.append(f"{alias}({t_lessons}L/{t_probs}P" + (f"/{t_extra}X" if t_extra else "") + ")")
+    EXTRA_P += t_extra
 
 import sys as _sys, os as _os
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
@@ -437,6 +488,18 @@ from resources import resources_pane, RES_CSS
 CSS = make_css("python") + RES_CSS
 
 JS = """
+/* Extra 분리(2026-09) 이전에 Learn 쪽에서 완료 표시한 「추가 연습」 레슨의 키를 Extra 패널 키로 옮긴다 */
+(function(){
+  try{
+    var K=(location.pathname.split('/').pop()||'learn').replace(/[^A-Za-z0-9_-]/g,'_')+':done';
+    var d=JSON.parse(localStorage.getItem(K)||'{}')||{}, moved=false;
+    Object.keys(d).forEach(function(k){
+      var m=k.match(/^(.+)-c-(ch[0-9]+)::(L[0-9]+\\. 추가 연습.*)$/);
+      if(m){ d[m[1]+'-x-'+m[2]+'::'+m[3]]=1; delete d[k]; moved=true; }
+    });
+    if(moved) localStorage.setItem(K,JSON.stringify(d));
+  }catch(e){}
+})();
 document.querySelectorAll('.tabbar').forEach(function(bar){
   bar.addEventListener('click', function(e){
     var btn = e.target.closest('.tab'); if(!btn || !bar.contains(btn)) return;
@@ -553,19 +616,9 @@ document.addEventListener('click', function(e){
 """
 JS = JS + JS_UI
 
-# 「추가 연습」(ch{NN}x.md) 문제 수 집계
-EXTRA_P = 0
-for _t in TRAILS:
-    _folder = os.path.join(SRC, _t["folder"])
-    if os.path.isdir(_folder):
-        for _f in os.listdir(_folder):
-            if re.match(r"ch\d\dx\.md$", _f):
-                with open(os.path.join(_folder, _f), encoding="utf-8") as _fh:
-                    EXTRA_P += len(re.findall(r"^\*\*\d+\)\s.*?\*\*\s*·", _fh.read(), re.M))
-
 stat_chips = "<span>🐍 Python3</span><span>Tutorial (34L·69P)</span>" + \
              "".join(f"<span>{html.escape(s)}</span>" for s in trail_stat) + \
-             (f"<span>✨ 추가 연습 {EXTRA_P}문제</span>" if EXTRA_P else "")
+             (f"<span>✨ Extra {EXTRA_P}문제</span>" if EXTRA_P else "")
 
 top_tabs_html = ("<button class='tab active' data-target='pane-codetree-101'>Tutorial</button>"
                  + "".join(trail_top_tabs)
@@ -591,7 +644,7 @@ HTML = (
 "<title>Python 학습 가이드</title>\n<style>" + CSS + "</style>\n</head>\n<body>\n"
 "<div class='masthead'><div class='inner'>"
 "<h1>🐍 Python 학습 가이드</h1>"
-"<p>입문 코스 <b>Tutorial</b>부터 상위 트레일까지 순서대로 학습하세요. 각 코스는 <b>Learn</b>(개념)과 <b>Test</b>(문제)로 나뉘고, 챕터 끝의 <b>「추가 연습」</b> 레슨으로 핵심을 반복·확장합니다. <b>📚 자료</b> 탭에 외부 문제집 가이드가 있습니다.</p>"
+"<p>입문 코스 <b>Tutorial</b>부터 상위 트레일까지 순서대로 학습하세요. 각 코스는 <b>Learn</b>(개념)·<b>Test</b>(문제)·<b>Extra</b>(추가 연습)로 나뉩니다. Extra에서 챕터 핵심을 소재만 바꿔 반복하고 코딩테스트 단골 유형으로 확장하세요. <b>📚 자료</b> 탭에 외부 문제집 가이드가 있습니다.</p>"
 "<div class='stat'>" + stat_chips + "</div>"
 "</div></div>\n"
 "<div class='tab-scope'>\n"
@@ -600,7 +653,7 @@ HTML = (
 + "\n".join(trail_panes) + "\n" + resources_pane(md2html) +
 "\n</div>\n"
 "<footer><b>Tutorial</b> 코스는 © Branch &amp; Bound(Codetree) 원문을 개인 학습용으로 요약·분석한 자료입니다. "
-"상위 트레일 탭(novice-low 등)은 공개된 레슨 제목·구조만 참고해 새로 창작한 원본 학습자료이며, 각 챕터의 「추가 연습」 레슨과 📚 자료 탭도 창작·정리 자료입니다.</footer>\n"
+"상위 트레일 탭(novice-low 등)은 공개된 레슨 제목·구조만 참고해 새로 창작한 원본 학습자료이며, <b>Extra</b> 탭의 추가 연습 문제와 📚 자료 탭도 창작·정리 자료입니다.</footer>\n"
 "<script>" + JS + "</script>\n</body>\n</html>"
 )
 

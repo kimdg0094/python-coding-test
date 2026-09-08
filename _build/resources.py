@@ -6,7 +6,7 @@ import re
 RES_MD = r"""
 ## 이 사이트 레벨 ↔ 외부 자료 매핑
 
-각 레벨을 마친 뒤(또는 병행하며) 아래 외부 자료의 **같은 유형**을 2~3문제씩 추가로 풀면 개념이 오래 남습니다. 각 챕터 끝의 **「추가 연습」 레슨**은 이 매핑의 유형을 챕터 수준으로 재구성한 창작 문제입니다.
+각 레벨을 마친 뒤(또는 병행하며) 아래 외부 자료의 **같은 유형**을 2~3문제씩 추가로 풀면 개념이 오래 남습니다. 각 챕터의 **✨ Extra 탭(추가 연습)**은 이 매핑의 유형을 챕터 수준으로 재구성한 창작 문제입니다.
 
 | 사이트 레벨 | 백준 「단계별로 풀어보기」 | solved.ac | 프로그래머스 고득점 Kit | 『이코테』 파트 | NeetCode 150 | 기타 |
 |---|---|---|---|---|---|---|
@@ -46,7 +46,7 @@ RES_MD = r"""
 
 1. **Learn**에서 레슨 개념을 읽고 예제 코드를 손으로 따라 친다.
 2. **Test**에서 그 레슨 문제를 스스로 푼다 → 러너로 채점 → 틀리면 정답을 보지 말고 **셀프체크**로 먼저 점검.
-3. 챕터 끝 **「추가 연습」 레슨**으로 같은 개념을 소재를 바꿔 반복하고, 코테 단골 유형으로 확장한다.
+3. 챕터의 **✨ Extra 탭(추가 연습)**으로 같은 개념을 소재를 바꿔 반복하고, 코테 단골 유형으로 확장한다.
 4. 위 매핑표에서 같은 유형의 외부 문제를 **2~3개** 더 푼다(백준·프로그래머스).
 5. 틀린 문제는 풀이의 **「스스로 다시 짤 때 생각 순서」** 를 보며 **다음 날 백지에서 다시** 짠다. 3일 뒤 한 번 더.
 
@@ -113,7 +113,7 @@ def resources_pane(md2html):
             '<span class="chip">학습 루틴</span><span class="chip">파이썬 치트시트</span></div></div>')
     return ('<div class="pane" id="pane-resources"><div class="wrap">'
             '<div class="trail-banner"><b>📚 자료</b> · 인터넷에서 찾은 코딩테스트 연습 자료를 이 사이트의 레벨과 연결했습니다. '
-            '각 챕터 끝의 <b>「추가 연습」</b> 레슨은 이 자료들의 단골 유형을 챕터 수준으로 재구성한 창작 문제입니다.</div>'
+            '각 챕터의 <b>✨ Extra</b> 탭(추가 연습)은 이 자료들의 단골 유형을 챕터 수준으로 재구성한 창작 문제입니다.</div>'
             + head + '<div class="res-body">' + body + '</div></div></div>')
 
 RES_CSS = """
@@ -162,4 +162,7 @@ pre>code.language-text,pre>code.language-diagram{white-space:pre}
 .res-body table th,.res-body table td{vertical-align:top}
 .res-body table td:first-child{white-space:nowrap;font-weight:700}
 .res-body .tablewrap{overflow-x:auto}
+
+/* ── ✨ Extra 패널: 챕터당 레슨이 1개라 '레슨 전부 완료' 일괄 버튼은 숨김(제목 옆 토글로 충분) ── */
+.pane[id*="-x-ch"] .bulk-done{display:none}
 """

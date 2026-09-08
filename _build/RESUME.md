@@ -67,3 +67,11 @@
 - **안전장치**: `verify_depth.py --diff`가 git으로 (1) 기존 줄이 새 파일의 부분수열인지(=추가만) (2) 각 레슨 `**문제**` 이후 구간이 바이트 동일한지 검사. 20개 에이전트 동시 작업에도 러너 1229/1229 유지.
 - **함께 수정**: 초안 자기 정정 문구 노출 5건(ch06 15→20, ch07 NO→YES, ch10 9→7, novice-mid/ch04 시각 2건, int-high/ch02 2→3), 오타 2곳, `verify_file.py` 입력 없는 문제 테스트 1개 허용.
 - **정정 기록**: 오케스트레이터가 에이전트에 "파이썬에서 `mask & 1 == 0`이 잘못 묶인다"고 잘못 지시했으나 에이전트가 실측으로 반박(파이썬은 `&`가 비교보다 우선순위가 높아 올바르게 묶임 — C 계열 함정의 오전파). 실제 함정인 `1 << n - 1`로 교체됨.
+
+## 2026-09-08 ✨ Extra 모드 신설 (추가 연습을 Test에서 분리)
+- **변경**: 각 트레일 코스의 모드바가 `📖 Learn · 🧩 Test · ✨ Extra` 3개. `ch{NN}x.md`(추가 연습)는 Learn/Test 병합에서 제외하고 Extra 모드에 챕터별 패널(`{alias}-x-ch{N}`)로 렌더링 — 레슨 머리(반복 개념·출제 맵·구성표) 카드 + 문제 러너. Tutorial(codetree-101)은 x 파일이 없어 Extra 없음.
+- **빌드 스크립트**: `build_html.py` — `split_trail_text`/`_lesson_parts` 헬퍼 분리, `render_extra_chapter` 추가, 트레일 루프에서 접미사 x 조각을 따로 읽음. 마스트헤드 칩 `✨ Extra N문제`는 루프에서 누적(EXTRA_P). 순차 내비: Learn 하단 `[Test 풀기][Extra]`, Test 하단 `[Extra][다음 Learn]`, Extra 하단 `[다음 Learn]`.
+- **진행률**: Extra 레슨 제목에도 완료 토글(챕터당 1개) → Extra 챕터 탭 ✓ 뱃지, 코스 %에 포함. 예전에 Learn에서 완료 표시한 「추가 연습」 키(`*-c-chN::L9. 추가 연습…`)는 페이지 로드 시 `*-x-chN::…`으로 자동 이관(build_html.py JS 첫 블록). Extra 패널의 `.bulk-done`은 CSS로 숨김(`resources.py` RES_CSS).
+- **수치**: 러너 1229 유지(Learn/Test 733 + Extra 496), 레슨 346 유지(Learn 301 + Extra 45). Learn 레슨 번호는 md 그대로라 x 번호(예: L9)가 Learn에서는 비고 Extra에 있음.
+- **미반영 항목**: Learn 챕터 헤더 칩 `레슨 n·문제 m`은 이제 x 제외 수치. `EXTRA_SPEC.md`의 md 규격은 변경 없음(파일 위치·형식 동일).
+- **검증**: 브라우저(localhost)에서 모드 전환·jump-nav(Test→Extra→다음 Learn)·완료 토글·뱃지·키 이관·Pyodide 채점(Extra 1번 정답 ✅) 확인. 배포는 `git push` 필요.
