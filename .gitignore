@@ -20,3 +20,6 @@ _orig_test.html
 # C++ 사이트 — 2026-08-28부터 동결(로컬 보관만, 배포 대상 아님)
 cpp/
 cpp_learning.html
+
+# 작업용 임시 스크립트·리포트
+_build/tmp/

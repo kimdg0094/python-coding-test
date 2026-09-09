@@ -119,8 +119,67 @@ def _split_examples(m):
     return '<div class="exset">' + boxes + "</div>"
 
 
+# 목록 항목 안에 들여쓰기된 ``` 펜스(예: "- **예제**:" 아래 2칸 들여쓴 예제 출력)는
+# Python-Markdown의 fenced_code가 인식하지 못해(펜스가 줄 맨 앞에 있어야 함) 내용이 마크다운으로
+# 해석된다 — 별 사각형의 `***` 줄이 <hr>(가로줄)로, `**`가 강조 기호로 바뀌는 원인.
+# 들여쓰기 폭만큼 벗겨 <pre><code>로 직접 만들고 htmlStash 자리표시자를 같은 들여쓰기로 남겨
+# 목록 항목 안에 그대로 머물게 한다. fenced_code(우선순위 25)보다 먼저(26) 실행.
+from markdown.preprocessors import Preprocessor as _MdPre
+from markdown.extensions import Extension as _MdExt
+
+class _IndentedFencePre(_MdPre):
+    OPEN = re.compile(r"^(?P<ind>[ \t]+)(?P<fence>`{3,}|~{3,})[ ]*(?P<lang>[\w#.+-]*)[ ]*$")
+    def run(self, lines):
+        out, i = [], 0
+        while i < len(lines):
+            m = self.OPEN.match(lines[i])
+            if m:
+                ind, fence, lang = m.group("ind"), m.group("fence"), m.group("lang")
+                j = i + 1
+                while j < len(lines) and lines[j].strip() != fence:
+                    j += 1
+                if j < len(lines):
+                    body = []
+                    for l in lines[i + 1:j]:
+                        if not l.strip(): body.append("")
+                        elif l.startswith(ind): body.append(l[len(ind):])
+                        else: body.append(l.lstrip())
+                    code = html.escape("\n".join(body), quote=False)
+                    cls = f' class="language-{lang}"' if lang else ""
+                    ph = self.md.htmlStash.store(f"<pre><code{cls}>{code}</code></pre>")
+                    out.append(ind + ph)
+                    i = j + 1
+                    continue
+            out.append(lines[i]); i += 1
+        return out
+
+class _IndentedFenceExt(_MdExt):
+    def extendMarkdown(self, md):
+        md.preprocessors.register(_IndentedFencePre(md), "indented_fence", 26)
+
+# 펜스 밖의 `---`/`***` 단독 줄(레슨 구분용으로 남은 것)은 <hr>가 되어 문제 카드 끝에 가로줄로 보인다 → 제거
+_HR_LINE = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
+def _strip_hr(text):
+    out, fence = [], None
+    for line in text.split("\n"):
+        s = line.strip()
+        if fence is None:
+            m = re.match(r"^(`{3,}|~{3,})", s)
+            if m: fence = m.group(1)
+            elif _HR_LINE.match(line): continue
+        elif s == fence:
+            fence = None
+        out.append(line)
+    return "\n".join(out)
+
+# 예제 표기 범례 — 문제 카드 위 안내문(Test·트레일·Extra)에 공통으로 붙는다.
+EX_LEGEND = ('<span class="ex-legend">예제 표기: 코드 상자 안의 <code>/</code>는 <b>줄바꿈</b>, '
+             '<code>·</code>는 <b>다른 예제</b>의 구분, <code>(빈 줄)</code>은 빈 줄 한 개입니다. '
+             '여러 줄짜리 회색 상자는 실제 출력 줄을 그대로 보여 줍니다.</span>')
+
 def md2html(text):
-    h = markdown.markdown(text or "", extensions=["tables", "fenced_code", "sane_lists"])
+    h = markdown.markdown(_strip_hr(text or ""),
+                          extensions=["tables", "fenced_code", "sane_lists", _IndentedFenceExt()])
     h = re.sub(r"<li>\s*\[ \]\s*", '<li class="task"><input type="checkbox" disabled> ', h)
     h = re.sub(r"<li>\s*\[[xX]\]\s*", '<li class="task done"><input type="checkbox" checked disabled> ', h)
     h = _DEPTH_RE.sub(_depth_head, h)
@@ -287,7 +346,7 @@ for i, d in enumerate(data):
             prob_html, cnt = render_problem_cards(body); break
     test_head = (f'<div class="ch-head"><h1>Ch{n}. {html.escape(d["name"])} — 문제</h1>'
                  f'<div class="test-note">문제 <b>{cnt}개</b> · 요구사항·입출력·예제만 보고 <b>스스로 풀어</b> 본 뒤 '
-                 f'각 문제의 <b>셀프체크 포인트</b>로 채점하세요.</div></div>')
+                 f'각 문제의 <b>셀프체크 포인트</b>로 채점하세요.{EX_LEGEND}</div></div>')
     test_tabs.append(f'<button class="tab{active}" data-target="test-ch{n}">{label}</button>')
     if n < len(CHAPTERS):
         _nav = ('<div class="test-jump">✅ 문제를 다 풀었다면 '
@@ -372,7 +431,7 @@ def render_trail_chapter(text):
         if p: p_parts.append(p)
         total_p += pc
     concept_body = intro_html + "\n".join(c_parts)
-    problem_body = ('<div class="test-note">각 레슨의 문제를 요구사항·입출력·예제만 보고 스스로 푼 뒤 셀프체크로 채점하세요.</div>'
+    problem_body = (f'<div class="test-note">각 레슨의 문제를 요구사항·입출력·예제만 보고 스스로 푼 뒤 셀프체크로 채점하세요.{EX_LEGEND}</div>'
                     + "\n".join(p_parts)) if p_parts else "<p>문제 없음</p>"
     return concept_body, problem_body, len(lessons), total_p
 
@@ -455,7 +514,7 @@ for trail in TRAILS:
             xhead = (f'<div class="ch-head"><h1>Ch{cnum}. {html.escape(cname)} — 추가 연습</h1>'
                      f'<div class="chips"><span class="chip">문제 {xprob}</span></div>'
                      f'<div class="test-note">Learn·Test를 마친 뒤, 이 챕터의 핵심을 소재만 바꿔 <b>반복</b>하고 '
-                     f'코딩테스트 단골 유형으로 <b>확장</b>하는 문제입니다. 요구사항·입출력·예제만 보고 스스로 푼 뒤 채점하세요.</div></div>')
+                     f'코딩테스트 단골 유형으로 <b>확장</b>하는 문제입니다. 요구사항·입출력·예제만 보고 스스로 푼 뒤 채점하세요.{EX_LEGEND}</div></div>')
             _xnav = f'<div class="test-jump">{_next_txt_x}{_next_btn}</div>'
             x_tabs.append(f'<button class="tab{xactive}" data-target="{xid}">{chlabel}</button>')
             x_panes.append(f'<div class="pane{xactive}" id="{xid}">{xhead}{xbody}{_xnav}</div>')

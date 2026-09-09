@@ -127,6 +127,8 @@ h3{scroll-margin-top:calc(var(--stick2,100px) + 62px)}
 .chip{background:var(--accent-l);color:var(--accent-d);border:1px solid var(--accent-lb);
   font-size:12px;padding:3px 11px;border-radius:14px;font-weight:700;letter-spacing:-.01em}
 .test-note{color:var(--muted);font-size:13.5px;margin-top:6px}
+.ex-legend{display:block;margin-top:5px;font-size:12.5px;color:var(--muted)}
+.ex-legend code{font-size:12px;padding:0 5px}
 .trail-banner{background:var(--accent-l);border:1px solid var(--accent-lb);color:var(--accent-d);
   border-radius:14px;padding:13px 18px;margin:20px 0 2px;font-size:14px;line-height:1.65}
 .tr-intro{background:var(--accent-l);border:1px solid var(--accent-lb);border-radius:14px;

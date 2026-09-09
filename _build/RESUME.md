@@ -75,3 +75,27 @@
 - **수치**: 러너 1229 유지(Learn/Test 733 + Extra 496), 레슨 346 유지(Learn 301 + Extra 45). Learn 레슨 번호는 md 그대로라 x 번호(예: L9)가 Learn에서는 비고 Extra에 있음.
 - **미반영 항목**: Learn 챕터 헤더 칩 `레슨 n·문제 m`은 이제 x 제외 수치. `EXTRA_SPEC.md`의 md 규격은 변경 없음(파일 위치·형식 동일).
 - **검증**: 브라우저(localhost)에서 모드 전환·jump-nav(Test→Extra→다음 Learn)·완료 토글·뱃지·키 이관·Pyodide 채점(Extra 1번 정답 ✅) 확인. 배포는 `git push` 필요.
+
+## 2026-09-08 예제 표기 정비 (가로줄 현상 + `/` 줄바꿈 표기 통일)
+- **현상 1 — 예제 출력에 가로줄(`---`)이 그어짐**: 원인은 `- **예제**:` 목록 항목 아래에 2칸 들여쓴 ```` ``` ```` 펜스. Python-Markdown의 `fenced_code`는 펜스가 줄 맨 앞에 있어야만 인식하므로 내용이 일반 마크다운으로 해석돼 `***` 줄이 `<hr>`, `**`가 강조로 바뀜(별 사각형·`*hi*` 문제 등). 레슨 구분용으로 남은 단독 `---`도 `<hr>`가 되어 카드 끝에 줄이 보였음.
+  - 수정: `build_html.py`에 `_IndentedFenceExt`(들여쓴 펜스를 htmlStash 자리표시자로 치환하는 Preprocessor, 우선순위 26)와 `_strip_hr`(펜스 밖 `---`/`***`/`___` 단독 줄 제거) 추가. `md2html`이 둘을 사용. 백업 `_build/tmp/build_html.py.before_fence`. 결과 `python_learning.html`의 `<hr />` 14 → 0.
+- **현상 2 — 입력은 `/`로 줄바꿈을 표시하는데 출력은 표시하지 않고 쭉 씀**: 규칙을 하나로 통일 — **코드 상자 안의 ` / ` = 줄바꿈, 케이스 사이 ` · ` = 다른 예제**. 문제 카드 위 안내문(Test·트레일·Extra 3곳)에 범례 `EX_LEGEND`(`.ex-legend`, theme.py) 표시.
+  - **도구**: 신규 `_build/verify_examples.py` — 예제 줄을 파싱해 `@@SOLUTION`을 실제 실행한 결과와 대조. `--fix`(안전한 자동 정정: `a` `b`처럼 붙어 있던 것을 실행 결과 줄 수에 맞춰 `a / b`로), `--normalize`(표기 통일: `` `a` / `b` `` → `` `a / b` ``, 케이스 구분 ` / `·`,`·`;` → ` · `), `--show MISMATCH,NORM,all`. 두 번 실행하면 변경 0(멱등). 판정: OK / OK-MARKED / FIX-* / NORM-* / MISMATCH / RUNERR(추상 표기 `n=5, ops=[...]`류) / PROSE / SKIP.
+  - **자동 정정**: FIX 43곳, NORM-OUT 166 / NORM-IN 223 / NORM-SEP 277곳(58파일).
+  - **수동 정정(값 자체가 틀렸던 예제 17건, 러너 정답 기준)**: int-high/ch05 행렬곱 26000→14000 · int-low/ch01 `*10/12*`→`*21/12*`, `.B.W.B`→`.BW.B`, 튕기는 공 `2 0`→`0 0` · int-low/ch02 점프 `2`→2가지 · int-mid/ch01 두 수 합 둘째 예제 교체, LRU 출력 · novice-high/ch03a 버블 패스(N 3→5), 안정성 예제, 기수 정렬 · novice-high/ch05 `2`→`3` · ch08a 20→25 · ch08b 45/35→25(검산 인용문 재작성) · ch10 두 번째 최단 2→4(정점 재방문 허용 명시) · novice-mid/ch01 자릿수 합 1→2, 팰린드롬 소수 4→5 · ch06 13→19 · ch09 신호등 4→-1. 이 예제들에 붙어 있던 "예제의 함정" 류 문구는 모두 제거(예제는 정답과 일치해야 함).
+  - **표기만 정정**: `\n` 표기(novice-mid/ch02), `입력`/`출력` 라벨 분리형(novice-high/ch10), `S=…, P=…` 추상형(int-high/ch04), 리스트 표기(int-low/ch05 DP 전부 stdin 형식으로), 첫 줄 N 누락(novice-high/ch02·ch05 스택/덱), `,` 로 나뉜 다중 줄 입력(novice-high/ch06). 스크립트 `_build/tmp/manual_fixes.py`, `manual_fixes2.py`.
+  - **남은 MISMATCH 6건은 의도적**: `…`/`...` 생략(로또·구구단), 분수 출력 `5/6`(줄바꿈 아님을 예제에 명시), 빈 줄 출력(소인수분해 1), 검산 주석의 `{4,2,5}`. → 2차 정비(아래)에서 분수 1건만 남기고 해소.
+- **검증**: `verify_runners.py` 1229/1229, 브라우저(localhost)에서 별 사각형 코드 상자·범례 렌더링 확인. 배포는 `git push` 필요.
+- **다음에 예제를 추가/수정할 때**: `PYTHONUTF8=1 python _build/verify_examples.py --normalize <md>`로 확인 → 표기 통일이 필요하면 `--fix --normalize`.
+
+## 2026-09-08 예제 표기 정비 2차 — 모든 예제의 줄바꿈을 눈에 보이게
+- **요청**: "`slow 5 SHOW … → slow fast …`처럼 쓰면 입력·출력의 줄바꿈을 알 수 없다. 모든 예제를 `slow / 5 / SHOW / …` → `slow / fast / …` 식으로." → 예제 span 안의 ```` ``` ```` 상자·추상 표기·산문 표기를 전부 인라인 ` / ` 표기로 통일.
+- **규칙(확정)**: 코드 상자 안 ` / ` = 줄바꿈, ` · ` = 다른 예제, `(입력 없음)`/`(출력 없음)`, `(빈 줄)` = 빈 줄 한 개(코드 상자 안에서도 사용 가능: `` `1 2 3 / (빈 줄) / 4 5 6` ``). 인라인으로 표현하면 뜻이 깨지는 출력(앞뒤 공백·연속 공백 — 인라인 `<code>`는 공백을 접음 —, `/`·백틱 포함, `(출력 앞부분)` 부분 출력)만 여러 줄 상자를 유지. 범례 `EX_LEGEND`에 `(빈 줄)`·상자 설명 추가.
+- **자동 변환** `_build/tmp/convert_fenced.py`: 예제 span 안 펜스 109개 → 인라인, 42개 유지(별 도형·우측정렬 표·`|`/`----+` 표·빈 줄 포함 격자·부분 출력). 로그 `_build/tmp/convert_log.txt`. 후처리로 `` `c` → `d` `` 연속줄을 ` · `로 병합.
+- **수동 변환** `manual_fixes3.py`(59곳)·`manual_fixes4.py`(4곳)·`manual_fixes5.py`(6곳): `n=5, ops=[...]`·`S=…` 추상 표기 → 러너 입력 형식(int-high/ch02 9문제·ch03·ch04·ch05, int-low/ch01·ch04·ch06, int-mid/ch04·ch05, novice-high/ch03a·ch03b·ch06·ch06x·ch08a·ch09·ch10, novice-mid/ch02·ch05, novice-low/ch05c·ch05x·ch09a, ch04-loops-1(LeebrosCode 6줄)·ch07·ch09·ch10). 로또 7줄·`(출력 앞부분)` 대신 전체 출력 기입. `sep_pass.py`: 예제 줄에서 백틱·괄호 밖의 ` / `(케이스 구분으로 쓰인 것) 24곳 → ` · `.
+- **값 정정(러너 정답 기준, 검산 메모도 함께 고침)**: int-low/ch06 `4`→`5`, `84`→`96` · novice-high/ch10:944 둘째 값 `2`→`1` · novice-high/ch03b `5 / 5 4 3 2 1`→`0 2` · int-mid/ch04 동전 뒤집기 `4 / THTH` `-1`→`2`(검산 2가 THTH→HHTH로 잘못 뒤집음; 실제 i=0→HTTH, i=1→HHHH) + `3 / TTT`→`-1` 추가 · int-low/ch03 미로 `YES 8`→`YES 9`(셀프체크의 8칸 목록에 도착 (0,3) 누락) · int-mid/ch04 동전 예제 `2 30 / 1 7`→`6` 채움 · novice-high/ch03a 선택 정렬 예제 값 채움. 예제에 붙어 있던 "직접 손으로 전개해 답을 확정할 것" 류 문구 제거.
+- **검증기 변경** `_build/verify_examples.py`: 괄호 토큰 1단계 중첩 허용, `(빈 줄…)` 단독 = 출력 없음, `split_lines`가 `(빈 줄)`→빈 문자열, `(검산 …)` 메모 줄은 파싱 제외(위치 보존). **git 미추적 상태였음 → `git add _build/verify_examples.py` 필요.**
+- **novice-high/ch01(시간복잡도 개념 챕터) 17문제** `manual_fixes6.py`: 손 분석 과제는 요구사항에 그대로 두고 입력/출력/예제를 러너의 stdin/stdout 형식으로 재작성(출력 끝에 "(손 분석 과제: …)"로 원래 과제 유지). 예: `5 2 9 / 5` → `1 best`, `a 4` → `16 O(n^2)`, `97` → `prime 8`, `1000000` → `iter O(1) / rec O(log n) 20 / time O(log n)`.
+- **초안 흔적 제거**: novice-high/ch09 최소 이동 횟수 예제(`(M실제=3) ...` — 아래 정확 버전 참고 / 예제(정확) ×2 → 한 줄로), int-mid/ch02 `(인덱스 1..3의 1+3+1? 실은 …)`, novice-high/ch09x 검산 `` `4` / `3 2 1 1` `` → `` `4 / 3 2 1 1` ``, ch01-basics "출력 `T`" → "(입력 없음) → `T`".
+- **최종 판정** `_build/tmp/ex_after6.txt`: OK 2492 / RUNERR 0 / PROSE 0 / MISMATCH 2(novice-mid/ch01 분수 `5/6` — 줄바꿈이 아님을 예제에 명시, 의도적) / SKIP 2(ch04a·ch04x `(출력 없음)` 별도 줄 — 파서 오탐, 값은 정확). 러너 1229/1229. 브라우저(localhost)에서 slow/fast 예제·범례·별 피라미드 상자 렌더링 확인.
+- **재개**: 예제를 새로 쓸 때는 위 규칙대로 인라인 ` / ` 표기 → `PYTHONUTF8=1 python _build/verify_examples.py --show MISMATCH,RUNERR,PROSE <md>`(전체 실행은 2분 이상 → timeout 600000).
