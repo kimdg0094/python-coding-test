@@ -48,15 +48,29 @@ def find_runners(text):
 def norm(s): return re.sub(r"[ \t]+(?=\n)","", (s or "")).rstrip()
 
 def main():
-    scope = sys.argv[1] if len(sys.argv) > 1 else "all"
-    if scope == "101":
-        files = glob.glob(os.path.join(BASE, "ch*.md"))
-    elif scope == "trails":
-        files = glob.glob(os.path.join(BASE, "trails", "*", "ch*.md"))
-    elif scope not in ("all",):
-        files = glob.glob(os.path.join(BASE, "trails", scope, "ch*.md"))
+    args = sys.argv[1:] or ["all"]
+    # 인자가 실제 md 파일 경로면 그 파일들만 검사한다.
+    # (한 트레일을 여러 명이 나눠 작업할 때 남의 작업 중인 파일까지 잡히지 않게)
+    paths = [a for a in args if a.lower().endswith(".md")]
+    if paths:
+        files = []
+        for a in paths:
+            p = a if os.path.isabs(a) else os.path.join(os.path.dirname(BASE), a)
+            if not os.path.exists(p):
+                p = os.path.join(BASE, a)
+            if not os.path.exists(p):
+                print(f"파일 없음: {a}"); return
+            files.append(p)
     else:
-        files = glob.glob(os.path.join(BASE, "ch*.md")) + glob.glob(os.path.join(BASE, "trails", "*", "ch*.md"))
+        scope = args[0]
+        if scope == "101":
+            files = glob.glob(os.path.join(BASE, "ch*.md"))
+        elif scope == "trails":
+            files = glob.glob(os.path.join(BASE, "trails", "*", "ch*.md"))
+        elif scope not in ("all",):
+            files = glob.glob(os.path.join(BASE, "trails", scope, "ch*.md"))
+        else:
+            files = glob.glob(os.path.join(BASE, "ch*.md")) + glob.glob(os.path.join(BASE, "trails", "*", "ch*.md"))
     total=passed=failed=noblk=comped=0
     fails=[]
     tmp = tempfile.mkdtemp(prefix="cppv_")
