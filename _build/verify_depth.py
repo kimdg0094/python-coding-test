@@ -47,8 +47,10 @@ def check_diagrams(path, lines, errors, warns):
             ln = lines[k]
             m = HANGUL.search(ln)
             if m:
-                # 줄 끝 '#' 주석 안의 한글은 정렬에 영향이 없으므로 허용
-                hash_at = ln.find("#")
+                # 줄 끝 주석(# 또는 //) 안의 한글은 정렬에 영향이 없으므로 허용
+                marks = [ln.find(c) for c in ("#", "//")]
+                marks = [x for x in marks if x != -1]
+                hash_at = min(marks) if marks else -1
                 if not (hash_at != -1 and hash_at < m.start()):
                     errors.append(
                         f"line {k+1}: 도식(```text) 정렬 칸에 한글 — 폰트 폴백으로 어긋납니다. "
@@ -107,7 +109,8 @@ def check_z(path):
         tail = text[mistakes_idx:]
         if tail.count("❌") < 5:
             errors.append(f"자주 하는 실수 {tail.count('❌')}개 (최소 5개, ❌ 표시 기준)")
-        if tail.count("```python") < 5:
+        _f2 = "```cpp" if (os.sep + "cpp" + os.sep) in os.path.abspath(path) else "```python"
+        if tail.count(_f2) < 5:
             errors.append("자주 하는 실수에 코드 예시가 부족 (틀린/고친 코드 쌍 필요)")
 
     ndia = check_diagrams(path, lines, errors, warns)
@@ -118,11 +121,15 @@ def check_z(path):
     skel_idx = text.find("**뼈대 코드**")
     if skel_idx >= 0:
         seg = text[skel_idx: text.find("**언제 무엇을 쓰나**") if "**언제 무엇을 쓰나**" in text else len(text)]
-        if seg.count("```python") < 2:
-            errors.append(f"뼈대 코드 템플릿 {seg.count('```python')}개 (최소 2개)")
+        _f = "```cpp" if (os.sep + "cpp" + os.sep) in os.path.abspath(path) else "```python"
+        if seg.count(_f) < 2:
+            errors.append(f"뼈대 코드 템플릿 {seg.count(_f)}개 (최소 2개)")
 
-    if re.search(r"#include|std::|\bcout\b|\bcin\b|C\+\+", text):
+    is_cpp = (os.sep + "cpp" + os.sep) in os.path.abspath(path)
+    if not is_cpp and re.search(r"#include|std::|\bcout\b|\bcin\b|C\+\+", text):
         errors.append("다른 언어(C++) 언급 금지")
+    if is_cpp and re.search(r"\bprint\(|\bdef \w+\(", text):
+        errors.append("C++ 파일에 파이썬 코드 혼입")
 
     nlines = len([l for l in lines if l.strip()])
     if nlines < 60:
@@ -157,7 +164,7 @@ def is_subsequence(old_lines, new_lines):
 
 def check_diff():
     """기존 추적 파일이 '추가만' 되었는지, 문제 영역이 그대로인지 git으로 검사."""
-    r = git(["diff", "--name-only", "HEAD", "--", "trails", "ch01-basics.md", "ch02-io.md",
+    r = git(["diff", "--name-only", "HEAD", "--", "trails", "cpp", "ch01-basics.md", "ch02-io.md",
              "ch03-conditionals-1.md", "ch04-loops-1.md", "ch05-conditionals-2.md",
              "ch06-array-1d.md", "ch07-string.md", "ch08-loops-2.md",
              "ch09-nested-loops.md", "ch10-array-2d.md"])
@@ -210,7 +217,8 @@ def main():
     if args[0] == "--diagrams":
         import glob
         bad = 0
-        pats = [os.path.join(BASE, "ch*.md"), os.path.join(BASE, "trails", "*", "ch*.md")]
+        pats = [os.path.join(BASE, "ch*.md"), os.path.join(BASE, "trails", "*", "ch*.md"),
+                os.path.join(BASE, "cpp", "ch*.md"), os.path.join(BASE, "cpp", "trails", "*", "ch*.md")]
         for path in sorted(sum((glob.glob(p) for p in pats), [])):
             lines = open(path, encoding="utf-8").read().split("\n")
             e, w = [], []
