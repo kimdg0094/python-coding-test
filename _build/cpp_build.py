@@ -79,10 +79,112 @@ def fix_lists(text):
         out.append(line)
     return "\n".join(out)
 
+# 심화 보완(DEPTH_SPEC) 라벨 → 소제목으로 승격해 스캔이 쉽게
+DEPTH_LABELS = {
+    "그림으로 보기": "fig",
+    "손으로 따라가기": "trace",
+    "왜 이렇게 되는가": "why",
+    "개념 지도": "map",
+    "뼈대 코드": "skel",
+    "언제 무엇을 쓰나": "pick",
+    "다음 챕터로": "next",
+}
+_DEPTH_RE = re.compile(
+    r"<p><strong>((?:[✅⚠️\s]*)?(" + "|".join(map(re.escape, DEPTH_LABELS)) +
+    r"|마스터 체크리스트|자주 하는 실수))</strong></p>")
+
+def _depth_head(m):
+    full, core = m.group(1), m.group(2)
+    kind = DEPTH_LABELS.get(core, "check" if "체크리스트" in core else "warn")
+    return f'<h4 class="dlabel dl-{kind}">{full.strip()}</h4>'
+
+# 개념 설명의 코드 블록에는 독립된 예제가 빈 줄로만 구분돼 여러 개 들어 있는 경우가 많다.
+# 어디까지가 한 예제인지 보이도록 각각을 별도 박스로 나눈다.
+# #include·중괄호·main 이 있으면 하나의 프로그램(뼈대 코드)이라 나누지 않고,
+# 조각이 들여쓰기로 시작하면 블록 내부의 빈 줄이라 나누지 않는다.
+_CPP_BLOCK = re.compile(r'<pre><code class="language-cpp">(.*?)</code></pre>', re.S)
+
+def _split_examples(m):
+    code = m.group(1)
+    if re.search(r"#include|\bmain\s*\(|[{}]", code):
+        return m.group(0)
+    parts = [q for q in re.split(r"\n\s*\n", code) if q.strip()]
+    if len(parts) < 2:
+        return m.group(0)
+    if any(q.split("\n")[0][:1] in (" ", "\t") for q in parts):
+        return m.group(0)
+    boxes = "".join(
+        '<pre><code class="language-cpp">' + q.strip("\n") + "</code></pre>"
+        for q in parts)
+    return '<div class="exset">' + boxes + "</div>"
+
+
+# 목록 항목 안에 들여쓰기된 ``` 펜스(예: "- **예제**:" 아래 2칸 들여쓴 예제 출력)는
+# Python-Markdown의 fenced_code가 인식하지 못해(펜스가 줄 맨 앞에 있어야 함) 내용이 마크다운으로
+# 해석된다 — 별 사각형의 `***` 줄이 <hr>(가로줄)로, `**`가 강조 기호로 바뀌는 원인.
+# 들여쓰기 폭만큼 벗겨 <pre><code>로 직접 만들고 htmlStash 자리표시자를 같은 들여쓰기로 남겨
+# 목록 항목 안에 그대로 머물게 한다. fenced_code(우선순위 25)보다 먼저(26) 실행.
+from markdown.preprocessors import Preprocessor as _MdPre
+from markdown.extensions import Extension as _MdExt
+
+class _IndentedFencePre(_MdPre):
+    OPEN = re.compile(r"^(?P<ind>[ \t]+)(?P<fence>`{3,}|~{3,})[ ]*(?P<lang>[\w#.+-]*)[ ]*$")
+    def run(self, lines):
+        out, i = [], 0
+        while i < len(lines):
+            m = self.OPEN.match(lines[i])
+            if m:
+                ind, fence, lang = m.group("ind"), m.group("fence"), m.group("lang")
+                j = i + 1
+                while j < len(lines) and lines[j].strip() != fence:
+                    j += 1
+                if j < len(lines):
+                    body = []
+                    for l in lines[i + 1:j]:
+                        if not l.strip(): body.append("")
+                        elif l.startswith(ind): body.append(l[len(ind):])
+                        else: body.append(l.lstrip())
+                    code = html.escape("\n".join(body), quote=False)
+                    cls = f' class="language-{lang}"' if lang else ""
+                    ph = self.md.htmlStash.store(f"<pre><code{cls}>{code}</code></pre>")
+                    out.append(ind + ph)
+                    i = j + 1
+                    continue
+            out.append(lines[i]); i += 1
+        return out
+
+class _IndentedFenceExt(_MdExt):
+    def extendMarkdown(self, md):
+        md.preprocessors.register(_IndentedFencePre(md), "indented_fence", 26)
+
+# 펜스 밖의 `---`/`***` 단독 줄(레슨 구분용으로 남은 것)은 <hr>가 되어 문제 카드 끝에 가로줄로 보인다 → 제거
+_HR_LINE = re.compile(r"^\s*(-{3,}|\*{3,}|_{3,})\s*$")
+def _strip_hr(text):
+    out, fence = [], None
+    for line in text.split("\n"):
+        s = line.strip()
+        if fence is None:
+            m = re.match(r"^(`{3,}|~{3,})", s)
+            if m: fence = m.group(1)
+            elif _HR_LINE.match(line): continue
+        elif s == fence:
+            fence = None
+        out.append(line)
+    return "\n".join(out)
+
+# 예제 표기 범례 — 문제 카드 위 안내문(Test·트레일·Extra)에 공통으로 붙는다.
+EX_LEGEND = ('<span class="ex-legend">예제 표기: 코드 상자 안의 <code>/</code>는 <b>줄바꿈</b>, '
+             '<code>·</code>는 <b>다른 예제</b>의 구분, <code>(빈 줄)</code>은 빈 줄 한 개입니다. '
+             '여러 줄짜리 회색 상자는 실제 출력 줄을 그대로 보여 줍니다.</span>')
+
 def md2html(text):
-    h = markdown.markdown(text or "", extensions=["tables", "fenced_code", "sane_lists"])
+    h = markdown.markdown(_strip_hr(text or ""),
+                          extensions=["tables", "fenced_code", "sane_lists", _IndentedFenceExt()])
     h = re.sub(r"<li>\s*\[ \]\s*", '<li class="task"><input type="checkbox" disabled> ', h)
     h = re.sub(r"<li>\s*\[[xX]\]\s*", '<li class="task done"><input type="checkbox" checked disabled> ', h)
+    h = _DEPTH_RE.sub(_depth_head, h)
+    h = h.replace("<table>", '<div class="tablewrap"><table>').replace("</table>", "</table></div>")
+    h = _CPP_BLOCK.sub(_split_examples, h)
     return h
 
 # ============ 코드 실행 채점 러너 ============
@@ -277,7 +379,7 @@ def render_trail_problems(lines):
                    f'<span class="pname">{html.escape(b["name"])}</span>{badge}</div>{body}{runner}</div>')
     return "\n".join(out), len(blocks)
 
-def render_trail_lesson_split(title, body_lines):
+def _lesson_parts(body_lines):
     prob_idx = None
     for i, line in enumerate(body_lines):
         if line.strip() == "**문제**":
@@ -289,6 +391,10 @@ def render_trail_lesson_split(title, body_lines):
     concept_lines = [l for l in concept_lines if l.strip() != "**개념**"]
     concept_html = md2html("\n".join(concept_lines).strip())
     problems_html, pc = render_trail_problems(problem_lines)
+    return concept_html, problems_html, pc
+
+def render_trail_lesson_split(title, body_lines):
+    concept_html, problems_html, pc = _lesson_parts(body_lines)
     c = (f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
          f'<div class="lconcept">{concept_html}</div></div>')
     p = ""
@@ -296,7 +402,7 @@ def render_trail_lesson_split(title, body_lines):
         p = f'<div class="lesson-p"><h3 class="lesson-title">{html.escape(title)}</h3>{problems_html}</div>'
     return c, p, pc
 
-def render_trail_chapter(text):
+def split_trail_text(text):
     text = fix_lists(text)
     intro, lessons, cur = "", [], None
     for line in text.split("\n"):
@@ -310,6 +416,10 @@ def render_trail_chapter(text):
         else:
             cur[1].append(line)
     if cur: lessons.append(cur)
+    return intro, lessons
+
+def render_trail_chapter(text):
+    intro, lessons = split_trail_text(text)
     c_parts, p_parts, total_p = [], [], 0
     intro_html = f'<div class="tr-intro">{html.escape(intro)}</div>' if intro else ""
     for title, blines in lessons:
@@ -318,12 +428,27 @@ def render_trail_chapter(text):
         if p: p_parts.append(p)
         total_p += pc
     concept_body = intro_html + "\n".join(c_parts)
-    problem_body = ('<div class="test-note">각 레슨의 문제를 요구사항·입출력·예제만 보고 스스로 푼 뒤 셀프체크로 채점하세요.</div>'
+    problem_body = (f'<div class="test-note">각 레슨의 문제를 요구사항·입출력·예제만 보고 스스로 푼 뒤 셀프체크로 채점하세요.{EX_LEGEND}</div>'
                     + "\n".join(p_parts)) if p_parts else "<p>문제 없음</p>"
     return concept_body, problem_body, len(lessons), total_p
 
+# 「추가 연습」(ch{NN}x.md) → ✨ Extra 모드. 레슨 머리(반복 개념·출제 맵·구성표)와 문제를 한 화면에 이어 붙인다.
+# 제목은 한 번만(개념 카드) 두어 완료 토글이 챕터당 1개가 되게 한다.
+def render_extra_chapter(text):
+    _, lessons = split_trail_text(text)
+    parts, total_p = [], 0
+    for title, blines in lessons:
+        concept_html, problems_html, pc = _lesson_parts(blines)
+        parts.append(f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
+                     f'<div class="lconcept">{concept_html}</div></div>')
+        if pc:
+            parts.append(f'<div class="lesson-p">{problems_html}</div>')
+        total_p += pc
+    return "\n".join(parts), len(lessons), total_p
+
 trail_top_tabs, trail_panes = [], []
 trail_stat = []
+EXTRA_P = 0   # ✨ Extra(추가 연습) 문제 수 합계 — 루프에서 누적
 for trail in TRAILS:
     folder = os.path.join(SRC, trail["folder"])
     files = [f for f in os.listdir(folder) if re.match(r"ch\d\d[a-z]?\.md$", f)]
@@ -334,60 +459,89 @@ for trail in TRAILS:
         m = re.match(r"ch(\d\d)([a-z]?)\.md$", f)
         groups.setdefault(int(m.group(1)), []).append((m.group(2), f))
     alias = trail["alias"]
-    c_tabs, c_panes, p_tabs, p_panes = [], [], [], []
-    t_lessons = t_probs = 0
+    c_tabs, c_panes, p_tabs, p_panes, x_tabs, x_panes = [], [], [], [], [], []
+    t_lessons = t_probs = t_extra = 0
     chlist = sorted(groups)
+    def _chname(cn):
+        return trail["chapters"][cn - 1] if cn - 1 < len(trail["chapters"]) else f"Ch{cn}"
+    def _read(ffs):
+        return "\n\n".join(open(os.path.join(folder, ff), encoding="utf-8").read() for _, ff in ffs)
     for idx, cnum in enumerate(chlist):
         frags = sorted(groups[cnum], key=lambda x: x[0])
-        text = "\n\n".join(open(os.path.join(folder, ff), encoding="utf-8").read() for _, ff in frags)
-        cname = trail["chapters"][cnum - 1] if cnum - 1 < len(trail["chapters"]) else f"Ch{cnum}"
+        # 접미사 x(추가 연습)는 Learn/Test에서 빼서 ✨ Extra 모드로 보낸다
+        text = _read([fr for fr in frags if fr[0] != "x"])
+        xtext = _read([fr for fr in frags if fr[0] == "x"])
+        cname = _chname(cnum)
         cbody, pbody, nlessons, nprob = render_trail_chapter(text)
-        t_lessons += nlessons; t_probs += nprob
+        xbody, xlessons, xprob = render_extra_chapter(xtext) if xtext.strip() else ("", 0, 0)
+        t_lessons += nlessons; t_probs += nprob; t_extra += xprob
         active = " active" if idx == 0 else ""
-        cid, pid = f"{alias}-c-ch{cnum}", f"{alias}-p-ch{cnum}"
+        cid, pid, xid = f"{alias}-c-ch{cnum}", f"{alias}-p-ch{cnum}", f"{alias}-x-ch{cnum}"
         chlabel = f"Ch{cnum}. {html.escape(cname)}"
         chead = (f'<div class="ch-head"><h1>Ch{cnum}. {html.escape(cname)}</h1>'
                  f'<div class="chips"><span class="chip">레슨 {nlessons}</span><span class="chip">문제 {nprob}</span></div></div>')
-        c_tabs.append(f'<button class="tab{active}" data-target="{cid}">{chlabel}</button>')
-        _ljump = (f'<div class="test-jump">🧩 이 챕터에는 문제 <b>{nprob}개</b>가 있습니다. '
-                  + jump_btn("Test에서 문제 풀기 →", f"pane-{alias}", f"{alias}-test", f"{alias}-p-ch{cnum}") + '</div>')
-        c_panes.append(f'<div class="pane{active}" id="{cid}">{chead}{cbody}{_ljump}</div>')
-        p_tabs.append(f'<button class="tab{active}" data-target="{pid}">{chlabel}</button>')
+        # 다음 챕터/레벨 이동 버튼 (Test·Extra 하단 공용)
         _pos = chlist.index(cnum)
         if _pos + 1 < len(chlist):
             _nn = chlist[_pos + 1]
-            _nname = trail["chapters"][_nn - 1] if _nn - 1 < len(trail["chapters"]) else f"Ch{_nn}"
-            _nav = ('<div class="test-jump">✅ 문제를 다 풀었다면 '
-                    + jump_btn(f"다음: Ch{_nn}. {_nname} Learn →", f"pane-{alias}", f"{alias}-tut", f"{alias}-c-ch{_nn}") + '</div>')
+            _next_btn = jump_btn(f"다음: Ch{_nn}. {_chname(_nn)} Learn →", f"pane-{alias}", f"{alias}-tut", f"{alias}-c-ch{_nn}")
+            _next_txt, _next_txt_x = "✅ 문제를 다 풀었다면 ", "✅ 추가 연습까지 마쳤다면 "
         else:
             _na, _nf = next_course_of(alias)
             if _na:
-                _nav = ('<div class="test-jump">✅ 이 레벨 완료! '
-                        + jump_btn(f"다음 레벨: {_na} →", f"pane-{_na}", f"{_na}-tut", f"{_na}-c-ch{_nf}") + '</div>')
+                _next_btn = jump_btn(f"다음 레벨: {_na} →", f"pane-{_na}", f"{_na}-tut", f"{_na}-c-ch{_nf}")
+                _next_txt, _next_txt_x = "✅ 이 레벨 완료! ", "✅ 이 레벨의 추가 연습까지 완료! "
             else:
-                _nav = '<div class="test-jump">🎉 모든 레벨을 완주했습니다! 수고하셨습니다.</div>'
+                _next_btn = ""
+                _next_txt = _next_txt_x = "🎉 모든 레벨을 완주했습니다! 수고하셨습니다."
+        _extra_btn = jump_btn("✨ Extra에서 추가 연습 →", f"pane-{alias}", f"{alias}-x", xid) if xprob else ""
+        # Learn
+        c_tabs.append(f'<button class="tab{active}" data-target="{cid}">{chlabel}</button>')
+        _ljump = (f'<div class="test-jump">🧩 이 챕터에는 문제 <b>{nprob}개</b>'
+                  + (f' · 추가 연습 <b>{xprob}개</b>' if xprob else '') + '가 있습니다. '
+                  + jump_btn("Test에서 문제 풀기 →", f"pane-{alias}", f"{alias}-test", pid) + _extra_btn + '</div>')
+        c_panes.append(f'<div class="pane{active}" id="{cid}">{chead}{cbody}{_ljump}</div>')
+        # Test
+        p_tabs.append(f'<button class="tab{active}" data-target="{pid}">{chlabel}</button>')
+        _nav = f'<div class="test-jump">{_next_txt}{_extra_btn}{_next_btn}</div>'
         p_panes.append(f'<div class="pane{active}" id="{pid}">{chead}{pbody}{_nav}</div>')
-    tut_id, test_id = f"{alias}-tut", f"{alias}-test"
+        # Extra
+        if xprob:
+            xactive = " active" if not x_tabs else ""
+            xhead = (f'<div class="ch-head"><h1>Ch{cnum}. {html.escape(cname)} — 추가 연습</h1>'
+                     f'<div class="chips"><span class="chip">문제 {xprob}</span></div>'
+                     f'<div class="test-note">Learn·Test를 마친 뒤, 이 챕터의 핵심을 소재만 바꿔 <b>반복</b>하고 '
+                     f'코딩테스트 단골 유형으로 <b>확장</b>하는 문제입니다. 요구사항·입출력·예제만 보고 스스로 푼 뒤 채점하세요.{EX_LEGEND}</div></div>')
+            _xnav = f'<div class="test-jump">{_next_txt_x}{_next_btn}</div>'
+            x_tabs.append(f'<button class="tab{xactive}" data-target="{xid}">{chlabel}</button>')
+            x_panes.append(f'<div class="pane{xactive}" id="{xid}">{xhead}{xbody}{_xnav}</div>')
+    tut_id, test_id, x_id = f"{alias}-tut", f"{alias}-test", f"{alias}-x"
     banner = (f'<div class="trail-banner"><b>{html.escape(alias)}</b> · {html.escape(trail["name"])} '
-              f'&nbsp;—&nbsp; 레슨 {t_lessons} · 문제 {t_probs}. '
-              f'<b>📖 Learn</b>에서 개념을 익히고 <b>🧩 Test</b>에서 문제를 스스로 푸세요.</div>')
+              f'&nbsp;—&nbsp; 레슨 {t_lessons} · 문제 {t_probs}' + (f' · 추가 연습 {t_extra}' if t_extra else '') + '. '
+              f'<b>📖 Learn</b>에서 개념을 익히고 <b>🧩 Test</b>에서 문제를 스스로 푼 뒤'
+              + (' <b>✨ Extra</b>로 반복·확장하세요.' if t_extra else ' 마무리하세요.') + '</div>')
     mode = ('<div class="tab-scope">'
             f'<div class="modebar tabbar"><button class="tab active" data-target="{tut_id}">📖 Learn</button>'
-            f'<button class="tab" data-target="{test_id}">🧩 Test</button></div>'
+            f'<button class="tab" data-target="{test_id}">🧩 Test</button>'
+            + (f'<button class="tab" data-target="{x_id}">✨ Extra</button>' if x_panes else '') + '</div>'
             f'<div class="pane active" id="{tut_id}"><div class="tab-scope"><div class="chapters tabbar">'
             + "\n".join(c_tabs) + '</div>\n' + "\n".join(c_panes) + '</div></div>'
             f'<div class="pane" id="{test_id}"><div class="tab-scope"><div class="chapters tabbar">'
             + "\n".join(p_tabs) + '</div>\n' + "\n".join(p_panes) + '</div></div>'
-            '</div>')
+            + (f'<div class="pane" id="{x_id}"><div class="tab-scope"><div class="chapters tabbar">'
+               + "\n".join(x_tabs) + '</div>\n' + "\n".join(x_panes) + '</div></div>' if x_panes else '')
+            + '</div>')
     pane_id = f"pane-{alias}"
     trail_top_tabs.append(f'<button class="tab" data-target="{pane_id}">{html.escape(alias)}</button>')
     trail_panes.append(f'<div class="pane" id="{pane_id}"><div class="wrap">{banner}{mode}</div></div>')
-    trail_stat.append(f"{alias}({t_lessons}L/{t_probs}P)")
+    trail_stat.append(f"{alias}({t_lessons}L/{t_probs}P" + (f"/{t_extra}X" if t_extra else "") + ")")
+    EXTRA_P += t_extra
 
 import sys as _sys, os as _os
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 from theme import make_css, JS_UI
-CSS = make_css("cpp")
+from resources import RES_CSS
+CSS = make_css("cpp") + RES_CSS
 
 JS = """
 document.querySelectorAll('.tabbar').forEach(function(bar){
@@ -484,7 +638,8 @@ document.addEventListener('click', function(e){
 JS = JS + JS_UI
 
 stat_chips = "<span>💠 C++</span><span>Tutorial (34L·69P)</span>" + \
-             "".join(f"<span>{html.escape(s)}</span>" for s in trail_stat)
+             "".join(f"<span>{html.escape(s)}</span>" for s in trail_stat) + \
+             (f"<span>✨ Extra {EXTRA_P}문제</span>" if EXTRA_P else "")
 
 top_tabs_html = ("<button class='tab active' data-target='pane-codetree-101'>Tutorial</button>"
                  + "".join(trail_top_tabs))
@@ -504,6 +659,8 @@ c101_pane = "<div class='pane active' id='pane-codetree-101'><div class='wrap'>"
 HTML = (
 "<!doctype html>\n<html lang='ko'>\n<head>\n<meta charset='utf-8'>\n"
 "<meta name='viewport' content='width=device-width, initial-scale=1'>\n"
+# 개인 학습용 배포 — 검색엔진 색인 차단 (robots.txt와 함께 동작)
+"<meta name='robots' content='noindex, nofollow, noarchive, nosnippet'>\n"
 "<title>C++ 학습 가이드</title>\n<style>" + CSS + "</style>\n</head>\n<body>\n"
 "<div class='masthead'><div class='inner'>"
 "<h1>💠 C++ 학습 가이드</h1>"

@@ -4,37 +4,59 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta http-equiv="refresh" content="0; url=python_learning.html">
-<link rel="canonical" href="python_learning.html">
-<title>Python 학습 가이드</title>
+<title>코딩테스트 학습 가이드</title>
 <style>
-  :root{ --bg:#f7f9f8; --card:#fff; --ink:#132320; --muted:#5f7370; --line:#dfe8e5; --accent:#0d8577; }
+  :root{ --bg:#f7f9f8; --card:#fff; --ink:#132320; --muted:#5f7370; --line:#dfe8e5;
+         --py:#0d8577; --py-l:rgba(13,133,119,.10); --cpp:#3b6fd4; --cpp-l:rgba(59,111,212,.10); }
   @media (prefers-color-scheme: dark){
-    :root{ --bg:#0e1615; --card:#151f1e; --ink:#e6efec; --muted:#93a8a4; --line:#25322f; --accent:#38b8a4; }
+    :root{ --bg:#0e1615; --card:#151f1e; --ink:#e6efec; --muted:#93a8a4; --line:#25322f;
+           --py:#38b8a4; --py-l:rgba(56,184,164,.13); --cpp:#7aa5f0; --cpp-l:rgba(122,165,240,.13); }
   }
   *{box-sizing:border-box}
   body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--ink);
        font-family:'Pretendard Variable',Pretendard,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;
        padding:24px;line-height:1.6}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:38px 34px;
-        max-width:440px;width:100%;text-align:center;box-shadow:0 6px 28px rgba(0,0,0,.06)}
-  h1{font-size:21px;font-weight:800;letter-spacing:-.03em;margin:0 0 8px}
-  p{margin:0 0 22px;color:var(--muted);font-size:14.5px}
-  a.go{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;
-       font-size:14.5px;padding:11px 26px;border-radius:11px}
-  a.go:hover{filter:brightness(1.08)}
-  .spin{width:26px;height:26px;margin:0 auto 18px;border:3px solid var(--line);
-        border-top-color:var(--accent);border-radius:50%;animation:r .8s linear infinite}
-  @keyframes r{to{transform:rotate(360deg)}}
+  .wrap{width:100%;max-width:620px;text-align:center}
+  h1{font-size:22px;font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+  .sub{margin:0 0 26px;color:var(--muted);font-size:14.5px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:520px){ .grid{grid-template-columns:1fr} }
+  a.card{display:block;text-decoration:none;color:inherit;background:var(--card);
+         border:1px solid var(--line);border-radius:18px;padding:26px 22px;text-align:left;
+         box-shadow:0 6px 28px rgba(0,0,0,.06);transition:transform .12s,border-color .12s}
+  a.card:hover{transform:translateY(-2px)}
+  a.card .emoji{font-size:30px;line-height:1;display:block;margin-bottom:12px}
+  a.card h2{font-size:17px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px}
+  a.card p{margin:0 0 14px;color:var(--muted);font-size:13.5px;line-height:1.6}
+  a.card .go{display:inline-block;font-weight:700;font-size:13.5px;padding:8px 16px;border-radius:10px}
+  a.py:hover{border-color:var(--py)}
+  a.py h2{color:var(--py)}
+  a.py .go{background:var(--py-l);color:var(--py)}
+  a.cpp:hover{border-color:var(--cpp)}
+  a.cpp h2{color:var(--cpp)}
+  a.cpp .go{background:var(--cpp-l);color:var(--cpp)}
+  .note{margin:24px 0 0;color:var(--muted);font-size:12.5px}
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="spin"></div>
-    <h1>🐍 Python 학습 가이드</h1>
-    <p>학습 페이지로 이동 중입니다…</p>
-    <a class="go" href="python_learning.html">바로 열기 →</a>
+  <div class="wrap">
+    <h1>코딩테스트 학습 가이드</h1>
+    <p class="sub">같은 커리큘럼(45챕터)을 두 언어로 준비했습니다. 공부할 언어를 고르세요.</p>
+    <div class="grid">
+      <a class="card py" href="python_learning.html">
+        <span class="emoji">🐍</span>
+        <h2>Python</h2>
+        <p>브라우저에서 코드를 직접 작성하고 <b>실행·채점</b>까지 됩니다. 추가 연습 문제 포함.</p>
+        <span class="go">Python으로 공부하기 →</span>
+      </a>
+      <a class="card cpp" href="cpp_learning.html">
+        <span class="emoji">💠</span>
+        <h2>C++</h2>
+        <p>같은 개념·도식·문제를 C++ 문법으로. 정답 코드와 풀이를 펼쳐 볼 수 있습니다.</p>
+        <span class="go">C++로 공부하기 →</span>
+      </a>
+    </div>
+    <p class="note">개인 학습용 페이지입니다. Tutorial 코스는 © Branch &amp; Bound(Codetree) 원문 요약본입니다.</p>
   </div>
-<script>location.replace('python_learning.html');</script>
 </body>
 </html>

@@ -105,16 +105,29 @@ for문 안에 for문을 넣는 2중(중첩) 반복문을 다룹니다. 외부=�
   - 작성 규격: `_build/EXTRA_SPEC.md`
   - 단일 파일 검증: `python _build/verify_file.py trails/<trail>/chNNx.md` (구조 + 정답 실행 대조)
   - 전체 검증: `python _build/verify_runners.py` · 빌드: `PYTHONUTF8=1 python _build/build_html.py`
-- 이 시점부터 **Python 버전(`python_learning.html`)만** 업그레이드합니다. `cpp_learning.html`은 동결.
+- 이 시점부터 **Python 버전(`python_learning.html`)** 을 중심으로 업그레이드했습니다.
+  (2026-09-10 C++ 동결 해제 — 아래 「C++ 사이트」 참고)
+
+## 💠 C++ 사이트 (2026-09-10 동결 해제)
+
+사용자가 C++ 전환을 검토하면서 `cpp/`·`cpp_learning.html`을 다시 관리 대상에 넣었습니다.
+Python 사이트에 적용한 보완(개념 심화 그림·손추적·유도, 챕터 정리 레슨, 추가 연습)을 **같은 커리큘럼 그대로** C++로 옮깁니다.
+
+- 대응 관계: `trails/<trail>/chNN*.md`(Python) ↔ `cpp/trails/<trail>/chNN*.md`(C++) — 파일명·레슨 번호가 1:1
+- 포팅 규격: `_build/CPP_PORT_SPEC.md` (무엇을 그대로 옮기고 무엇을 C++로 바꾸는지, 자료구조 대응표, C++ 고유 함정)
+- 빌드: `PYTHONUTF8=1 python _build/cpp_build.py`
+- 검증: `python _build/verify_cpp.py <scope>` (scope: `101` | `trails` | `<트레일명>` | `all`) — g++ 컴파일·실행 채점
+- C++ 사이트는 브라우저 실행기가 없는 **정답 공개형**입니다(정답 코드·풀이 펼쳐 보기).
 
 ## 🌐 배포 (GitHub Pages)
 
-- **주소**: <https://kimdg0094.github.io/python-coding-test/> (루트 접속 시 `python_learning.html`로 이동)
+- **주소**: <https://kimdg0094.github.io/python-coding-test/> (루트에서 Python / C++ 중 선택)
+  - Python: `python_learning.html` · C++: `cpp_learning.html`
 - **저장소**: `kimdg0094/python-coding-test` (public, 브랜치 `main`, 폴더 `/`)
 - **색인 차단**: `robots.txt`(전체 Disallow + 주요 AI 크롤러 명시 차단) + 각 HTML의 `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">`
   - noindex 메타는 `_build/build_html.py`에 들어 있어 재빌드해도 유지됩니다.
   - 다만 이는 **검색 노출만 막을 뿐, 접근 제한이 아닙니다.** 링크를 아는 사람은 전부 열람할 수 있습니다.
-- **배포 제외 대상**(`.gitignore`): `cpp/`, `cpp_learning.html`(동결), `*.log`, `.venv/`, `__pycache__/`
+- **배포 제외 대상**(`.gitignore`): `*.log`, `.venv/`, `__pycache__/`, `*.bak`, `_build/tmp/`
 - **전송 용량**: 원본 5.4MB → gzip 약 1.17MB
 
 ### 갱신 방법
