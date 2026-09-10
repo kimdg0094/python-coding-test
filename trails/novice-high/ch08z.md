@@ -29,7 +29,7 @@
      call stack = depth         no recursion, rolling is easy
 ```
 
-- 유형 다섯 가지는 결국 **dp 표의 모양과 "어느 칸을 읽는가"**로 갈린다. ● 는 지금 채우는 칸, ▲ ◀ ↘ 는 그 칸이 읽는 자리다.
+- 유형 다섯 가지는 결국 **dp 표의 모양과 "어느 칸을 읽는가"**로 갈린다. `*` 는 지금 채우는 칸, `^` `<` `\` 는 그 칸이 읽는 자리다.
 
 ```text
   five shapes of a dp table      * = the cell being filled
