@@ -396,13 +396,26 @@ def _lesson_parts(body_lines):
     problems_html, pc = render_trail_problems(problem_lines)
     return concept_html, problems_html, pc
 
-def render_trail_lesson_split(title, body_lines):
+# Learn 탭은 ch{NN}x.md(추가 연습)를 Extra로 빼고 렌더링하므로, md의 레슨 번호를
+# 그대로 쓰면 x가 차지하던 번호가 구멍으로 남는다(예: L1 L2 [L3=x] L4 → 화면엔 L1 L2 L4).
+# 그래서 "보이는 번호"만 탭 안에서 1부터 다시 매긴다.
+# 완료 토글의 localStorage 키는 제목 문자열에서 만들어지므로, 원래 제목을
+# data-t 로 심어 키를 고정한다(번호를 고쳐도 기존 진행률이 유지된다).
+_LNUM = re.compile(r"^L(\d+)\.\s*(.*)$", re.S)
+
+def renumber_lesson(title, idx):
+    m = _LNUM.match(title)
+    return f"L{idx}. {m.group(2)}" if m else title
+
+def render_trail_lesson_split(title, body_lines, disp=None):
+    disp = title if disp is None else disp
     concept_html, problems_html, pc = _lesson_parts(body_lines)
-    c = (f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
+    dt = f' data-t="{html.escape(title)}"' if disp != title else ""
+    c = (f'<div class="lesson"><h3 class="lesson-title"{dt}>{html.escape(disp)}</h3>'
          f'<div class="lconcept">{concept_html}</div></div>')
     p = ""
     if pc:
-        p = f'<div class="lesson-p"><h3 class="lesson-title">{html.escape(title)}</h3>{problems_html}</div>'
+        p = f'<div class="lesson-p"><h3 class="lesson-title"{dt}>{html.escape(disp)}</h3>{problems_html}</div>'
     return c, p, pc
 
 def split_trail_text(text):
@@ -425,8 +438,8 @@ def render_trail_chapter(text):
     intro, lessons = split_trail_text(text)
     c_parts, p_parts, total_p = [], [], 0
     intro_html = f'<div class="tr-intro">{html.escape(intro)}</div>' if intro else ""
-    for title, blines in lessons:
-        c, p, pc = render_trail_lesson_split(title, blines)
+    for i, (title, blines) in enumerate(lessons, 1):
+        c, p, pc = render_trail_lesson_split(title, blines, renumber_lesson(title, i))
         c_parts.append(c)
         if p: p_parts.append(p)
         total_p += pc
@@ -440,9 +453,11 @@ def render_trail_chapter(text):
 def render_extra_chapter(text):
     _, lessons = split_trail_text(text)
     parts, total_p = [], 0
-    for title, blines in lessons:
+    for i, (title, blines) in enumerate(lessons, 1):
         concept_html, problems_html, pc = _lesson_parts(blines)
-        parts.append(f'<div class="lesson"><h3 class="lesson-title">{html.escape(title)}</h3>'
+        disp = renumber_lesson(title, i)   # Extra 탭은 챕터당 레슨 1개 → L1
+        dt = f' data-t="{html.escape(title)}"' if disp != title else ""
+        parts.append(f'<div class="lesson"><h3 class="lesson-title"{dt}>{html.escape(disp)}</h3>'
                      f'<div class="lconcept">{concept_html}</div></div>')
         if pc:
             parts.append(f'<div class="lesson-p">{problems_html}</div>')

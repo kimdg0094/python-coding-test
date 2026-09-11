@@ -183,3 +183,16 @@
 - **검증**: `verify_file.py` ch07·ch07x·ch09 전부 OK · `verify_depth.py --diagrams` 도식 오류 0 · `verify_examples.py` OK 32/no-example 7 · python 블록 21개 compile 통과 · **`verify_runners.py` 1229/1229** · 문제 수(6/10/12)·레슨 수 변동 없음.
 - **주의**: `verify_file.py`는 z 파일에 대해 "문제 카드 없음" ERROR를 내지만 이는 z 파일 전체의 기존 동작(대조군 `ch06z.md`도 동일). z 파일 검증은 `verify_depth.py`로 한다.
 - **배포**: 빌드까지 완료(`python_learning.html` 7,225KB). `git push`는 하지 않음 — 사용자 승인 후 진행.
+
+
+## 2026-09-11 레슨 번호 구멍 수정 (Learn 탭 L1 L2 [빔] L4 → L1 L2 L3) · 두 사이트
+
+- **증상**: 사용자 제보 — 챕터를 열면 레슨 번호가 `L1, L2, L4`처럼 중간이 비어 있다.
+- **원인**: 2026-09-08 Extra 모드 신설 때 `ch{NN}x.md`(추가 연습)를 Learn/Test 병합에서 빼고 Extra 탭으로 보냈는데, **md의 레슨 번호는 그대로 뒀다**. 병합 순서가 `'' < a < b < c < x < z`라 x는 항상 끝에서 두 번째 번호를 차지하므로, x가 빠진 Learn 탭에는 그 번호가 구멍으로 남는다. (당시 RESUME에 "x 번호가 Learn에서는 비고 Extra에 있음"으로 **인지는 돼 있었으나 수정하지 않은 항목**.)
+- **범위**: 전수 조사 결과 **Python 45챕터 / C++ 45챕터 전부**. Tutorial(101)은 x 파일이 없어 해당 없음. 각 챕터 구조는 동일(content 레슨 k개 + x 1개 + z 1개).
+- **고친 방법 — md는 건드리지 않고 "보이는 번호"만 재매김**:
+  - `build_html.py`·`cpp_build.py`에 `renumber_lesson(title, idx)` 추가. `render_trail_chapter`/`render_extra_chapter`가 `enumerate`로 탭 안에서 1부터 다시 매긴다. Learn은 `L1..L(k+1)`(z가 마지막), Extra는 챕터당 레슨 1개라 `L1`.
+  - **진행률 보존이 관건**: 완료 토글의 localStorage 키가 `paneId::제목(60자)`이라 번호를 고치면 기존 체크가 전부 날아간다. 그래서 번호가 바뀐 레슨의 `<h3>`에 **원래 제목을 `data-t` 속성으로 심고**, `theme.py`의 `h.dataset.t=h.textContent.trim()`을 `if(!h.dataset.t){...}`로 바꿔 서버가 심은 값을 우선하게 했다. → **키는 이전과 완전히 동일**, 마이그레이션 불필요.
+  - md 번호를 그대로 두었으므로 `EXTRA_SPEC.md` 규격·병합 순서·verify 도구는 손댈 필요가 없다.
+- **검증**: 렌더된 패널 Learn 45 / Test 45 / Extra 45 = **135개 × 2사이트 전부 번호 1..n 연속** · `data-t` 90개(사이트당)가 md 원본 제목과 **100% 일치**(키 불변 확인) · 레슨 제목 수 312 → 312, 러너 1229 → 1229 변동 없음 · `verify_runners.py` 1229/1229.
+- **주의(다음에 레슨을 추가할 때)**: md에는 병합 순서대로 번호를 매기면 된다(x가 z보다 앞 번호). 화면 번호는 빌드가 알아서 다시 매긴다. 다만 **레슨 제목 문자열을 바꾸면 완료 체크가 초기화**된다 — 제목 변경 시에는 `data-t`를 옛 제목으로 고정하거나 키 마이그레이션을 넣을 것.

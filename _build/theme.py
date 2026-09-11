@@ -313,7 +313,7 @@ JS_UI = """
   /* 레슨 완료 토글 + 진행률 집계 */
   var HEADS=[];
   Array.prototype.slice.call(document.querySelectorAll('.lesson > .lesson-title, .sec h3')).forEach(function(h){
-    h.dataset.t=h.textContent.trim();
+    if(!h.dataset.t){h.dataset.t=h.textContent.trim();}
     var chp=h.closest('.pane'), cop=h.closest('[id^="pane-"]');
     var e={k:keyOf(h), ch:chp?chp.id:'', co:cop?cop.id:''};
     HEADS.push(e);
