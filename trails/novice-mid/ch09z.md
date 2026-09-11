@@ -294,14 +294,12 @@ else:
 ```python
 # ❌ 틀린 코드
 best = 0                          # 두 그룹 차이의 최솟값을 담을 변수
-for mask in range(1 << n):
-    h = 0
-    for i in range(n):
-        if mask & (1 << i):
-            h += w[i]
-    d = abs(S - 2 * h)
-    if d < best:
-        best = d
+for r in range(n + 1):
+    for chosen in combinations(w, r):
+        h = sum(chosen)
+        d = abs(S - 2 * h)
+        if d < best:
+            best = d
 print(best)
 ```
 
@@ -310,14 +308,12 @@ print(best)
 ```python
 # ✅ 고친 코드
 best = None                       # 또는 최댓값이 될 수 있는 값(예: S)으로
-for mask in range(1 << n):
-    h = 0
-    for i in range(n):
-        if mask & (1 << i):
-            h += w[i]
-    d = abs(S - 2 * h)
-    if best is None or d < best:
-        best = d
+for r in range(n + 1):
+    for chosen in combinations(w, r):
+        h = sum(chosen)
+        d = abs(S - 2 * h)
+        if best is None or d < best:
+            best = d
 print(best)
 ```
 

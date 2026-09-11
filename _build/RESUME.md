@@ -168,3 +168,18 @@
 - C++ md 수정 → `PYTHONUTF8=1 python _build/cpp_build.py` → `python _build/verify_cpp.py all`(1,229개, 20~40분)
 - 한 파일만 빠르게: `python _build/verify_cpp.py cpp/trails/<trail>/chNN.md`
 - 파이썬·C++ 문제 수 대조: `grep -c '^\*\*[0-9]*) ' <파일>`
+
+
+## 2026-09-11 novice-mid 부분집합 완전탐색을 비트마스크 → combinations로 교체 (Python 전용)
+
+- **동기**: 사용자가 "`<<`가 novice-mid에서 나올 개념이냐"고 물었고, 사이트를 확인해 보니 `novice-mid/ch07`(물체 단위로 완전탐색)이 비트마스크를 **처음부터 끝까지 주력 도구**로 쓰고 있었다. 비트 연산의 본무대는 `intermediate-high/ch05`(Bitonic Cycle)라 두 트레일이나 앞서 나온다. 사용자 결정으로 **Python 사이트만** `combinations` 기반으로 교체.
+- **선택지 확인**: C++ 사이트는 itertools가 없어 같은 교체가 불가능(재귀로 바꾸는 안도 있었으나 사용자가 Python만 선택). `cpp/trails/novice-mid/ch07*`는 비트마스크 그대로 유지 — **두 사이트의 이 챕터만 접근이 다르다**.
+- **바꾼 파일 5개**:
+  - `trails/novice-mid/ch07.md` — 개념부(`combinations(values, r)` 골격), 도식(mask 표 → 크기 r별 표 + C(n,r) 합계), 손추적 표(mask 0..7 → r=0..3), "왜 이렇게 되는가" 3항목, 접근 전략, 정답 4개(문제 1·2·3, L2 문제 3) + 풀이. 배열이 둘인 문제 3은 `combinations(range(N), r)`로 **번호**를 고르게 함.
+  - `trails/novice-mid/ch07x.md` — 머리말 반복 개념, 문제 구성표 3행, 정답 3개(문제 8·9·10) + 풀이. 문제 8은 `set(pick)`으로 제약 검사, 문제 10은 개수 제약을 반복 범위 `range(K+1)`로 녹이고 합을 `total - 2*sum(chosen)`으로 단순화.
+  - `trails/novice-mid/ch07z.md` — 개념 지도 도식 2줄, 뼈대 코드 3개(+ 번호 고르기 예시 신설), 「언제 무엇을 쓰나」 표(`permutations`·`product` 행 추가), 체크리스트 6항목, **자주 하는 실수 1·2를 신규 함정으로 교체**(`range(n)`에서 `+1` 누락 / 배열이 둘인데 값을 골라 짝이 어긋남), 3·7은 코드만 재작성.
+  - `trails/novice-mid/ch09.md`·`ch09z.md` — 같은 트레일에 남아 있던 비트마스크 잔재(두 그룹 나누기 문제 1개, 실수 7의 코드 2블록) 정리.
+- **남긴 것**: `ch07.md` 접근 전략 끝에 비트마스크 **참고 3줄**(`for mask in range(1 << N)` 표기 소개 + "Intermediate High에서 배운다"). 남의 코드에서 봤을 때 알아볼 수 있게 하려는 의도.
+- **검증**: `verify_file.py` ch07·ch07x·ch09 전부 OK · `verify_depth.py --diagrams` 도식 오류 0 · `verify_examples.py` OK 32/no-example 7 · python 블록 21개 compile 통과 · **`verify_runners.py` 1229/1229** · 문제 수(6/10/12)·레슨 수 변동 없음.
+- **주의**: `verify_file.py`는 z 파일에 대해 "문제 카드 없음" ERROR를 내지만 이는 z 파일 전체의 기존 동작(대조군 `ch06z.md`도 동일). z 파일 검증은 `verify_depth.py`로 한다.
+- **배포**: 빌드까지 완료(`python_learning.html` 7,225KB). `git push`는 하지 않음 — 사용자 승인 후 진행.

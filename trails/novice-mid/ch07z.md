@@ -16,9 +16,9 @@
     "what do I pick?"                       "what is the answer?"
           |                                       |
     subset of n items                       candidate v in [lo, hi]
-    mask = 0 .. (1<<n)-1                    for v in range(lo, hi+1)
+    r = 0..n, combinations(a, r)            for v in range(lo, hi+1)
           |                                       |
-    evaluate(mask) : sum / count            check(v) : one O(n) scan
+    evaluate(chosen) : sum / count          check(v) : one O(n) scan
           |                                       |
     O(2^n * n),  n <= 20                    O(V * n),  V = hi-lo+1
           |                                       |
@@ -34,28 +34,42 @@
 
 **뼈대 코드**
 
-부분집합 완전탐색 — 비트마스크 골격.
+부분집합 완전탐색 — combinations 골격.
 
 ```python
+from itertools import combinations
+
 n = 4
 w = [3, 7, 4, 9]                  # ← 문제마다 바뀜(물체의 속성)
 C = 13                            # ← 문제마다 바뀜(제약)
 
 best = 0                          # ← 답이 음수일 수 있으면 None으로
-for mask in range(1 << n):        # 0 .. 2^n - 1, 부분집합 하나씩
-    total = 0
-    cnt = 0
-    for i in range(n):
-        if mask & (1 << i):       # i번 물체를 골랐는가
-            total += w[i]
-            cnt += 1
-    if total <= C:                # ← 문제마다 바뀜(제약 통과 조건)
-        if total > best:          # ← 문제마다 바뀜(최대/최소/개수)
-            best = total
+for r in range(n + 1):            # 고르는 개수 0 .. n → 합쳐서 2^n가지
+    for chosen in combinations(w, r):
+        total = sum(chosen)
+        cnt = r                   # 고른 개수는 r 그 자체
+        if total <= C:            # ← 문제마다 바뀜(제약 통과 조건)
+            if total > best:      # ← 문제마다 바뀜(최대/최소/개수)
+                best = total
 print(best)
 ```
 
-부분집합 완전탐색 — 재귀 골격(비트 연산이 낯설 때 같은 일을 한다).
+물체의 속성이 둘 이상이면(무게와 가치 등) 값이 아니라 **번호**를 고른다.
+
+```python
+from itertools import combinations
+
+n = 3
+w = [3, 4, 5]
+v = [4, 5, 6]
+
+for r in range(n + 1):
+    for pick in combinations(range(n), r):   # 번호 묶음 (0, 2) 같은 꼴
+        tw = sum(w[i] for i in pick)
+        tv = sum(v[i] for i in pick)
+```
+
+부분집합 완전탐색 — 재귀 골격(도중에 가지치기를 넣고 싶을 때 같은 일을 한다).
 
 ```python
 n = 3
@@ -78,19 +92,19 @@ print(best)
 두 그룹으로 나누기 골격 — 한쪽만 고르면 반대쪽은 자동이다.
 
 ```python
+from itertools import combinations
+
 n = 4
 a = [1, 6, 11, 5]
 total = sum(a)
 
 best = None
-for mask in range(1, (1 << n) - 1):   # 양 끝 제외 → 두 그룹 모두 최소 1개
-    s = 0
-    for i in range(n):
-        if mask & (1 << i):
-            s += a[i]
-    d = abs(s - (total - s))          # ← 문제마다 바뀜(평가식)
-    if best is None or d < best:
-        best = d
+for r in range(1, n):                 # 0명과 n명 제외 → 두 그룹 모두 최소 1개
+    for chosen in combinations(a, r):
+        s = sum(chosen)
+        d = abs(s - (total - s))      # ← 문제마다 바뀜(평가식)
+        if best is None or d < best:
+            best = d
 print(best)
 ```
 
@@ -116,9 +130,12 @@ print(ans)
 
 | 상황 | 고르는 것 | 이유 | 복잡도 |
 | --- | --- | --- | --- |
-| "몇 개를 골라서 …", 각 물체가 독립적으로 포함/제외 | 부분집합(비트마스크) | 탐색의 축이 물체 그 자체 | O(2^n · n), n ≤ 20 |
+| "몇 개를 골라서 …", 각 물체가 독립적으로 포함/제외 | 부분집합(`combinations`, r = 0..n) | 탐색의 축이 물체 그 자체 | O(2^n · n), n ≤ 20 |
 | "두 팀/두 그룹으로 남김없이 나눠라" | 부분집합 + 나머지는 자동 | 한쪽을 정하면 반대편이 결정됨 | O(2^n · n) |
-| 비트 연산이 헷갈리거나 도중에 가지치기하고 싶다 | 재귀(포함/제외) | 부분 상태를 인자로 들고 다닐 수 있음 | O(2^n) 노드 |
+| 고르는 개수가 **정확히 k개**로 정해져 있다 | `combinations(a, k)` 한 줄 | r을 훑을 필요 없이 그 크기만 | O(C(n,k) · k) |
+| 뽑는 **순서가 뜻을 가진다**(줄 세우기·암호 배치) | `permutations` | `combinations`는 순서를 무시함 | O(n! / (n-k)!) |
+| 같은 것을 **여러 번 골라도 된다**(K종류를 N번) | `product(a, repeat=n)` | 중복 선택은 조합이 아님 | O(K^n) |
+| 도중에 가지치기해 가망 없는 가지를 끊고 싶다 | 재귀(포함/제외) | 부분 상태를 인자로 들고 다닐 수 있음 | O(2^n) 노드 |
 | "조건을 만족하는 가장 큰/작은 값 X를 구하라" | 값 기준 완전탐색 | 답 자체가 하나의 수 | O(V · n) |
 | 값 범위 V가 매우 크고 check가 단조 | (다음 단계) 답에 대한 이분탐색 | 참/거짓 경계가 딱 한 곳 | O(n log V) |
 | 물체 n개 중 **정확히 2개**만 고른다 | 이중 for `i < j` | 순서가 무의미해 절반만 보면 됨 | O(n²) |
@@ -127,11 +144,13 @@ print(ans)
 **✅ 마스터 체크리스트**
 
 - [ ] 설명할 수 있다: 부분집합의 개수가 왜 정확히 2^n인지(각 물체마다 두 갈래 × n번 → 곱의 법칙).
-- [ ] 설명할 수 있다: 0 ~ 2^n-1의 정수 하나가 왜 부분집합 하나와 일대일로 대응하는지.
-- [ ] 설명할 수 있다: `1 << i`가 무엇이고, `mask & (1 << i)`가 왜 "i번 물체를 골랐는가"를 뜻하는지.
-- [ ] 설명할 수 있다: `(1 << n) - 1`과 `1 << (n - 1)`이 왜 다른 값인지.
+- [ ] 설명할 수 있다: 크기별로 나눠 세면 왜 중복도 누락도 없는지(C(n,0) + … + C(n,n) = 2^n).
+- [ ] 설명할 수 있다: `combinations`가 왜 `(3, 7)`과 `(7, 3)`을 따로 내지 않는지.
+- [ ] 설명할 수 있다: `range(n + 1)`에서 `+ 1`을 빼면 어떤 경우가 통째로 빠지는지.
+- [ ] 설명할 수 있다: 배열이 둘 이상일 때 왜 `combinations(range(n), r)`로 번호를 고르는지.
+- [ ] 설명할 수 있다: `combinations`·`permutations`·`product`를 각각 언제 쓰는지.
 - [ ] 설명할 수 있다: "두 그룹으로 나누기"가 왜 부분집합 하나를 고르는 문제와 같은지.
-- [ ] 설명할 수 있다: 두 그룹이 모두 비지 않아야 할 때 mask 범위를 `1 .. 2^n-2`로 두는 이유.
+- [ ] 설명할 수 있다: 두 그룹이 모두 비지 않아야 할 때 r 범위를 `1 .. n-1`로 두는 이유.
 - [ ] 설명할 수 있다: 부분집합 완전탐색이 O(2^n · n)이고, 그래서 n ≤ 20이 실전 기준선인 이유.
 - [ ] 설명할 수 있다: "값 기준 완전탐색"이 조합 대신 무엇을 훑는지, 언제 그 발상이 가능한지.
 - [ ] 설명할 수 있다: 후보 값의 범위 [lo, hi]를 어떻게 정하고, 왜 `range(lo, hi + 1)`이어야 하는지.
@@ -141,42 +160,44 @@ print(ans)
 
 **⚠️ 자주 하는 실수**
 
-**1) 전체 집합 마스크를 `1 << n - 1`로 계산**
+**1) 고르는 개수 범위에서 `+ 1`을 빠뜨리기**
 
 ```python
 # ❌ 틀린 코드
 n = 4
-full = 1 << n - 1                 # "2^n - 1"을 만들려던 의도
-for mask in range(full + 1):
-    pass
+for r in range(n):                # 0, 1, 2, 3 — n개를 전부 고르는 경우가 없다
+    for chosen in combinations(a, r):
+        pass
 ```
 
-왜: `-`가 `<<`보다 먼저 계산되어 `1 << (n - 1)` = 8이 된다. 원하던 `2^n - 1` = 15의 절반만 훑어 부분집합의 절반을 통째로 놓친다.
+왜: `range(n)`은 `n - 1`에서 멈춘다. "전부 고르기"가 정답인 입력(예: 한도가 넉넉해 다 담는 게 최선)에서만 틀리는데, 작은 예제는 대개 그 경우가 아니라 잘 안 잡힌다.
 
 ```python
 # ✅ 고친 코드
 n = 4
-full = (1 << n) - 1               # 15 = 0b1111
-for mask in range(full + 1):
-    pass
+for r in range(n + 1):            # 0 .. n, 공집합과 전체집합 모두 포함
+    for chosen in combinations(a, r):
+        pass
 ```
 
-**2) 비트 검사에서 `== 1`을 붙이기**
+**2) 배열이 둘인데 값을 골라 짝이 어긋나기**
 
 ```python
 # ❌ 틀린 코드
-for i in range(n):
-    if mask & (1 << i) == 1:      # i번 비트가 켜졌는지 보려던 의도
-        total += w[i]
+for r in range(n + 1):
+    for chosen in combinations(w, r):    # 무게 "값"만 골랐다
+        tw = sum(chosen)
+        tv = sum(v[:r])                  # 가치는 어느 상품 것인지 알 수 없다
 ```
 
-왜: `mask & (1 << i)`의 값은 켜져 있을 때 `1`이 아니라 `2^i`다. `i = 0`일 때만 우연히 맞고, `i ≥ 1`은 전부 거짓이 되어 첫 물체만 담긴다.
+왜: `combinations(w, r)`이 내어 주는 것은 무게 값뿐이라, 그 무게가 **몇 번 상품의 것인지**가 사라진다. 짝이 되는 가치를 되찾을 방법이 없고, 무게가 같은 상품이 둘 이상이면 더욱 그렇다.
 
 ```python
 # ✅ 고친 코드
-for i in range(n):
-    if mask & (1 << i):           # 0이 아니면 켜진 것
-        total += w[i]
+for r in range(n + 1):
+    for pick in combinations(range(n), r):   # "번호"를 고른다
+        tw = sum(w[i] for i in pick)
+        tv = sum(v[i] for i in pick)
 ```
 
 **3) 최댓값 변수를 0으로 초기화**
@@ -184,13 +205,11 @@ for i in range(n):
 ```python
 # ❌ 틀린 코드
 best = 0
-for mask in range(1 << n):
-    s = 0
-    for i in range(n):
-        if mask & (1 << i):
-            s += v[i]
-    if s > best:
-        best = s
+for r in range(n + 1):
+    for chosen in combinations(v, r):
+        s = sum(chosen)
+        if s > best:
+            best = s
 ```
 
 왜: "반드시 1개 이상 골라야 한다"인데 모든 가치가 음수라면 정답도 음수다. 그런데 `best = 0`은 한 번도 갱신되지 않아 0이 출력된다.
@@ -198,13 +217,11 @@ for mask in range(1 << n):
 ```python
 # ✅ 고친 코드
 best = None
-for mask in range(1, 1 << n):     # 최소 1개는 고른다 → mask=0 제외
-    s = 0
-    for i in range(n):
-        if mask & (1 << i):
-            s += v[i]
-    if best is None or s > best:
-        best = s
+for r in range(1, n + 1):         # 최소 1개는 고른다 → r = 0 제외
+    for chosen in combinations(v, r):
+        s = sum(chosen)
+        if best is None or s > best:
+            best = s
 ```
 
 **4) 같은 쌍을 두 번 세기(`i < j` 누락)**
@@ -272,22 +289,18 @@ for x in h:
 
 ```python
 # ❌ 틀린 코드
-for mask in range(1 << n):        # mask = 0 이면 한 그룹이 텅 빈다
-    s = 0
-    for i in range(n):
-        if mask & (1 << i):
-            s += a[i]
+for r in range(n + 1):            # r = 0 이면 한 그룹이 텅 빈다
+    for chosen in combinations(a, r):
+        s = sum(chosen)
 ```
 
-왜: "두 팀 모두 최소 1명"이라는 조건이 있으면 mask가 `0`(한 팀이 빔)이나 `2^n - 1`(반대 팀이 빔)인 경우는 유효한 분할이 아니다. 그대로 두면 항상 "전부 한 팀"이 최적으로 뽑힌다.
+왜: "두 팀 모두 최소 1명"이라는 조건이 있으면 고르는 인원이 `0`명(한 팀이 빔)이거나 `n`명(반대 팀이 빔)인 경우는 유효한 분할이 아니다. 그대로 두면 항상 "전부 한 팀"이 최적으로 뽑힌다.
 
 ```python
 # ✅ 고친 코드
-for mask in range(1, (1 << n) - 1):   # 양 끝(0, 2^n-1)을 자연스럽게 배제
-    s = 0
-    for i in range(n):
-        if mask & (1 << i):
-            s += a[i]
+for r in range(1, n):             # 양 끝(0명, n명)을 자연스럽게 배제
+    for chosen in combinations(a, r):
+        s = sum(chosen)
 ```
 
 **다음 챕터로**
